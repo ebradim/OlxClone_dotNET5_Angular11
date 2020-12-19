@@ -1,5 +1,5 @@
 import { createReducer, on } from '@ngrx/store';
-import { fromAPIActions } from '../actions';
+import { fromAPIActions, fromLogoutActions } from '../actions';
 import { IUser } from '../models/API';
 
 export interface State {
@@ -11,12 +11,22 @@ export const initialState: State = {
 
 export const reducer = createReducer(
   initialState,
-  on(fromAPIActions.loginSuccess, (state, { user }) => {
-    return {
-      ...state,
-      user,
-    };
-  }),
-  on(fromAPIActions.loginError, () => initialState)
+  on(
+    fromAPIActions.loginSuccess,
+    fromAPIActions.registerSuccess,
+    (state, { user }) => {
+      return {
+        ...state,
+        user,
+      };
+    }
+  ),
+
+  on(
+    fromAPIActions.loginError,
+    fromAPIActions.registerError,
+    fromAPIActions.logoutSuccess,
+    () => initialState
+  )
 );
 export const getUser = (state: State) => state.user;

@@ -1,11 +1,17 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { fromAPIActions, fromLoginActions } from '../actions';
+import {
+  fromAPIActions,
+  fromLoginActions,
+  fromLogoutActions,
+  fromRegisterActions,
+} from '../actions';
 import { AuthService } from '../services/auth.service';
-import { catchError, exhaustMap, map, tap } from 'rxjs/operators';
+import { catchError, exhaustMap, map, switchMap, tap } from 'rxjs/operators';
 import { ILogin } from '../models/Login';
 import { of } from 'rxjs';
 import { Router } from '@angular/router';
+import { IRegister } from '../models/Register';
 @Injectable()
 export class AuthEffects {
   constructor(
@@ -26,12 +32,43 @@ export class AuthEffects {
       )
     )
   );
+  register$ = createEffect(() =>
+    this.action$.pipe(
+      ofType(fromRegisterActions.register),
+      map((action) => action.user),
+      exhaustMap((user: IRegister) =>
+        this.authService.register(user).pipe(
+          map((user) => fromAPIActions.registerSuccess({ user })),
+          catchError((error) => of(fromAPIActions.registerError({ error })))
+        )
+      )
+    )
+  );
 
-  afterLogin$ = createEffect(
+  logout$ = createEffect(() =>
+    this.action$.pipe(
+      ofType(fromLogoutActions.logout),
+      exhaustMap(() => {
+        return this.authService
+          .logout()
+          .pipe(map((logout) => fromAPIActions.logoutSuccess({ logout })));
+      })
+    )
+  );
+  afterAuth$ = createEffect(
     () =>
       this.action$.pipe(
-        ofType(fromAPIActions.loginSuccess),
+        ofType(fromAPIActions.loginSuccess, fromAPIActions.registerSuccess),
         tap(() => this.router.navigate(['/home']))
+      ),
+    { dispatch: false }
+  );
+
+  afterLogout$ = createEffect(
+    () =>
+      this.action$.pipe(
+        ofType(fromAPIActions.logoutSuccess),
+        tap(() => this.router.navigate(['/auth/login']))
       ),
     { dispatch: false }
   );
