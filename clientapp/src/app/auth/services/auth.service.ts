@@ -16,7 +16,7 @@ export class AuthService {
 
   public login(user: ILogin): Observable<IUser> {
     const endpoint = environment.url + this.routes.login;
-    return this.client.post<IUser>(endpoint, user);
+    return this.client.post<IUser>(endpoint, user, { withCredentials: true });
   }
 
   public register(user: IRegister): Observable<IUser> {

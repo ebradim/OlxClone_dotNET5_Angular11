@@ -1,0 +1,45 @@
+.form-container {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-between;
+  padding: 50px;
+  margin: 5%;
+  .left-side {
+    flex-grow: 25;
+    word-break: break-all;
+    .title {
+      font-family: Quicksand;
+      font-size: 80px;
+    }
+    .info {
+      display: inline;
+      font-family: Assistant;
+      font-size: 20px;
+      color: #fff;
+      background-color: #000;
+      width: fit-content;
+      padding: 5px 10px;
+      min-width: 200px;
+    }
+  }
+  form {
+    margin-top: 5vh;
+    flex-grow: 40;
+    .btn-signin {
+      width: 80%;
+      margin-left: 10%;
+      height: 40px;
+    }
+    input {
+      height: 35px;
+    }
+  }
+}
+.flexed-centered {
+  color: rgb(224, 24, 67);
+  margin-top: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}

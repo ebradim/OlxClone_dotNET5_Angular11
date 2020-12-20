@@ -1,0 +1,68 @@
+<div class="form-container">
+  <div class="left-side">
+    <h1 class="title">Welcome Back!</h1>
+    <p class="info">Login to start selling & buying, and earn money</p>
+  </div>
+
+  <form
+    nz-form
+    [nzLayout]="'vertical'"
+    [formGroup]="loginForm"
+    (ngSubmit)="submit()"
+  >
+    <nz-form-item>
+      <nz-form-control nzErrorTip="Please input your username!">
+        <nz-input-group nzPrefixIcon="user">
+          <input
+            class="input-login"
+            formControlName="userName"
+            nz-input
+            placeholder="Username"
+            autocomplete="username"
+            #ispend
+          />
+        </nz-input-group>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-control nzErrorTip="Please input your Password!">
+        <nz-input-group [nzSuffix]="suffixTemplate">
+          <input
+            [type]="passwordVisible ? 'text' : 'password'"
+            nz-input
+            placeholder="input password"
+            formControlName="password"
+          />
+        </nz-input-group>
+        <ng-template #suffixTemplate>
+          <i
+            nz-icon
+            [nzType]="passwordVisible ? 'eye-invisible' : 'eye'"
+            (click)="passwordVisible = !passwordVisible"
+          ></i>
+        </ng-template>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item> </nz-form-item>
+    <nz-form-control>
+      <button
+        nz-button
+        type="submit"
+        nzShape="round"
+        nzType="default"
+        class="btn-signin"
+        [disabled]="loading$ |async"
+      >
+        Log in
+      </button>
+    </nz-form-control>
+    <div class="flexed-centered" *ngIf="error$ | async as error">
+      <span nz-typography nzType="danger">
+        <strong>{{ error.error?.errors?.User || "Failed to connect" }}</strong>
+      </span>
+    </div>
+    <div *ngIf="loading$ | async " class="flexed-centered">
+      <nz-spin nzSimple [nzSize]="'large'"></nz-spin>
+    </div>
+  </form>
+</div>

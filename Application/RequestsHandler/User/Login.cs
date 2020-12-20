@@ -58,6 +58,7 @@ namespace Application.RequestsHandler.User
                      var refreshToken = refreshTokenGenerator.Generate(user.UserName);
                      var token = new RefreshToken { Token = refreshToken, AppUser = user, CreatedAt = DateTime.UtcNow, ExpireAt = DateTime.UtcNow.AddDays(2) };
                      await dataContext.RefreshTokens.AddAsync(token, cancellationToken);
+                     
                      var success = await dataContext.SaveChangesAsync() > 0;
                      if (success)
                      {

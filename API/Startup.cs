@@ -8,7 +8,9 @@ using Infrastructure.Tokens;
 using Infrastructure.User;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.CookiePolicy;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -45,11 +47,18 @@ namespace API
             services.AddMvc()
                     .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<Register>());
             services.AddHttpContextAccessor();
+            services.AddCors(options=>{
+                options.AddPolicy("OlxPolicy",policy=>{
+                    policy.AllowAnyHeader().AllowAnyMethod().WithOrigins("http://localhost:4200").AllowCredentials();
+                });
+            });
+       
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            app.UseCors("OlxPolicy");
             app.UseMiddleware<ErrorHandlingMiddleware>();
 
             if (env.IsDevelopment())

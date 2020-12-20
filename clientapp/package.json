@@ -22,6 +22,7 @@
     "@ngrx/effects": "^10.1.1",
     "@ngrx/router-store": "^10.1.1",
     "@ngrx/store": "^10.1.1",
+    "ng-zorro-antd": "^10.2.2",
     "rxjs": "~6.6.0",
     "tslib": "^2.0.0",
     "zone.js": "~0.10.2"
