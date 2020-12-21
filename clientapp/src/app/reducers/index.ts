@@ -1,19 +1,23 @@
 import * as fromRouter from '@ngrx/router-store';
+import * as fromAPI from './api.reducer';
 import {
   createFeatureSelector,
   ActionReducer,
   MetaReducer,
   ActionReducerMap,
+  createSelector,
 } from '@ngrx/store';
 import { environment } from 'src/environments/environment';
 export interface State {
   router: fromRouter.RouterReducerState<any>;
+  api: fromAPI.State;
 }
 
-export const selectRouter = createFeatureSelector<
-  State,
-  fromRouter.RouterReducerState<any>
->('router');
+export const featureSelector = createFeatureSelector<State>('root');
+
+export const routerState = createSelector(featureSelector, (x) => x.router);
+export const apiState = createSelector(featureSelector, (x) => x.api);
+export const getCurrentUser = createSelector(apiState, fromAPI.getUser);
 
 export const {
   selectCurrentRoute, // select the current route
@@ -24,9 +28,11 @@ export const {
   selectRouteParam, // factory function to select a route param
   selectRouteData, // select the current route data
   selectUrl, // select the current url
-} = fromRouter.getSelectors(selectRouter);
+} = fromRouter.getSelectors(routerState);
+
 export const reducers: ActionReducerMap<State> = {
   router: fromRouter.routerReducer,
+  api: fromAPI.reducer,
 };
 export function debug(reducer: ActionReducer<any>): ActionReducer<any> {
   return (state, action) => {

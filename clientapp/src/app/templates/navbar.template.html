@@ -72,25 +72,48 @@
       </li>
     </ul>
   </li>
-  <div class="btns-auth-container">
-    <button
-      nz-button
-      nzType="default"
-      [nzSize]="'large'"
-      class="btn-signin"
-      nzShape="round"
-      [routerLink]="['/auth/login']"
-    >
-      <i nz-icon nzType="login"></i>Sign In
-    </button>
-    <button
-      nz-button
-      nzType="primary"
-      [nzSize]="'large'"
-      class="btn-newaccount"
-      nzShape="round"
-    >
-      <i nz-icon nzType="user-add"></i>Create new account
-    </button>
+
+  <div *ngIf="user$ |async as logged;else nouser">
+    <div class="user-info">
+      <button
+        nz-button
+        nzType="dashed"
+        [nzSize]="'large'"
+        class="btn-profile"
+        nzShape="round"
+        [routerLink]="['/auth/login']"
+      >
+        <nz-avatar
+          nzIcon="user"
+          nzSrc="//zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
+        ></nz-avatar>
+        {{logged.firstName}} {{logged.lastName}}
+      </button>
+    </div>
   </div>
+
+  <ng-template #nouser>
+    <div class="btns-auth-container">
+      <button
+        nz-button
+        nzType="default"
+        [nzSize]="'large'"
+        class="btn-signin"
+        nzShape="round"
+        [routerLink]="['/auth/login']"
+      >
+        <i nz-icon nzType="login"></i>Sign In
+      </button>
+      <button
+        nz-button
+        nzType="primary"
+        [nzSize]="'large'"
+        class="btn-newaccount"
+        nzShape="round"
+        [routerLink]="['/auth/register']"
+      >
+        <i nz-icon nzType="user-add"></i>Create new account
+      </button>
+    </div>
+  </ng-template>
 </ul>

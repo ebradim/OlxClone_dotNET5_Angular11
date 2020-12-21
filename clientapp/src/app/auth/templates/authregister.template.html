@@ -1,0 +1,171 @@
+<div class="main-container">
+  <form
+    nz-form
+    [formGroup]="registerForm"
+    class="form-container"
+    (ngSubmit)="submit()"
+  >
+    <nz-form-item>
+      <nz-form-label [nzSpan]="7" nzRequired>FirstName</nz-form-label>
+      <nz-form-control
+        [nzSpan]="12"
+        nzHasFeedback
+        [nzErrorTip]="firstnameErrorTpl"
+      >
+        <input
+          nz-input
+          formControlName="firstName"
+          placeholder="First Name"
+          type="text"
+        />
+        <ng-template #firstnameErrorTpl let-control>
+          <ng-container *ngIf="control.hasError('required')">
+            Please input your First Name<br />
+          </ng-container>
+          <ng-container *ngIf="control.hasError('pattern')">
+            <strong>Names can have letters only.</strong> <br />
+            <i
+              >Must start with capital letters,Minimum length is 3 and Maximum
+              length is 10</i
+            >
+          </ng-container>
+        </ng-template>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label [nzSpan]="7" nzRequired>LastName</nz-form-label>
+      <nz-form-control
+        [nzSpan]="12"
+        nzHasFeedback
+        [nzErrorTip]="lastnameErrorTpl"
+      >
+        <input
+          nz-input
+          formControlName="lastName"
+          placeholder="Last Name"
+          type="text"
+        />
+        <ng-template #lastnameErrorTpl let-control>
+          <ng-container *ngIf="control.hasError('required')">
+            Please input your Last Name<br />
+          </ng-container>
+          <ng-container *ngIf="control.hasError('pattern')">
+            <strong>Names can have letters only.</strong> <br />
+            <i
+              >Must start with capital letters,Minimum length is 3 and Maximum
+              length is 10</i
+            >
+          </ng-container>
+        </ng-template>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label [nzSpan]="7" nzRequired>Username</nz-form-label>
+      <nz-form-control [nzSpan]="12" nzHasFeedback [nzErrorTip]="userErrorTpl">
+        <input nz-input formControlName="userName" placeholder="Username" />
+
+        <ng-template #userErrorTpl let-control>
+          <ng-container *ngIf="control.hasError('required')">
+            Please input your username!
+          </ng-container>
+          <ng-container *ngIf="control.hasError('pattern')">
+            <strong>Must start with lower case letters.</strong> <br />
+            <i
+              >Numbers and underscore are allowed with minimum length 5 and
+              maxlenght of 18</i
+            >
+          </ng-container>
+        </ng-template>
+      </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item>
+      <nz-form-label [nzSpan]="7" nzRequired>Password</nz-form-label>
+      <nz-form-control
+        [nzSpan]="12"
+        nzHasFeedback
+        nzErrorTip="Please input your password!"
+        [nzErrorTip]="passwordErrorTpl"
+      >
+        <nz-input-group [nzSuffix]="suffixTemplate">
+          <input
+            nz-input
+            [type]="passwordVisible ? 'text' :'password'"
+            type="password"
+            formControlName="password"
+            placeholder="Write your password"
+            (ngModelChange)="matchPassword()"
+          />
+        </nz-input-group>
+
+        <ng-template #suffixTemplate>
+          <i
+            nz-icon
+            [nzType]="passwordVisible ? 'eye-invisible' : 'eye'"
+            (click)="passwordVisible = !passwordVisible"
+          ></i>
+        </ng-template>
+        <ng-template #passwordErrorTpl let-control>
+          <ng-container *ngIf="control.hasError('minlength')">
+            Password can not be less than 6 characters<br />
+          </ng-container>
+          <ng-container *ngIf="control.hasError('required')">
+            Please write your password!<br />
+          </ng-container>
+        </ng-template>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label [nzSpan]="7" nzRequired>Confirm Password</nz-form-label>
+      <nz-form-control
+        [nzSpan]="12"
+        nzHasFeedback
+        [nzErrorTip]="confirmErrorTpl"
+      >
+        <input
+          nz-input
+          type="password"
+          formControlName="confirm"
+          [type]="passwordVisible ? 'text' :'password'"
+          placeholder="confirm your password"
+        />
+
+        <ng-template #confirmErrorTpl let-control>
+          <ng-container *ngIf="control.hasError('minlength')">
+            Password can not be less than 6 characters. <br />
+          </ng-container>
+          <ng-container *ngIf="control.hasError('required')">
+            Please confirm your password!<br />
+          </ng-container>
+          <ng-container *ngIf="control.hasError('confirm')">
+            Password doesn't match.<br />
+          </ng-container>
+        </ng-template>
+      </nz-form-control>
+    </nz-form-item>
+    <div style="display: flex; flex-flow: row; justify-content: center">
+      <label nz-checkbox style="margin-top: 5px" formControlName="checked"
+        >I agree to terms and conditions</label
+      >
+    </div>
+    <div class="btn-container">
+      <button
+        nz-button
+        type="submit"
+        [disabled]="!registerForm.valid"
+        nzType="primary"
+        class="btn-register"
+      >
+        Create new account
+      </button>
+    </div>
+  </form>
+</div>
+<div class="flexed-centered" *ngIf="error$ | async as error">
+  <span nz-typography nzType="danger">
+    <strong>{{ error.error?.errors?.User || "Failed to connect" }}</strong>
+  </span>
+</div>
+<div *ngIf="loading$ | async " class="flexed-centered">
+  <nz-spin nzSimple [nzSize]="'large'"></nz-spin>
+</div>
