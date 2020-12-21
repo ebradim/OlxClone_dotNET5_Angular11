@@ -26,9 +26,9 @@ namespace Infrastructure.Tokens
         public async Task<RefreshToken> SendAuthCookies(AppUser user)
         {
             var (aid, rid, sid) = await tokenGenerator.GenerateRequired(user);
-            contextAccessor.HttpContext.Response.Cookies.Append("_aid", aid,new CookieOptions { Expires =DateTime.UtcNow.AddMinutes(30),HttpOnly=true,Secure=false,SameSite=SameSiteMode.Unspecified,Domain=""});
-            contextAccessor.HttpContext.Response.Cookies.Append("_rid", rid, new CookieOptions { Expires = DateTime.UtcNow.AddDays(2), HttpOnly = true, Secure = false, SameSite = SameSiteMode.Unspecified, Domain = "" });
-            contextAccessor.HttpContext.Response.Cookies.Append("_sid", sid, new CookieOptions { Expires = DateTime.UtcNow.AddDays(2), HttpOnly = false, Secure = false, SameSite = SameSiteMode.Unspecified, Domain = "" });
+            contextAccessor.HttpContext.Response.Cookies.Append("_aid", aid,new CookieOptions { Expires =DateTime.UtcNow.AddMinutes(30),HttpOnly=true,Secure=false,SameSite=SameSiteMode.Unspecified,Domain="localhost"});
+            contextAccessor.HttpContext.Response.Cookies.Append("_rid", rid, new CookieOptions { Expires = DateTime.UtcNow.AddDays(2), HttpOnly = true, Secure = false, SameSite = SameSiteMode.Unspecified, Domain = "localhost" });
+            contextAccessor.HttpContext.Response.Cookies.Append("_sid", sid, new CookieOptions { Expires = DateTime.UtcNow.AddDays(2), HttpOnly = false, Secure = false, SameSite = SameSiteMode.Unspecified, Domain = "localhost" });
             return  new RefreshToken
             {
                 Token = rid,
@@ -41,7 +41,7 @@ namespace Infrastructure.Tokens
         public async Task SendAuthCookies(AppUser user, string refreshToken = null)
         {
             var jwt = await tokenGenerator.GenerateJwtAsync(user);
-            var st =  tokenGenerator.GenerateStateToken();
+            var st =  tokenGenerator.GenerateStateToken(user.UserName);
             contextAccessor.HttpContext.Response.Cookies.Append("_aid", jwt, new CookieOptions { Expires = DateTime.UtcNow.AddMinutes(30), HttpOnly = true, Secure = false, SameSite = SameSiteMode.Unspecified, Domain = "localhost" });
             contextAccessor.HttpContext.Response.Cookies.Append("_rid", refreshToken, new CookieOptions { Expires = DateTime.UtcNow.AddDays(2), HttpOnly = true, Secure = false, SameSite = SameSiteMode.Unspecified, Domain = "localhost" });
             contextAccessor.HttpContext.Response.Cookies.Append("_sid", st, new CookieOptions { Expires = DateTime.UtcNow.AddDays(2), HttpOnly = false, Secure = false, SameSite = SameSiteMode.Unspecified, Domain = "localhost" });

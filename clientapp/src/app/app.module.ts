@@ -26,6 +26,7 @@ import {
   LoginOutline,
   CustomerServiceFill,
 } from '@ant-design/icons-angular/icons';
+import { NzAvatarModule } from 'ng-zorro-antd/avatar';
 
 const icons: IconDefinition[] = [
   SearchOutline,
@@ -43,12 +44,14 @@ registerLocaleData(en);
   imports: [
     BrowserModule,
     HttpClientModule,
-    StoreModule.forRoot(reducers, { metaReducers }),
+    StoreModule.forRoot({}, { metaReducers }),
+    StoreModule.forFeature('root', reducers),
     EffectsModule.forRoot([]),
     StoreRouterConnectingModule.forRoot(),
     AppRouting,
     NzMenuModule,
     NzButtonModule,
+    NzAvatarModule,
     NzIconModule.forChild(icons),
 
     BrowserAnimationsModule,

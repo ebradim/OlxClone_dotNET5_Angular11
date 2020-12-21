@@ -1,0 +1,24 @@
+.main-container {
+  margin: 2%;
+  .form-container {
+    nz-form-item {
+      nz-form-label {
+        padding-top: 8px;
+      }
+    }
+    input {
+      height: 50px;
+    }
+  }
+}
+.btn-container {
+  display: flex;
+  flex-flow: row;
+  justify-content: center;
+
+  .btn-register {
+    width: 200px;
+    height: 40px;
+    margin-top: 30px;
+  }
+}

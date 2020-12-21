@@ -1,5 +1,6 @@
 import { createReducer, on } from '@ngrx/store';
-import { fromAPIActions, fromRegisterActions } from '../actions';
+import { fromAPIActions } from 'src/app/actions';
+import { fromRegisterActions } from '../actions';
 export interface State {
   connecting: boolean;
   error: any;

@@ -1,6 +1,6 @@
 import { createReducer, on } from '@ngrx/store';
-import { fromAPIActions, fromLogoutActions } from '../actions';
-import { IUser } from '../models/API';
+import { fromAPIActions } from '../actions';
+import { IUser } from '../auth/models/API';
 
 export interface State {
   user: IUser | null;
@@ -29,4 +29,4 @@ export const reducer = createReducer(
     () => initialState
   )
 );
-export const getUser = (state: State) => state.user;
+export const getUser = (state: State) => state?.user;

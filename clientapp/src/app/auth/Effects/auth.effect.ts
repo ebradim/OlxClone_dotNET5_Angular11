@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import {
-  fromAPIActions,
   fromLoginActions,
   fromLogoutActions,
   fromRegisterActions,
 } from '../actions';
+import { fromAPIActions } from '../../actions';
 import { AuthService } from '../services/auth.service';
 import { catchError, exhaustMap, map, switchMap, tap } from 'rxjs/operators';
 import { ILogin } from '../models/Login';

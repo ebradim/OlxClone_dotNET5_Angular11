@@ -18,9 +18,12 @@ import {
   UserOutline,
 } from '@ant-design/icons-angular/icons';
 import { NzButtonModule } from 'ng-zorro-antd/button';
+import { AuthRegisterComponent } from './components/authregister.component';
+import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
+
 const icons: IconDefinition[] = [EyeInvisibleOutline, EyeOutline, UserOutline];
 
-export const COMPONENTS = [AuthLoginComponent];
+export const COMPONENTS = [AuthLoginComponent, AuthRegisterComponent];
 @NgModule({
   declarations: COMPONENTS,
   imports: [
@@ -31,6 +34,7 @@ export const COMPONENTS = [AuthLoginComponent];
     NzInputModule,
     NzIconModule.forChild(icons),
     NzSpinModule,
+    NzCheckboxModule,
     NzButtonModule,
     StoreModule.forFeature('auth', reducers),
     EffectsModule.forFeature([AuthEffects]),
