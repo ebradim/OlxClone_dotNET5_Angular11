@@ -31,8 +31,8 @@ namespace Application.RequestsHandler.User
         {
             public Validator()
             {
-                RuleFor(x => x.FirstName).NotEmpty().WithMessage("Your name is required").MinimumLength(3).WithMessage("Min length is 3").MaximumLength(10).WithMessage("Max length is 10");
-                RuleFor(x => x.LastName).NotEmpty().WithMessage("Your name is required").MinimumLength(3).WithMessage("Min length is 3").MaximumLength(10).WithMessage("Max length is 10");
+                RuleFor(x => x.FirstName).NotEmpty().WithMessage("Your name is required").MinimumLength(2).WithMessage("Min length is 2").MaximumLength(10).WithMessage("Max length is 10");
+                RuleFor(x => x.LastName).NotEmpty().WithMessage("Your name is required").MinimumLength(2).WithMessage("Min length is 2").MaximumLength(10).WithMessage("Max length is 10");
                 RuleFor(x => x.UserName).NotEmpty().WithMessage("Your UserName is required").MinimumLength(5).WithMessage("Min length is 5").MaximumLength(18).WithMessage("Max length is 18").Matches("^[a-z]([a-zA-z0-9_]){5,18}$").WithMessage("Must start with lower case and letter, numbers and underscore are allowed with minimum length 5 and maxlenght of 18");
 
                 RuleFor(x => x.Password).NotEmpty().WithMessage("Your password is required").MinimumLength(6).WithMessage("Min length is 6");
@@ -67,14 +67,16 @@ namespace Application.RequestsHandler.User
                 };
                 var registerResult = await userManager.CreateAsync(user, request.Password);
                 var roleResult = await userManager.AddToRoleAsync(user, "Normal");
+               
                 if (registerResult.Succeeded && roleResult.Succeeded)
                 {
                     var refreshToken = refreshTokenGenerator.Generate(user.UserName);
-                    await dataContext.RefreshTokens.AddAsync(new RefreshToken { Token = refreshToken, CreatedAt = DateTime.UtcNow, AppUser = user, ExpireAt = DateTime.UtcNow.AddDays(2) });
+                    var token =new RefreshToken { Token = refreshToken, CreatedAt = DateTime.UtcNow, AppUser = user, ExpireAt = DateTime.UtcNow.AddDays(2) };
+                    await dataContext.RefreshTokens.AddAsync(token);
                     var success = await dataContext.SaveChangesAsync() > 0;
                     if (success)
                     {
-                        await authCookies.SendAuthCookies(user, refreshToken);
+                        await authCookies.SendAuthCookies(user, token.Token);
                         return new AuthUserDTO(user);
                     }
 

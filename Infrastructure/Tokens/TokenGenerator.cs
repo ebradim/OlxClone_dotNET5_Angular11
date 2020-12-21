@@ -61,14 +61,14 @@ namespace Infrastructure.Tokens
         {
             var token = await this.GenerateJwtAsync(user);
             var rt =  this.GenerateRefreshToken();
-            var st =  this.GenerateStateToken();
+            var st =  this.GenerateStateToken(user.UserName);
 
             return (token, rt, st);
         }
 
-        public string GenerateStateToken()
+        public string GenerateStateToken(string name)
         {
-            return Guid.NewGuid().ToString();
+            return Guid.NewGuid().ToString() +"-"+ Convert.ToBase64String(Encoding.UTF8.GetBytes(name));
         }
     }
 }
