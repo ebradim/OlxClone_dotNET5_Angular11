@@ -1,4 +1,6 @@
 ﻿using Application.Interfaces;
+using Application.Models;
+using Domain;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
@@ -13,11 +15,11 @@ namespace Application.RequestsHandler.User
 {
     public class TokenRefresh
     {
-        public class Refresh : IRequest<bool>
+        public class Refresh : IRequest<AuthUserDTO>
         {
 
         }
-        public class Handler : IRequestHandler<Refresh, bool>
+        public class Handler : IRequestHandler<Refresh, AuthUserDTO>
         {
             private readonly DataContext dataContext;
             private readonly IHttpContextAccessor contextAccessor;
@@ -34,24 +36,35 @@ namespace Application.RequestsHandler.User
                 this.refreshTokenGenerator = refreshTokenGenerator;
             }
 
-            public async Task<bool> Handle(Refresh request, CancellationToken cancellationToken)
+            public async Task<AuthUserDTO> Handle(Refresh request, CancellationToken cancellationToken)
             {
                 var refresh_token = contextAccessor.HttpContext.Request.Cookies["_rid"];
+                if(refresh_token is null || refresh_token.Length ==0)
+                    throw new HttpContextException(HttpStatusCode.Unauthorized,new {User = "Your session is expired"});
                 // Todo: if it belongs to user
-                var user = await dataContext.Users.Include(x => x.RefreshTokens).Where(x => x.Id == currentUser.UserId).FirstOrDefaultAsync();
+                var userToken = await dataContext.RefreshTokens.Where(x=>x.Token == refresh_token).Select(x=>new RefreshToken{
+                    Token = x.Token,
+                    UserId = x.UserId,
+                    ExpireAt =x.ExpireAt,
+                    RevokedAt = x.RevokedAt,
+                    ReplacedByToken = x.ReplacedByToken
 
+                }).FirstOrDefaultAsync();
+                var user = await dataContext.Users
+                .Where(x=>x.Id == userToken.UserId)
+                .Select(x=> new AppUser{FirstName =x.FirstName,LastName=x.LastName,UserName=x.UserName,Id=x.Id})
+                .FirstOrDefaultAsync();
 
-                var tokenIsExist = user.RefreshTokens.FirstOrDefault(x => x.Token == refresh_token);
 
                 // yes?
-                if (tokenIsExist is not null && tokenIsExist.IsActive)
+                if (userToken is not null && userToken.IsActive)
                 {
 
-                    if (tokenIsExist.IsAboutToExpire)
+                    if (userToken.IsAboutToExpire)
                     { 
                         var newtoken = refreshTokenGenerator.Generate(user.UserName);
-                        tokenIsExist.RevokedAt = DateTime.UtcNow;
-                        tokenIsExist.ReplacedByToken = newtoken;
+                        userToken.RevokedAt = DateTime.UtcNow;
+                        userToken.ReplacedByToken = newtoken;
                         await dataContext.RefreshTokens.AddAsync(new Domain.RefreshToken
                         { 
                             CreatedAt = DateTime.UtcNow,
@@ -88,7 +101,7 @@ namespace Application.RequestsHandler.User
                         Domain = "localhost" }
                     );
           
-                    return true;
+                    return new AuthUserDTO(user);
 
                    
 

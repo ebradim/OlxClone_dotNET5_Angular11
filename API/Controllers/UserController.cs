@@ -35,9 +35,9 @@ namespace API.Controllers
             return await mediator.Send(login);
         }
 
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        
         [HttpPost("refresh")]
-        public async Task<ActionResult<bool>> Refresh()
+        public async Task<ActionResult<AuthUserDTO>> Refresh()
         {
             return await mediator.Send(new TokenRefresh.Refresh());
         }

@@ -14,6 +14,7 @@ export const reducer = createReducer(
   on(
     fromAPIActions.loginSuccess,
     fromAPIActions.registerSuccess,
+    fromAPIActions.refreshTokenSuccess,
     (state, { user }) => {
       return {
         ...state,
@@ -26,6 +27,7 @@ export const reducer = createReducer(
     fromAPIActions.loginError,
     fromAPIActions.registerError,
     fromAPIActions.logoutSuccess,
+    fromAPIActions.refreshTokenError,
     () => initialState
   )
 );

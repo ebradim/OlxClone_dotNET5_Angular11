@@ -21,3 +21,11 @@ export const logoutSuccess = createAction(
   '[Logout] Logout Success',
   props<{ logout: boolean }>()
 );
+export const refreshTokenSuccess = createAction(
+  '[Auth/User/Token] Refresh Token Success',
+  props<{ user: IUser }>()
+);
+export const refreshTokenError = createAction(
+  '[Auth/User/Token] Refresh Token Error',
+  props<{ error: any }>()
+);

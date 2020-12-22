@@ -4,7 +4,7 @@ import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
 import { AuthRouting } from './auth.routing';
 import { AuthLoginComponent } from './components/authlogin.component';
-import { AuthEffects } from './Effects/auth.effect';
+import { AuthEffects } from './Effects/auth.effects';
 import { reducers } from './reducers';
 import { NzFormModule } from 'ng-zorro-antd/form';
 import { NzInputModule } from 'ng-zorro-antd/input';
