@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { fromTokenActions } from '../actions';
 import { IUser } from '../auth/models/API';
 import { AuthState } from '../auth/reducers';
-import { getCurrentUser } from '../reducers';
+import { getCurrentUser, RootState } from '../reducers';
 
 @Component({
   selector: 'app-navbar',
@@ -14,12 +14,7 @@ import { getCurrentUser } from '../reducers';
 export class NavbarComponent {
   user$: Observable<IUser | null> | undefined;
 
-  constructor(private store: Store<AuthState>) {
-    if (
-      document.cookie.split(';').find((x) => x.includes('_sid')) !== undefined
-    ) {
-      this.store.dispatch(fromTokenActions.refreshToken());
-    }
+  constructor(private store: Store<RootState>) {
     this.user$ = this.store.pipe(select(getCurrentUser));
   }
 }

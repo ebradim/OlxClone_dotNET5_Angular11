@@ -8,12 +8,12 @@ import {
   createSelector,
 } from '@ngrx/store';
 import { environment } from 'src/environments/environment';
-export interface State {
+export interface RootState {
   router: fromRouter.RouterReducerState<any>;
   api: fromAPI.State;
 }
 
-export const featureSelector = createFeatureSelector<State>('root');
+export const featureSelector = createFeatureSelector<RootState>('root');
 
 export const routerState = createSelector(featureSelector, (x) => x.router);
 export const apiState = createSelector(featureSelector, (x) => x.api);
@@ -30,7 +30,7 @@ export const {
   selectUrl, // select the current url
 } = fromRouter.getSelectors(routerState);
 
-export const reducers: ActionReducerMap<State> = {
+export const reducers: ActionReducerMap<RootState> = {
   router: fromRouter.routerReducer,
   api: fromAPI.reducer,
 };

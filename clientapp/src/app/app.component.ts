@@ -1,4 +1,8 @@
 import { Component } from '@angular/core';
+import { Store } from '@ngrx/store';
+import { fromTokenActions } from './actions';
+import { AuthState } from './auth/reducers';
+import { RootState } from './reducers';
 
 @Component({
   selector: 'app-root',
@@ -7,4 +11,11 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'clientapp';
+  constructor(private store: Store<RootState>) {
+    if (
+      document.cookie.split(';').find((x) => x.includes('_sid')) !== undefined
+    ) {
+      this.store.dispatch(fromTokenActions.refreshToken());
+    }
+  }
 }

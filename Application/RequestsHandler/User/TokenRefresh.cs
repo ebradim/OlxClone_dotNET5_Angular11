@@ -8,6 +8,7 @@ using Persistence;
 using System;
 using System.Linq;
 using System.Net;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -39,7 +40,8 @@ namespace Application.RequestsHandler.User
             public async Task<AuthUserDTO> Handle(Refresh request, CancellationToken cancellationToken)
             {
                 var refresh_token = contextAccessor.HttpContext.Request.Cookies["_rid"];
-                if(refresh_token is null || refresh_token.Length ==0)
+                var state_token = contextAccessor.HttpContext.Request.Cookies["_sid"];
+                if(refresh_token is null || refresh_token.Length <1 || state_token.Length<1)
                     throw new HttpContextException(HttpStatusCode.Unauthorized,new {User = "Your session is expired"});
                 // Todo: if it belongs to user
                 var userToken = await dataContext.RefreshTokens.Where(x=>x.Token == refresh_token).Select(x=>new RefreshToken{
@@ -55,7 +57,7 @@ namespace Application.RequestsHandler.User
                 .Select(x=> new AppUser{FirstName =x.FirstName,LastName=x.LastName,UserName=x.UserName,Id=x.Id})
                 .FirstOrDefaultAsync();
 
-
+                
                 // yes?
                 if (userToken is not null && userToken.IsActive)
                 {
