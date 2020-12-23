@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, of, Subscription } from 'rxjs';
+import { delay, tap } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { IUser } from '../auth/models/API';
 

@@ -1,7 +1,16 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { of } from 'rxjs';
-import { catchError, exhaustMap, map } from 'rxjs/operators';
+import { interval, Observable, of, timer } from 'rxjs';
+import {
+  catchError,
+  delay,
+  exhaustMap,
+  map,
+  mergeMap,
+  repeat,
+  switchMap,
+  tap,
+} from 'rxjs/operators';
 import { fromAPIActions, fromTokenActions } from '../actions';
 import { TokenService } from '../service/token.service';
 
@@ -19,5 +28,27 @@ export class TokenEffects {
         );
       })
     )
+  );
+  tokenUpdate$ = createEffect(
+    () =>
+      this.action$.pipe(
+        ofType(
+          fromAPIActions.refreshTokenSuccess,
+          fromAPIActions.registerSuccess,
+          fromAPIActions.loginSuccess
+        ),
+        switchMap(() => {
+          return this.authService.refreshToken().pipe(
+            delay(25000),
+            map((user) => fromAPIActions.refreshTokenSuccess({ user })),
+            catchError((error) =>
+              of(fromAPIActions.refreshTokenError({ error }))
+            ),
+            repeat()
+          );
+        })
+      ),
+
+    { dispatch: false }
   );
 }
