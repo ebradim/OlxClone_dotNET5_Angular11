@@ -1,7 +1,11 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { AppComponent } from './app.component';
-import { HttpClientModule } from '@angular/common/http';
+import {
+  HttpClientModule,
+  HttpClientXsrfModule,
+  HTTP_INTERCEPTORS,
+} from '@angular/common/http';
 import { StoreModule } from '@ngrx/store';
 import { metaReducers, reducers } from './reducers';
 import { EffectsModule } from '@ngrx/effects';
@@ -28,6 +32,7 @@ import {
 } from '@ant-design/icons-angular/icons';
 import { NzAvatarModule } from 'ng-zorro-antd/avatar';
 import { TokenEffects } from './effects/token.effects';
+import { TokenInterceptor } from './interceptors/token.interceptor';
 
 const icons: IconDefinition[] = [
   SearchOutline,
@@ -45,6 +50,7 @@ registerLocaleData(en);
   imports: [
     BrowserModule,
     HttpClientModule,
+
     StoreModule.forRoot({}, { metaReducers }),
     StoreModule.forFeature('root', reducers),
     EffectsModule.forRoot([TokenEffects]),
@@ -57,7 +63,10 @@ registerLocaleData(en);
 
     BrowserAnimationsModule,
   ],
-  providers: [{ provide: NZ_I18N, useValue: en_US }],
+  providers: [
+    { provide: NZ_I18N, useValue: en_US },
+    { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true },
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

@@ -24,26 +24,38 @@ namespace API.Controllers
         }
         //localhost/api/user/register
         [HttpPost("register")]
+        [AllowAnonymous]
+        [IgnoreAntiforgeryToken]
         public async Task<ActionResult<AuthUserDTO>> Register(Register.AccountRegister register)
         {
             return await mediator.Send(register);
         }
 
         [HttpPost("login")]
+        [AllowAnonymous]
+        [IgnoreAntiforgeryToken]
         public async Task<ActionResult<AuthUserDTO>> Login(Login.AccountLogin login)
         {
             return await mediator.Send(login);
         }
 
-        
-        [HttpPost("refresh")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [HttpGet("forgery")]
+        [IgnoreAntiforgeryToken]
+        public async Task<ActionResult<Unit>> GenerateForgeryToken()
+        {
+            return await mediator.Send(new ForgeryToken.Generate());
+        }
+
+        [HttpGet("refresh")]
         public async Task<ActionResult<AuthUserDTO>> Refresh()
         {
             return await mediator.Send(new TokenRefresh.Refresh());
         }
 
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-        [HttpPost("logout")]
+        [HttpGet("logout")]
+        [IgnoreAntiforgeryToken]
         public async Task<ActionResult<bool>> Logout()
         {
             return await mediator.Send(new Logout.AccountLogoutRequest());

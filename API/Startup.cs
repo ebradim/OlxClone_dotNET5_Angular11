@@ -7,10 +7,13 @@ using FluentValidation.AspNetCore;
 using Infrastructure.Tokens;
 using Infrastructure.User;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.CookiePolicy;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -39,12 +42,22 @@ namespace API
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "API", Version = "v1" });
             });
+            services.AddAntiforgery(options => 
+            {
+                options.HeaderName = "X-Token";
+                options.SuppressXFrameOptionsHeader = false;
+
+            });
             services.AddControllers().AddNewtonsoftJson();
             services.AddScoped<ICurrentUser, CurrentUser>();
             services.AddScoped<ITokenGenerator, TokenGenerator>();
             services.AddScoped<IAuthCookies, AuthCookies>();
             services.AddScoped<IRefreshTokenGenerator, RefreshTokenGenerator>();
-            services.AddMvc()
+            services.AddMvc(options=>{
+                options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
+                var authorizedPolicy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
+                options.Filters.Add(new AuthorizeFilter(authorizedPolicy));
+            })
                     .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<Register>());
             services.AddHttpContextAccessor();
             services.AddCors(options=>{
