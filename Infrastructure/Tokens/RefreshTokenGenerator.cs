@@ -8,9 +8,10 @@ namespace Infrastructure.Tokens
     {
         public string Generate(string userName = null)
         {
-            var token = $"{Guid.NewGuid()} {Guid.NewGuid()} {userName}";
-            var encoded = Encoding.UTF8.GetBytes(token);
-            return Convert.ToBase64String(encoded);
+            var firstToken = $"{Guid.NewGuid()}-{DateTime.UtcNow}";
+            var firstPart = Convert.ToBase64String(Encoding.UTF8.GetBytes(firstToken));
+
+            return firstPart + Guid.NewGuid().ToString() + "-" + Convert.ToBase64String(Encoding.UTF8.GetBytes(userName));
         }
     }
 }

@@ -1,6 +1,8 @@
 ﻿using Application.Interfaces;
 using MediatR;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Distributed;
 using Persistence;
 using System;
 using System.Collections.Generic;
@@ -20,23 +22,28 @@ namespace Application.RequestsHandler.User
         }
         public class Handler : IRequestHandler<AccountLogoutRequest, bool>
         {
-            private readonly DataContext dataContext;
             private readonly IAuthCookies authCookies;
+            private readonly IHttpContextAccessor contextAccessor;
+            private readonly IDistributedCache cache;
 
-            public Handler(DataContext dataContext, IAuthCookies authCookies)
+            public Handler( IAuthCookies authCookies,IHttpContextAccessor contextAccessor,IDistributedCache cache)
             {
-                this.dataContext = dataContext;
                 this.authCookies = authCookies;
+                this.contextAccessor = contextAccessor;
+                this.cache = cache;
             }
             public async Task<bool> Handle(AccountLogoutRequest request, CancellationToken cancellationToken)
             {
-                var refresh = authCookies.GetRefreshAndClearAll();
-                var token = await dataContext.RefreshTokens.Where(x => x.Token == refresh).FirstOrDefaultAsync();
-                if(token is not null)
+                var refreshToken = contextAccessor.HttpContext.Request.Cookies["_rid"];
+                if(refreshToken is not null)
                 {
-                    token.RevokedAt = DateTime.UtcNow;
-                    token.ReplacedByToken = "OnLogout";
-                    return await dataContext.SaveChangesAsync() > 0;
+                    var lastPart = refreshToken[(refreshToken.LastIndexOf('-')+1)..];
+                    
+                    var key = "rid-" + lastPart;
+                    await cache.RemoveAsync(key);
+                    var refresh = authCookies.GetRefreshAndClearAll();
+
+                    return true;
 
                 }
                 else

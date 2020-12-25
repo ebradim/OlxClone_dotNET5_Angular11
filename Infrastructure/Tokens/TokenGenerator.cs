@@ -52,15 +52,17 @@ namespace Infrastructure.Tokens
 
         public string GenerateRefreshToken(string userName = null)
         {
-            var token = $"{Guid.NewGuid()} {Guid.NewGuid()} {userName}";
-            var encoded = Encoding.UTF8.GetBytes(token);
-            return Convert.ToBase64String(encoded);
+            var firstToken = $"{Guid.NewGuid()}-{DateTime.UtcNow}";
+            var firstEncoded = Encoding.UTF8.GetBytes(firstToken);
+            var firstPart =  Convert.ToBase64String(firstEncoded);
+
+            return firstPart +Guid.NewGuid().ToString()+ "-" + Convert.ToBase64String(Encoding.UTF8.GetBytes(userName));
         }
 
         public async Task<(string, string, string)> GenerateRequired(AppUser user)
         {
             var token = await this.GenerateJwtAsync(user);
-            var rt =  this.GenerateRefreshToken();
+            var rt =  this.GenerateRefreshToken(user.UserName);
             var st =  this.GenerateStateToken(user.UserName);
 
             return (token, rt, st);

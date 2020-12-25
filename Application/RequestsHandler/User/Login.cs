@@ -5,6 +5,7 @@ using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Distributed;
 using Persistence;
 using System;
 using System.Collections.Generic;
@@ -32,9 +33,10 @@ namespace Application.RequestsHandler.User
             private readonly ITokenGenerator jwtGenerator;
             private readonly IRefreshTokenGenerator refreshTokenGenerator;
             private readonly IAuthCookies authCookies;
+            private readonly IDistributedCache cache;
 
             public Handler(DataContext dataContext, UserManager<AppUser> userManager,SignInManager<AppUser> signInManager,IHttpContextAccessor contextAccessor,
-                ITokenGenerator jwtGenerator, IRefreshTokenGenerator refreshTokenGenerator,IAuthCookies authCookies)
+                ITokenGenerator jwtGenerator, IRefreshTokenGenerator refreshTokenGenerator,IAuthCookies authCookies, IDistributedCache cache)
             {
                 this.dataContext = dataContext;
                 this.userManager = userManager;
@@ -43,6 +45,7 @@ namespace Application.RequestsHandler.User
                 this.jwtGenerator = jwtGenerator;
                 this.refreshTokenGenerator = refreshTokenGenerator;
                 this.authCookies = authCookies;
+                this.cache = cache;
             }
             public async Task<AuthUserDTO> Handle(AccountLogin request, CancellationToken cancellationToken)
             {
@@ -56,17 +59,10 @@ namespace Application.RequestsHandler.User
                 {
                     
                      var refreshToken = refreshTokenGenerator.Generate(user.UserName);
-                     var token = new RefreshToken { Token = refreshToken, AppUser = user, CreatedAt = DateTime.UtcNow, ExpireAt = DateTime.UtcNow.AddDays(2) };
-                     await dataContext.RefreshTokens.AddAsync(token, cancellationToken);
-                     
-                     var success = await dataContext.SaveChangesAsync() > 0;
-                     if (success)
-                     {
-                         await authCookies.SendAuthCookies(user, token.Token);
-                     }
-                        // Todo: Add refresh token to Redis
-                    
-                  
+                
+                    await authCookies.SendAuthCookies(user, refreshToken);
+                    var key = "rid-" + Convert.ToBase64String(Encoding.UTF8.GetBytes(user.UserName));
+                    await cache.SetRefreshToken(key, refreshToken);
 
                     return new AuthUserDTO(user);
                 }

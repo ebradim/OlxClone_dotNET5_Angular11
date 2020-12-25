@@ -4,6 +4,7 @@ using Domain;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Distributed;
 using Persistence;
 using System;
 using System.Linq;
@@ -26,99 +27,57 @@ namespace Application.RequestsHandler.User
             private readonly IHttpContextAccessor contextAccessor;
             private readonly ITokenGenerator jwtGenerator;
             private readonly ICurrentUser currentUser;
+            private readonly ITokenGenerator tokenGenerator;
             private readonly IRefreshTokenGenerator refreshTokenGenerator;
+            private readonly IDistributedCache cache;
+            private readonly IAuthCookies cookies;
 
-            public Handler(DataContext dataContext, IHttpContextAccessor contextAccessor,ITokenGenerator jwtGenerator,ICurrentUser currentUser,IRefreshTokenGenerator refreshTokenGenerator)
+            public Handler(DataContext dataContext, IHttpContextAccessor contextAccessor,ITokenGenerator jwtGenerator,ICurrentUser currentUser,ITokenGenerator tokenGenerator, IDistributedCache cache,IAuthCookies cookies)
             {
                 this.dataContext = dataContext;
                 this.contextAccessor = contextAccessor;
                 this.jwtGenerator = jwtGenerator;
                 this.currentUser = currentUser;
-                this.refreshTokenGenerator = refreshTokenGenerator;
+                this.tokenGenerator = tokenGenerator;
+                this.cache = cache;
+                this.cookies = cookies;
             }
 
             public async Task<AuthUserDTO> Handle(Refresh request, CancellationToken cancellationToken)
             {
-                var refresh_token = contextAccessor.HttpContext.Request.Cookies["_rid"];
+                var refreshToken = contextAccessor.HttpContext.Request.Cookies["_rid"];
                 var state_token = contextAccessor.HttpContext.Request.Cookies["_sid"];
-                if(refresh_token is null || refresh_token.Length <1 || state_token.Length<1)
+                if(refreshToken is null || refreshToken.Length <1 || state_token.Length<1)
                     throw new HttpContextException(HttpStatusCode.Unauthorized,new {User = "Your session is expired"});
                 // Todo: if it belongs to user
-                var userToken = await dataContext.RefreshTokens.Where(x=>x.Token == refresh_token).Select(x=>new RefreshToken{
-                    Token = x.Token,
-                    UserId = x.UserId,
-                    ExpireAt =x.ExpireAt,
-                    RevokedAt = x.RevokedAt,
-                    ReplacedByToken = x.ReplacedByToken
+                var base64User = refreshToken[(refreshToken.LastIndexOf('-')+1)..];
 
-                }).FirstOrDefaultAsync();
-                var user = await dataContext.Users
-                .Where(x=>x.Id == userToken.UserId)
-                .Select(x=> new AppUser{FirstName =x.FirstName,LastName=x.LastName,UserName=x.UserName,Id=x.Id})
-                .FirstOrDefaultAsync();
-
-                
-                // yes?
-                if (userToken is not null && userToken.IsActive)
+                var id = await cache.GetRefreshToken("rid-" + base64User);
+                if(id is not null)
                 {
+                    var userName = Encoding.UTF8.GetString(Convert.FromBase64String(base64User));
+                    var user = await dataContext.Users
+                                     .Where(x => x.UserName == userName)
+                                     .Select(x => new AppUser {UserName = x.UserName, Id = x.Id,UserRoles = x.UserRoles })
+                                     .AsNoTracking()
+                                     .FirstOrDefaultAsync();
+                    //generate and send new
 
-                    if (userToken.IsAboutToExpire)
-                    { 
-                        var newtoken = refreshTokenGenerator.Generate(user.UserName);
-                        userToken.RevokedAt = DateTime.UtcNow;
-                        userToken.ReplacedByToken = newtoken;
-                        await dataContext.RefreshTokens.AddAsync(new Domain.RefreshToken
-                        { 
-                            CreatedAt = DateTime.UtcNow,
-                            AppUser = user,
-                            ExpireAt = DateTime.UtcNow.AddDays(2) 
-                        });
-                        var success =  await dataContext.SaveChangesAsync() > 0;
-                        if (success)
-                        {
-                            contextAccessor.HttpContext.Response.Cookies.Append("_rid", newtoken, new CookieOptions 
-                            { 
-                                Expires = DateTime.UtcNow.AddDays(2),
-                                HttpOnly = true, Secure = false, 
-                                SameSite = SameSiteMode.Unspecified,
-                                Domain = "localhost" }
-                            );
-
-                            contextAccessor.HttpContext.Response.Cookies.Append("_sid", Guid.NewGuid().ToString(), new CookieOptions 
-                            { 
-                                Expires = DateTime.UtcNow.AddDays(2), 
-                                HttpOnly = false, Secure = false,
-                                SameSite = SameSiteMode.Unspecified,
-                                Domain = "localhost" }
-                            );
-                        }
-                    }
-                    var access_token = await jwtGenerator.GenerateJwtAsync(user);
-                    
-                    contextAccessor.HttpContext.Response.Cookies.Append("_aid", access_token, new CookieOptions 
-                    {   
-                        Expires = DateTime.UtcNow.AddMinutes(30),
-                        HttpOnly = true, Secure = false,
-                        SameSite = SameSiteMode.Unspecified,
-                        Domain = "localhost" }
-                    );
-          
+                    var newToken  = await cookies.SendAuthCookies(user);
+                    await cache.RemoveAsync("rid-"+ base64User);
+                    var key = "rid-" + Convert.ToBase64String(Encoding.UTF8.GetBytes(user.UserName));
+                    await cache.SetRefreshToken(key, newToken.Token);
                     return new AuthUserDTO(user);
-
-                   
-
 
                 }
                 else
                 {
-                  
+
                     contextAccessor.HttpContext.Response.Cookies.Delete("_sid");
-                    throw new HttpContextException(HttpStatusCode.Unauthorized, new { Token ="Your token is expired, Log in again" });
-                   
-                     
+                    throw new HttpContextException(HttpStatusCode.Unauthorized, new { Token = "Your token is expired, Log in again" });
                 }
-             
-                //No ?
+
+
                
                 
 

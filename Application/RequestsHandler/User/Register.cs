@@ -6,6 +6,7 @@ using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Distributed;
 using Persistence;
 using System;
 using System.Collections.Generic;
@@ -44,13 +45,15 @@ namespace Application.RequestsHandler.User
             private readonly UserManager<AppUser> userManager;
             private readonly IAuthCookies authCookies;
             private readonly IRefreshTokenGenerator refreshTokenGenerator;
+            private readonly IDistributedCache cache;
 
-            public Handler(DataContext dataContext, UserManager<AppUser> userManager,IAuthCookies authCookies,IRefreshTokenGenerator refreshTokenGenerator)
+            public Handler(DataContext dataContext, UserManager<AppUser> userManager,IAuthCookies authCookies,IRefreshTokenGenerator refreshTokenGenerator,IDistributedCache cache)
             {
                 this.dataContext = dataContext;
                 this.userManager = userManager;
                 this.authCookies = authCookies;
                 this.refreshTokenGenerator = refreshTokenGenerator;
+                this.cache = cache;
             }
             public async Task<AuthUserDTO> Handle(AccountRegister request, CancellationToken cancellationToken)
             {
@@ -71,14 +74,12 @@ namespace Application.RequestsHandler.User
                 if (registerResult.Succeeded && roleResult.Succeeded)
                 {
                     var refreshToken = refreshTokenGenerator.Generate(user.UserName);
-                    var token =new RefreshToken { Token = refreshToken, CreatedAt = DateTime.UtcNow, AppUser = user, ExpireAt = DateTime.UtcNow.AddDays(2) };
-                    await dataContext.RefreshTokens.AddAsync(token);
-                    var success = await dataContext.SaveChangesAsync() > 0;
-                    if (success)
-                    {
-                        await authCookies.SendAuthCookies(user, token.Token);
+           
+                        await authCookies.SendAuthCookies(user, refreshToken);
+                        var key = "rid-"+ Convert.ToBase64String(Encoding.UTF8.GetBytes(user.UserName));
+                        await cache.SetRefreshToken(key, refreshToken);
                         return new AuthUserDTO(user);
-                    }
+                    
 
                 }
                 throw new Exception("Server Error - Register");
