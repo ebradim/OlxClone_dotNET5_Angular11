@@ -18,7 +18,7 @@ export const featureSelector = createFeatureSelector<RootState>('root');
 export const routerState = createSelector(featureSelector, (x) => x.router);
 export const apiState = createSelector(featureSelector, (x) => x.api);
 export const getCurrentUser = createSelector(apiState, fromAPI.getUser);
-
+export const isAuthenticated = createSelector(apiState, (x) => !!x.user);
 export const {
   selectCurrentRoute, // select the current route
   selectFragment, // select the current route fragment

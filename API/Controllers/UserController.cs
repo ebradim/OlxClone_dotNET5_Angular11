@@ -46,8 +46,8 @@ namespace API.Controllers
         {
             return await mediator.Send(new ForgeryToken.Generate());
         }
-        [HttpGet("refresh")]
         [AllowAnonymous]
+        [HttpGet("refresh")]
         [IgnoreAntiforgeryToken]
         public async Task<ActionResult<AuthUserDTO>> Refresh()
         {

@@ -58,7 +58,7 @@ namespace Application.RequestsHandler.User
                     var userName = Encoding.UTF8.GetString(Convert.FromBase64String(base64User));
                     var user = await dataContext.Users
                                      .Where(x => x.UserName == userName)
-                                     .Select(x => new AppUser {UserName = x.UserName, Id = x.Id,UserRoles = x.UserRoles })
+                                     .Select(x => new AppUser {FirstName = x.FirstName,LastName =x.LastName,UserName = x.UserName, Id = x.Id,UserRoles = x.UserRoles })
                                      .AsNoTracking()
                                      .FirstOrDefaultAsync();
                     //generate and send new
