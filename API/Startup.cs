@@ -49,7 +49,10 @@ namespace API
                 options.SuppressXFrameOptionsHeader = false;
 
             });
-            services.AddControllers().AddNewtonsoftJson();
+            services.AddControllers().AddNewtonsoftJson(options=>
+            {
+                options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
+            });
             services.AddScoped<ICurrentUser, CurrentUser>();
             services.AddScoped<ITokenGenerator, TokenGenerator>();
             services.AddScoped<IAuthCookies, AuthCookies>();

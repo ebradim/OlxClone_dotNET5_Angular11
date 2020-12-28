@@ -1,6 +1,8 @@
 using Application.CQRS;
 using Application.Models;
+using Domain;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -18,7 +20,9 @@ namespace API.Controllers
 
         }
         [HttpGet]
-        public async Task<ActionResult<List<ReadUsersDTO>>> Get()
+        [AllowAnonymous]
+        [IgnoreAntiforgeryToken]
+        public async Task<ActionResult<List<UserAdvertise>>> Get()
         {
             return await mediator.Send(new ReadUsers.Query());
         }

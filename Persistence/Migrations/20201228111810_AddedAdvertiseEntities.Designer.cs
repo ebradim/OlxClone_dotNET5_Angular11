@@ -10,8 +10,8 @@ using Persistence;
 namespace Persistence.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20201212024154_ADdedMigrations")]
-    partial class ADdedMigrations
+    [Migration("20201228111810_AddedAdvertiseEntities")]
+    partial class AddedAdvertiseEntities
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -20,6 +20,61 @@ namespace Persistence.Migrations
                 .UseIdentityByDefaultColumns()
                 .HasAnnotation("Relational:MaxIdentifierLength", 63)
                 .HasAnnotation("ProductVersion", "5.0.0");
+
+            modelBuilder.Entity("Domain.Advertise", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("text");
+
+                    b.Property<string>("City")
+                        .HasColumnType("text");
+
+                    b.Property<string>("District")
+                        .HasColumnType("text");
+
+                    b.Property<double>("Price")
+                        .HasColumnType("double precision");
+
+                    b.Property<DateTime>("PublishedAt")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<string>("Title")
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Advertise");
+                });
+
+            modelBuilder.Entity("Domain.AdvertiseInfo", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .UseIdentityByDefaultColumn();
+
+                    b.Property<string>("AdvertiseId")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Color")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Hint")
+                        .HasColumnType("text");
+
+                    b.Property<byte>("Quantity")
+                        .HasColumnType("smallint");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AdvertiseId")
+                        .IsUnique();
+
+                    b.ToTable("AdvertiseInfo");
+                });
 
             modelBuilder.Entity("Domain.AppUser", b =>
                 {
@@ -157,6 +212,48 @@ namespace Persistence.Migrations
                     b.ToTable("AspNetRoles");
                 });
 
+            modelBuilder.Entity("Domain.UserAdvertise", b =>
+                {
+                    b.Property<string>("AdvertiseId")
+                        .HasColumnType("text");
+
+                    b.Property<string>("AppUserId")
+                        .HasColumnType("text");
+
+                    b.Property<bool>("IsNegotiate")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("IsOnWarranty")
+                        .HasColumnType("boolean");
+
+                    b.Property<int>("PaymentOption")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("integer");
+
+                    b.HasKey("AdvertiseId", "AppUserId");
+
+                    b.HasIndex("AppUserId");
+
+                    b.ToTable("UserAdvertise");
+                });
+
+            modelBuilder.Entity("Domain.UserAdvertiseFavorite", b =>
+                {
+                    b.Property<string>("AdvertiseId")
+                        .HasColumnType("text");
+
+                    b.Property<string>("AppUserId")
+                        .HasColumnType("text");
+
+                    b.HasKey("AdvertiseId", "AppUserId");
+
+                    b.HasIndex("AppUserId");
+
+                    b.ToTable("UserAdvertiseFavorite");
+                });
+
             modelBuilder.Entity("Domain.UserRoles", b =>
                 {
                     b.Property<string>("RoleId")
@@ -261,11 +358,58 @@ namespace Persistence.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
+            modelBuilder.Entity("Domain.AdvertiseInfo", b =>
+                {
+                    b.HasOne("Domain.Advertise", "Advertise")
+                        .WithOne("AdvertiseInfo")
+                        .HasForeignKey("Domain.AdvertiseInfo", "AdvertiseId");
+
+                    b.Navigation("Advertise");
+                });
+
             modelBuilder.Entity("Domain.RefreshToken", b =>
                 {
                     b.HasOne("Domain.AppUser", "AppUser")
                         .WithMany("RefreshTokens")
                         .HasForeignKey("UserId");
+
+                    b.Navigation("AppUser");
+                });
+
+            modelBuilder.Entity("Domain.UserAdvertise", b =>
+                {
+                    b.HasOne("Domain.Advertise", "Advertise")
+                        .WithMany("UserAdvertises")
+                        .HasForeignKey("AdvertiseId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Domain.AppUser", "AppUser")
+                        .WithMany("UserAdvertises")
+                        .HasForeignKey("AppUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Advertise");
+
+                    b.Navigation("AppUser");
+                });
+
+            modelBuilder.Entity("Domain.UserAdvertiseFavorite", b =>
+                {
+                    b.HasOne("Domain.Advertise", "Advertise")
+                        .WithMany("UserAdvertiseFavorites")
+                        .HasForeignKey("AdvertiseId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Domain.AppUser", "AppUser")
+                        .WithMany("UserAdvertiseFavorites")
+                        .HasForeignKey("AppUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Advertise");
 
                     b.Navigation("AppUser");
                 });
@@ -325,9 +469,22 @@ namespace Persistence.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("Domain.Advertise", b =>
+                {
+                    b.Navigation("AdvertiseInfo");
+
+                    b.Navigation("UserAdvertiseFavorites");
+
+                    b.Navigation("UserAdvertises");
+                });
+
             modelBuilder.Entity("Domain.AppUser", b =>
                 {
                     b.Navigation("RefreshTokens");
+
+                    b.Navigation("UserAdvertiseFavorites");
+
+                    b.Navigation("UserAdvertises");
 
                     b.Navigation("UserRoles");
                 });

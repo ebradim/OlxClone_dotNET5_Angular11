@@ -1,9 +1,7 @@
-import { Component, ViewEncapsulation } from '@angular/core';
+import { Component } from '@angular/core';
 import { select, Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
-import { fromTokenActions } from '../actions';
 import { IUser } from '../auth/models/API';
-import { AuthState } from '../auth/reducers';
 import { getCurrentUser, RootState } from '../reducers';
 
 @Component({

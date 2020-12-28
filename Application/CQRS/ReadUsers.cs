@@ -1,4 +1,5 @@
 using Application.Models;
+using Domain;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
@@ -11,11 +12,11 @@ namespace Application.CQRS
 {
     public class ReadUsers
     {
-        public class Query : IRequest<List<ReadUsersDTO>>
+        public class Query : IRequest<List<UserAdvertise>>
         {
 
         }
-        public class Handler : IRequestHandler<Query, List<ReadUsersDTO>>
+        public class Handler : IRequestHandler<Query, List<UserAdvertise>>
         {
             private readonly DataContext dataContext;
             public Handler(DataContext dataContext)
@@ -23,19 +24,10 @@ namespace Application.CQRS
                 this.dataContext = dataContext;
 
             }
-            public async Task<List<ReadUsersDTO>> Handle(Query request, CancellationToken cancellationToken)
+            public async Task<List<UserAdvertise>> Handle(Query request, CancellationToken cancellationToken)
             {
                 var users = await dataContext.
-                Users.Select(x =>
-                new ReadUsersDTO
-                {
-                    UserName = x.UserName,
-                    FirstName = x.FirstName,
-                    LastName = x.LastName,
-                    Test = new Test { Email = x.Email }
-                }
-
-                ).AsNoTracking().ToListAsync();
+                UserAdvertise.Include(x=>x.Advertise).ThenInclude(x=>x.AdvertiseInfo).Include(x=>x.AppUser).AsNoTracking().ToListAsync();
                 return users;
             }
         }

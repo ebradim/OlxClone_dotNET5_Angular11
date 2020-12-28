@@ -4,10 +4,26 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace Persistence.Migrations
 {
-    public partial class ADdedMigrations : Migration
+    public partial class AddedAdvertiseEntities : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.CreateTable(
+                name: "Advertise",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "text", nullable: false),
+                    Title = table.Column<string>(type: "text", nullable: true),
+                    Price = table.Column<double>(type: "double precision", nullable: false),
+                    PublishedAt = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
+                    City = table.Column<string>(type: "text", nullable: true),
+                    District = table.Column<string>(type: "text", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Advertise", x => x.Id);
+                });
+
             migrationBuilder.CreateTable(
                 name: "AspNetRoles",
                 columns: table => new
@@ -49,6 +65,29 @@ namespace Persistence.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetUsers", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "AdvertiseInfo",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Hint = table.Column<string>(type: "text", nullable: true),
+                    Description = table.Column<string>(type: "text", nullable: true),
+                    Color = table.Column<string>(type: "text", nullable: true),
+                    Quantity = table.Column<byte>(type: "smallint", nullable: false),
+                    AdvertiseId = table.Column<string>(type: "text", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AdvertiseInfo", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_AdvertiseInfo_Advertise_AdvertiseId",
+                        column: x => x.AdvertiseId,
+                        principalTable: "Advertise",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -181,6 +220,64 @@ namespace Persistence.Migrations
                         onDelete: ReferentialAction.Restrict);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "UserAdvertise",
+                columns: table => new
+                {
+                    AdvertiseId = table.Column<string>(type: "text", nullable: false),
+                    AppUserId = table.Column<string>(type: "text", nullable: false),
+                    IsNegotiate = table.Column<bool>(type: "boolean", nullable: false),
+                    IsOnWarranty = table.Column<bool>(type: "boolean", nullable: false),
+                    Status = table.Column<int>(type: "integer", nullable: false),
+                    PaymentOption = table.Column<int>(type: "integer", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserAdvertise", x => new { x.AdvertiseId, x.AppUserId });
+                    table.ForeignKey(
+                        name: "FK_UserAdvertise_Advertise_AdvertiseId",
+                        column: x => x.AdvertiseId,
+                        principalTable: "Advertise",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_UserAdvertise_AspNetUsers_AppUserId",
+                        column: x => x.AppUserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "UserAdvertiseFavorite",
+                columns: table => new
+                {
+                    AdvertiseId = table.Column<string>(type: "text", nullable: false),
+                    AppUserId = table.Column<string>(type: "text", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserAdvertiseFavorite", x => new { x.AdvertiseId, x.AppUserId });
+                    table.ForeignKey(
+                        name: "FK_UserAdvertiseFavorite_Advertise_AdvertiseId",
+                        column: x => x.AdvertiseId,
+                        principalTable: "Advertise",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_UserAdvertiseFavorite_AspNetUsers_AppUserId",
+                        column: x => x.AppUserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AdvertiseInfo_AdvertiseId",
+                table: "AdvertiseInfo",
+                column: "AdvertiseId",
+                unique: true);
+
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
                 table: "AspNetRoleClaims",
@@ -227,10 +324,23 @@ namespace Persistence.Migrations
                 name: "IX_RefreshTokens_UserId",
                 table: "RefreshTokens",
                 column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserAdvertise_AppUserId",
+                table: "UserAdvertise",
+                column: "AppUserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserAdvertiseFavorite_AppUserId",
+                table: "UserAdvertiseFavorite",
+                column: "AppUserId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "AdvertiseInfo");
+
             migrationBuilder.DropTable(
                 name: "AspNetRoleClaims");
 
@@ -250,7 +360,16 @@ namespace Persistence.Migrations
                 name: "RefreshTokens");
 
             migrationBuilder.DropTable(
+                name: "UserAdvertise");
+
+            migrationBuilder.DropTable(
+                name: "UserAdvertiseFavorite");
+
+            migrationBuilder.DropTable(
                 name: "AspNetRoles");
+
+            migrationBuilder.DropTable(
+                name: "Advertise");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");

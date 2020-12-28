@@ -1,17 +1,17 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.26124.0
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30717.126
 MinimumVisualStudioVersion = 15.0.26124.0
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "API", "API\API.csproj", "{6F6522D6-E14E-4630-B249-7988EFDCD327}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "API", "API\API.csproj", "{6F6522D6-E14E-4630-B249-7988EFDCD327}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain", "Domain\Domain.csproj", "{BABB85C7-F718-4CEE-979B-E33FE0EB61BB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Domain", "Domain\Domain.csproj", "{BABB85C7-F718-4CEE-979B-E33FE0EB61BB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Persistence", "Persistence\Persistence.csproj", "{4DC2A98A-C674-4A7F-8C77-1893737587BD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Persistence", "Persistence\Persistence.csproj", "{4DC2A98A-C674-4A7F-8C77-1893737587BD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application", "Application\Application.csproj", "{EAA45AA1-B6EB-4EB3-88DA-71E156A4B281}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Application", "Application\Application.csproj", "{EAA45AA1-B6EB-4EB3-88DA-71E156A4B281}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure", "Infrastructure\Infrastructure.csproj", "{9F16EE39-8598-42CE-A04A-18DD7C9A0F97}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Infrastructure", "Infrastructure\Infrastructure.csproj", "{9F16EE39-8598-42CE-A04A-18DD7C9A0F97}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,9 +21,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 		Release|x64 = Release|x64
 		Release|x86 = Release|x86
-	EndGlobalSection
-	GlobalSection(SolutionProperties) = preSolution
-		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{6F6522D6-E14E-4630-B249-7988EFDCD327}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -86,5 +83,11 @@ Global
 		{9F16EE39-8598-42CE-A04A-18DD7C9A0F97}.Release|x64.Build.0 = Release|Any CPU
 		{9F16EE39-8598-42CE-A04A-18DD7C9A0F97}.Release|x86.ActiveCfg = Release|Any CPU
 		{9F16EE39-8598-42CE-A04A-18DD7C9A0F97}.Release|x86.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {A42487D3-DC24-4FDF-93FF-2B6FA1EAFCDB}
 	EndGlobalSection
 EndGlobal

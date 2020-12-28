@@ -17,6 +17,9 @@ namespace Domain
 
         public ICollection<UserRoles> UserRoles { get; set; }
         public ICollection<RefreshToken> RefreshTokens { get; set; }
+        public ICollection<UserAdvertise> UserAdvertises { get; set; }
+        public ICollection<UserAdvertiseFavorite> UserAdvertiseFavorites { get; set; }
 
+ 
     }
 }
