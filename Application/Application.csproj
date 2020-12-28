@@ -1,5 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <ItemGroup>
+    <None Remove="RequestsHandler\UserAdvertises\Create.cs~RF520187.TMP" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\Persistence\Persistence.csproj" />
     <ProjectReference Include="..\Domain\Domain.csproj" />
   </ItemGroup>

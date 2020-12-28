@@ -29,7 +29,8 @@ namespace Domain
         {
             var g = Guid.NewGuid().ToString();
             var id = g.Substring(0, g.IndexOf('-'));
-            var result=title.Replace(" ", "-");
+            var result = title.EndsWith(" ") ? title.TrimEnd().Insert(title.Length - 1, " ").Replace(" ", "-") :
+                                                          title.TrimEnd().Insert(title.Length, " ").Replace(" ", "-");
             return $"{result}{id}";
         }
     }

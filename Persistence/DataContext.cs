@@ -75,7 +75,7 @@ namespace Persistence
                 opt.HasOne(x => x.AppUser)
                   .WithMany(x => x.UserAdvertiseFavorites)
                   .HasForeignKey(x => x.AppUserId);
-
+                
             });
 
 
@@ -93,7 +93,7 @@ namespace Persistence
 
             builder.Entity<AdvertiseInfo>(opt =>
             {
-                opt.HasKey(x => new { x.Id,x.AdvertiseId});
+                opt.HasIndex(x => new { x.Id,x.AdvertiseId});
 
 
             });
