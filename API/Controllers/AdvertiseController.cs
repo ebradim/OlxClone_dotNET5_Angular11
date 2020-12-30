@@ -1,14 +1,10 @@
-﻿using Application.Models;
+﻿using API.AuthPolicy;
+using Application.Models;
 using Application.RequestsHandler.UserAdvertises;
-using Domain;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace API.Controllers
@@ -34,14 +30,16 @@ namespace API.Controllers
         {
             return await mediator.Send(new UserAdsDetails.AdDetails { Id = id});
         }
-
-        [HttpDelete("{id}"), Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme), IgnoreAntiforgeryToken]
+        
+        [HttpDelete("{id}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme,Policy =AppPolicy.IS_ADVERTISE_OWNER)]
+        [IgnoreAntiforgeryToken]
         public async Task<ActionResult<bool>> DeleteAdAsync(string id)
         {
             return await mediator.Send(new UserAdDelete.DeleteAdd { Id = id });
         }
 
-        [HttpPut("{id}"), Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme), IgnoreAntiforgeryToken]
+        [HttpPut("{id}"), Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = AppPolicy.IS_ADVERTISE_OWNER), IgnoreAntiforgeryToken]
         public async Task<ActionResult<UserAdvertiseDTO>> UpdateAdAsync(string id,UserAdEdit.EditAD editAD)
         {
             editAD.Id = id;

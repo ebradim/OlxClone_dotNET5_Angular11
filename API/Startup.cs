@@ -1,4 +1,8 @@
+using API.AuthPolicy;
+using API.AuthPolicy.Handler;
+using API.AuthPolicy.Requirements;
 using API.Middlewares;
+
 using API.Services;
 using Application.CQRS;
 using Application.Interfaces;
@@ -9,16 +13,13 @@ using Infrastructure.User;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.CookiePolicy;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
-using System;
 
 namespace API
 {
@@ -69,13 +70,19 @@ namespace API
                     policy.AllowAnyHeader().AllowAnyMethod().WithOrigins("http://localhost:4200").AllowCredentials();
                 });
             });
-
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy(AppPolicy.IS_ADVERTISE_OWNER, policy =>
+                {
+                    policy.Requirements.Add(new AdvertiseOwnerRequirement());
+                });
+            });
             services.AddStackExchangeRedisCache(options =>
             {
                 options.Configuration = Configuration.GetConnectionString("redis");
                 options.InstanceName = "OlxClone-";
             });
-       
+            services.AddTransient<IAuthorizationHandler, AdvertiseOwnerHandler>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
