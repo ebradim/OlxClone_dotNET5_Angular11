@@ -1,0 +1,33 @@
+<div class="example-input">
+  <nz-input-group nzSize="large" [nzSuffix]="suffixIcon">
+    <input
+      nzPrefixIcon="search"
+      placeholder="What are you looking for?"
+      nz-input
+      [(ngModel)]="inputValue"
+      (ngModelChange)="onChange($event)"
+      [nzAutocomplete]="auto"
+    />
+  </nz-input-group>
+  <ng-template #suffixIcon>
+    <i nz-icon nzType="search"></i>
+  </ng-template>
+  <nz-autocomplete #auto>
+    <nz-auto-optgroup *ngFor="let group of optionGroups" [nzLabel]="groupTitle">
+      <ng-template #groupTitle>
+        <span
+          ><b>{{ group.title }}</b> from
+          <a class="more-link" href="#" target="_blank"> Ebrahim Elsayed</a>
+        </span>
+      </ng-template>
+      <nz-auto-option
+        *ngFor="let option of group.children"
+        [nzLabel]="option.title"
+        [nzValue]="option.title"
+      >
+        {{ option.title }}
+        <span class="certain-search-item-count">{{ option.count }}</span>
+      </nz-auto-option>
+    </nz-auto-optgroup>
+  </nz-autocomplete>
+</div>

@@ -8,7 +8,7 @@ import {
 import { select, State } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { IUser } from '../auth/models/API';
+import { IUser } from '../../auth/models/API';
 import { getCurrentUser, RootState } from '../reducers';
 
 @Injectable({

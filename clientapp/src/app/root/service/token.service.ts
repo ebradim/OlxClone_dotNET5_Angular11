@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable, of, Subscription } from 'rxjs';
 import { delay, tap } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
-import { IUser } from '../auth/models/API';
+import { IUser } from '../../auth/models/API';
 
 @Injectable({ providedIn: 'root' })
 export class TokenService {

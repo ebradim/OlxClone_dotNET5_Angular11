@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
 import { select, Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
-import { IUser } from '../auth/models/API';
+import { fromLogoutActions } from 'src/app/auth/actions';
+import { IUser } from '../../auth/models/API';
 import { getCurrentUser, RootState } from '../reducers';
 
 @Component({
@@ -14,5 +15,8 @@ export class NavbarComponent {
 
   constructor(private store: Store<RootState>) {
     this.user$ = this.store.pipe(select(getCurrentUser));
+  }
+  logOut() {
+    this.store.dispatch(fromLogoutActions.logout());
   }
 }

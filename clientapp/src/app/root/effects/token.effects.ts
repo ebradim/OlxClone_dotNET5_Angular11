@@ -9,6 +9,8 @@ import {
   mergeMap,
   repeat,
   switchMap,
+  take,
+  takeUntil,
   tap,
 } from 'rxjs/operators';
 import { fromAPIActions, fromTokenActions } from '../actions';
@@ -37,6 +39,7 @@ export class TokenEffects {
           fromAPIActions.registerSuccess,
           fromAPIActions.loginSuccess
         ),
+        takeUntil(of(fromAPIActions.logoutSuccess)),
         switchMap(() => {
           return this.authService.refreshToken().pipe(
             delay(25000),

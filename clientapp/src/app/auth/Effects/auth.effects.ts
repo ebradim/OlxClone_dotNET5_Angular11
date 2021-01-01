@@ -5,7 +5,7 @@ import {
   fromLogoutActions,
   fromRegisterActions,
 } from '../actions';
-import { fromAPIActions } from '../../actions';
+import { fromAPIActions } from '../../root/actions';
 import { AuthService } from '../services/auth.service';
 import { catchError, exhaustMap, map, switchMap, tap } from 'rxjs/operators';
 import { ILogin } from '../models/Login';
@@ -59,7 +59,7 @@ export class AuthEffects {
     () =>
       this.action$.pipe(
         ofType(fromAPIActions.loginSuccess, fromAPIActions.registerSuccess),
-        tap(() => this.router.navigate(['/home']))
+        tap(() => this.router.navigate(['/']))
       ),
     { dispatch: false }
   );

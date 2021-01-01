@@ -1,0 +1,167 @@
+<ul nz-menu nzMode="horizontal" class="navbar-container">
+  <img
+    style="width: 50px; height: 40px; margin-top: 10px"
+    src="https://upload.wikimedia.org/wikipedia/commons/4/42/OLX_New_Logo.png"
+  />
+  <div class="navbar-start">
+    <li nz-menu-item nzSelected [routerLink]="['/']">
+      <i nz-icon nzType="home" nzTheme="outline"></i> Home
+    </li>
+
+    <li nz-menu-item>
+      <i nz-icon nzType="search" nzTheme="outline"></i> Explore
+    </li>
+
+    <li nz-submenu nzTitle="Categories" nzIcon="group">
+      <ul>
+        <li nz-submenu nzTitle="Electronics">
+          <ul>
+            <li nz-menu-item>Mobiles</li>
+            <li nz-menu-item>Tablets</li>
+            <li nz-menu-item>Laptops</li>
+            <li nz-menu-item>PCs</li>
+            <li nz-menu-item>Others</li>
+          </ul>
+        </li>
+        <li nz-submenu nzTitle="Vehicles">
+          <ul>
+            <li nz-menu-item>Cars</li>
+            <li nz-menu-item>Bikes</li>
+            <li nz-menu-item>Motocycles</li>
+            <li nz-menu-item>Others</li>
+          </ul>
+        </li>
+        <li nz-submenu nzTitle="Pets">
+          <ul>
+            <li nz-menu-item>Birds</li>
+            <li nz-menu-item>Cats</li>
+            <li nz-menu-item>Dogs</li>
+            <li nz-menu-item>Others</li>
+          </ul>
+        </li>
+        <li nz-submenu nzTitle="Jobs">
+          <ul>
+            <li nz-menu-item>Accounting</li>
+            <li nz-menu-item>Customer Service</li>
+            <li nz-menu-item>Drivers</li>
+            <li nz-menu-item>Engineering</li>
+            <li nz-menu-item>HR</li>
+            <li nz-menu-item>IT</li>
+            <li nz-menu-item>Guards and Security</li>
+            <li nz-menu-item>Others</li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+    <li nz-submenu nzTitle="Help" nzIcon="customer-service">
+      <ul>
+        <li nz-menu-group nzTitle="Customer Service">
+          <ul>
+            <li nz-menu-item>Contact Us</li>
+            <li nz-menu-item>Live chat</li>
+          </ul>
+        </li>
+        <li nz-menu-group nzTitle="Company">
+          <ul>
+            <li nz-menu-item>Careers</li>
+            <li nz-menu-item>About us</li>
+          </ul>
+        </li>
+        <li nz-menu-group nzTitle="FAQ">
+          <ul>
+            <li nz-menu-item>Terms of use</li>
+            <li nz-menu-item>Privacy Policy</li>
+            <li nz-menu-item>Sitemap</li>
+            <li nz-menu-item>Regions map</li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </div>
+
+  <div *ngIf="user$ |async as logged;else nouser">
+    <div
+      class="user-info"
+      nz-dropdown
+      nzTrigger="click"
+      [nzDropdownMenu]="menu"
+    >
+      <div
+        nz-button
+        nzType="dashed"
+        class="btn-profile"
+        [routerLink]="['/auth/login']"
+      >
+        <nz-avatar
+          class="user-info-image"
+          nzIcon="user"
+          nzSrc="//zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
+        ></nz-avatar>
+        {{logged.firstName}} {{logged.lastName}}
+      </div>
+    </div>
+    <nz-dropdown-menu #menu="nzDropdownMenu">
+      <ul nz-menu class="profile-dropdown">
+        <li nz-menu-item style="margin: 10px; padding: 10px; font-weight: bold">
+          <i nz-icon nzType="appstore-add" nzTheme="outline"></i>Create new
+          Advertise
+        </li>
+        <li nz-menu-divider></li>
+
+        <li nz-menu-group nzTitle="Account">
+          <ul>
+            <li nz-menu-item style="font-weight: 700">
+              <i nz-icon nzType="user" nzTheme="outline"></i>Profile
+            </li>
+            <li nz-menu-item style="font-weight: 700">
+              <i nz-icon nzType="star" nzTheme="outline"></i>Favorites
+            </li>
+
+            <li nz-menu-divider></li>
+
+            <button
+              nz-button
+              nzType="primary"
+              [nzSize]="'small'"
+              (click)="logOut()"
+              style="
+                width: 100%;
+                height: 30px;
+                padding-right: 15px;
+                margin: 10px 0 10px 0;
+              "
+            >
+              <i nz-icon nzType="logout" nzTheme="outline"></i>
+              Logout
+            </button>
+          </ul>
+        </li>
+      </ul>
+    </nz-dropdown-menu>
+  </div>
+
+  <ng-template #nouser>
+    <div class="btns-auth-container">
+      <button
+        nz-button
+        nzType="default"
+        [nzSize]="'large'"
+        class="btn-signin"
+        nzShape="round"
+        [routerLink]="['/auth/login']"
+      >
+        <i nz-icon nzType="login"></i>Sign In
+      </button>
+      <button
+        nz-button
+        nzType="primary"
+        [nzSize]="'large'"
+        class="btn-newaccount"
+        nzShape="round"
+        [routerLink]="['/auth/register']"
+      >
+        <i nz-icon nzType="user-add"></i>Create new account
+      </button>
+    </div>
+  </ng-template>
+</ul>

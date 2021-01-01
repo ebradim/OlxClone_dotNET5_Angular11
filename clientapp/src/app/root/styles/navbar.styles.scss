@@ -1,0 +1,90 @@
+// Navbar
+$nav_btn_width: fit-content;
+$nav_btns: ("newaccount", "signin");
+$required_margin: 10px 15px 0px 0px;
+
+.navbar-container {
+  background-color: #fff;
+  box-shadow: 0px 0px 4px 4px whitesmoke;
+  padding-bottom: 8px;
+  display: flex;
+  font-family: Roboto;
+
+  flex-flow: row wrap;
+  justify-content: center;
+  .navbar-start {
+    padding-top: 5px !important;
+    margin: 5px 50px;
+    display: flex;
+
+    flex-flow: row wrap;
+  }
+  li {
+    text-align: center;
+  }
+  .ant-menu-item-selected {
+    background-color: #f2f4fd !important;
+    border-bottom: 3px solid #485bbd;
+  }
+}
+
+@each $class in $nav_btns {
+  .btns-auth-container {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: center;
+
+    .btn-#{$class} {
+      margin: $required_margin;
+      float: right;
+      width: $nav_btn_width;
+      transition: box-shadow 500ms, border 500ms;
+
+      &:not(:first-child):hover {
+        box-shadow: 0px 0px 8px 5px #bfc7f5;
+        transition: box-shadow 500ms;
+      }
+      &:first-child:hover {
+        box-shadow: 0px 0px 8px 4px #dfdfdf;
+        border: 1px solid #ffffff;
+        transition: box-shadow 500ms, border 500ms;
+      }
+    }
+  }
+}
+
+.user-info {
+  cursor: pointer;
+  border-style: none;
+  :hover {
+    background-color: #ececec;
+    transition: background-color 400ms;
+    border-radius: 50px;
+  }
+  :active {
+    background-color: #fff;
+
+    outline-color: #ffffff;
+  }
+  :focus {
+    color: #253fba;
+    outline-color: #253fba;
+  }
+
+  .btn-profile {
+    display: flex;
+    flex-flow: row wrap;
+    padding: 0px 15px 0px 10px;
+
+    margin-top: 10px;
+    margin-left: 50px;
+    .user-info-image {
+      margin-top: 5px;
+      margin-right: 2px;
+    }
+  }
+}
+.profile-dropdown {
+  font-family: Quicksand;
+  font-weight: bold;
+}

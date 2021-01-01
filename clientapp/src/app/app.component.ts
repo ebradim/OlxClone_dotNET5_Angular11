@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { fromTokenActions } from './actions';
+import { fromTokenActions } from './root/actions';
 import { AuthState } from './auth/reducers';
-import { RootState } from './reducers';
+import { RootState } from './root/reducers';
 
 @Component({
   selector: 'app-root',

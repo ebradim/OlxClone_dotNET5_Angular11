@@ -1,0 +1,63 @@
+<div class="advertise-card-container">
+  <nz-card style="width: 300px; margin-top: 16px" [nzActions]="[actionSetting]">
+    <nz-skeleton
+      [nzActive]="true"
+      [nzLoading]="true"
+      [nzAvatar]="{ size: 'large' }"
+    >
+      <nz-card-meta
+        [nzAvatar]="avatarTemplate"
+        nzTitle="Card title"
+        nzDescription="This is the description"
+      ></nz-card-meta>
+    </nz-skeleton>
+  </nz-card>
+  <nz-card style="width: 300px; margin-top: 16px" [nzActions]="[actionSetting]">
+    <nz-skeleton
+      [nzActive]="true"
+      [nzLoading]="true"
+      [nzAvatar]="{ size: 'large' }"
+    >
+      <nz-card-meta
+        [nzAvatar]="avatarTemplate"
+        nzTitle="Card title"
+        nzDescription="This is the description"
+      ></nz-card-meta>
+    </nz-skeleton>
+  </nz-card>
+  <nz-card style="width: 300px; margin-top: 16px" [nzActions]="[actionSetting]">
+    <nz-skeleton
+      [nzActive]="true"
+      [nzLoading]="true"
+      [nzAvatar]="{ size: 'large' }"
+    >
+      <nz-card-meta
+        [nzAvatar]="avatarTemplate"
+        nzTitle="Card title"
+        nzDescription="This is the description"
+      ></nz-card-meta>
+    </nz-skeleton>
+  </nz-card>
+  <nz-card style="width: 300px; margin-top: 16px" [nzActions]="[actionSetting]">
+    <nz-skeleton
+      [nzActive]="true"
+      [nzLoading]="true"
+      [nzAvatar]="{ size: 'large' }"
+    >
+      <nz-card-meta
+        [nzAvatar]="avatarTemplate"
+        nzTitle="Card title"
+        nzDescription="This is the description"
+      ></nz-card-meta>
+    </nz-skeleton>
+  </nz-card>
+</div>
+
+<ng-template #avatarTemplate>
+  <nz-avatar
+    nzSrc="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
+  ></nz-avatar>
+</ng-template>
+<ng-template #actionSetting>
+  <i nz-icon nzType="star" nzTheme="twotone"></i>
+</ng-template>

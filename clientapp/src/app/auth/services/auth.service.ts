@@ -25,6 +25,6 @@ export class AuthService {
   }
   public logout(): Observable<boolean> {
     const endpoint = environment.url + this.routes.logout;
-    return this.client.get<boolean>(endpoint, {});
+    return this.client.get<boolean>(endpoint, { withCredentials: true });
   }
 }

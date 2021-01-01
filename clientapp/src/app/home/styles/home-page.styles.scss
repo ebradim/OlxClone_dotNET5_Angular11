@@ -1,0 +1,13 @@
+.root {
+  display: flex;
+  flex-flow: column wrap;
+
+  margin: 8% 5%;
+  justify-content: center;
+  .search-box {
+    padding: 0px 20%;
+  }
+  .advertise-card {
+    padding: 3% 10%;
+  }
+}
