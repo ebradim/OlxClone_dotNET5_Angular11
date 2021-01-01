@@ -25,7 +25,8 @@
 
 ## 📝 Overview
 <p align="center">
- <img  src="https://user-images.githubusercontent.com/50548116/103410493-15440180-4b74-11eb-8a7e-0024a1a7727b.png" alt="Project logo"></a>
+
+ <img  src="https://user-images.githubusercontent.com/50548116/103432223-4e1bbf00-4be4-11eb-9d4a-3bdbaf948b22.png" alt="Project logo"></a>
 </p>
 
 This project is still in progress.
