@@ -4,7 +4,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace Persistence.Migrations
 {
-    public partial class AddedAdvertiseEntities : Migration
+    public partial class re_migrate_fix_casting_issue : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -12,7 +12,9 @@ namespace Persistence.Migrations
                 name: "Advertise",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "text", nullable: false),
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    UniqueId = table.Column<string>(type: "text", nullable: true),
                     Title = table.Column<string>(type: "text", nullable: true),
                     Price = table.Column<double>(type: "double precision", nullable: false),
                     PublishedAt = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
@@ -77,7 +79,7 @@ namespace Persistence.Migrations
                     Description = table.Column<string>(type: "text", nullable: true),
                     Color = table.Column<string>(type: "text", nullable: true),
                     Quantity = table.Column<byte>(type: "smallint", nullable: false),
-                    AdvertiseId = table.Column<string>(type: "text", nullable: true)
+                    AdvertiseId = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -87,7 +89,7 @@ namespace Persistence.Migrations
                         column: x => x.AdvertiseId,
                         principalTable: "Advertise",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -224,7 +226,7 @@ namespace Persistence.Migrations
                 name: "UserAdvertise",
                 columns: table => new
                 {
-                    AdvertiseId = table.Column<string>(type: "text", nullable: false),
+                    AdvertiseId = table.Column<int>(type: "integer", nullable: false),
                     AppUserId = table.Column<string>(type: "text", nullable: false),
                     IsNegotiate = table.Column<bool>(type: "boolean", nullable: false),
                     IsOnWarranty = table.Column<bool>(type: "boolean", nullable: false),
@@ -252,7 +254,7 @@ namespace Persistence.Migrations
                 name: "UserAdvertiseFavorite",
                 columns: table => new
                 {
-                    AdvertiseId = table.Column<string>(type: "text", nullable: false),
+                    AdvertiseId = table.Column<int>(type: "integer", nullable: false),
                     AppUserId = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
@@ -273,10 +275,20 @@ namespace Persistence.Migrations
                 });
 
             migrationBuilder.CreateIndex(
+                name: "IX_Advertise_UniqueId",
+                table: "Advertise",
+                column: "UniqueId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_AdvertiseInfo_AdvertiseId",
                 table: "AdvertiseInfo",
                 column: "AdvertiseId",
                 unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AdvertiseInfo_Id_AdvertiseId",
+                table: "AdvertiseInfo",
+                columns: new[] { "Id", "AdvertiseId" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",

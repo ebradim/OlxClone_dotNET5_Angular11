@@ -21,10 +21,24 @@ $required_margin: 10px 15px 0px 0px;
   }
   li {
     text-align: center;
+    outline: none;
+    &:hover {
+      color: #253fba;
+      font-weight: bold;
+    }
   }
-  .ant-menu-item-selected {
+  .ant-menu-item {
+    color: black;
+  }
+
+  .ant-menu-item-selected-route {
     background-color: #f2f4fd !important;
     border-bottom: 3px solid #485bbd;
+    font-weight: normal !important;
+    color: rgba(68, 88, 187, 0.849);
+    &:hover {
+      font-weight: normal;
+    }
   }
 }
 

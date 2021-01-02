@@ -5,6 +5,7 @@ using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace API.Controllers
@@ -19,7 +20,11 @@ namespace API.Controllers
         {
             this.mediator = mediator;
         }
-
+        [Route("load"), HttpGet,AllowAnonymous, IgnoreAntiforgeryToken]
+        public async Task<ActionResult<List<UserAdvertiseDetailsDTO>>> GetHomeAdsAsync()
+        {
+            return await mediator.Send(new UserAdLoad.LoadAds());
+        }
         [Route("add"), HttpPost,Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme), IgnoreAntiforgeryToken]
         public async Task<ActionResult<UserAdvertiseDTO>> CreateNewAsync(UserAds.NewAdd createAdd)
         {
@@ -42,7 +47,7 @@ namespace API.Controllers
         [HttpPut("{id}"), Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = AppPolicy.IS_ADVERTISE_OWNER), IgnoreAntiforgeryToken]
         public async Task<ActionResult<UserAdvertiseDTO>> UpdateAdAsync(string id,UserAdEdit.EditAD editAD)
         {
-            editAD.Id = id;
+            editAD.UniqueId = id;
             return await mediator.Send(editAD);
         }
     }

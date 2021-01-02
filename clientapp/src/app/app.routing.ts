@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { NotFoundComponent } from './errors/components/notfound.component';
 import { AuthGuard } from './root/guards/auth.guard';
 const routes: Routes = [
   {
@@ -8,8 +9,25 @@ const routes: Routes = [
     loadChildren: () => import('./auth/auth.module').then((x) => x.AuthModule),
   },
   {
+    path: 'home',
+    loadChildren: () =>
+      import('././root/home/home.module').then((x) => x.HomeModule),
+  },
+  {
+    path: 'advertise',
+    loadChildren: () =>
+      import('././root/advertise/advertise.module').then(
+        (x) => x.AdvertiseModule
+      ),
+  },
+  {
     path: '',
-    loadChildren: () => import('./home/home.module').then((x) => x.HomeModule),
+    redirectTo: 'home',
+    pathMatch: 'full',
+  },
+  {
+    path: '**',
+    component: NotFoundComponent,
   },
 ];
 @NgModule({

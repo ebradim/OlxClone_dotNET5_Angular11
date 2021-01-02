@@ -8,7 +8,7 @@ namespace Domain
 {
     public class UserAdvertiseFavorite
     {
-        public string AdvertiseId { get; set; }
+        public int AdvertiseId { get; set; }
         public Advertise Advertise { get; set; }
 
 

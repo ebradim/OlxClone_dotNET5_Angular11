@@ -4,11 +4,20 @@
     src="https://upload.wikimedia.org/wikipedia/commons/4/42/OLX_New_Logo.png"
   />
   <div class="navbar-start">
-    <li nz-menu-item nzSelected [routerLink]="['/']">
+    <li
+      nz-menu-item
+      nzSelected
+      [routerLink]="['/home']"
+      routerLinkActive="ant-menu-item-selected-route"
+    >
       <i nz-icon nzType="home" nzTheme="outline"></i> Home
     </li>
 
-    <li nz-menu-item>
+    <li
+      nz-menu-item
+      [routerLink]="['/auth']"
+      routerLinkActive="ant-menu-item-selected-route"
+    >
       <i nz-icon nzType="search" nzTheme="outline"></i> Explore
     </li>
 

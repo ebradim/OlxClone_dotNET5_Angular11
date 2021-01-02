@@ -27,7 +27,7 @@ namespace Application.RequestsHandler.UserAdvertises
             }
             public async Task<bool> Handle(DeleteAdd request, CancellationToken cancellationToken)
             {
-                var ad = await dataContext.UserAdvertise.FirstOrDefaultAsync(x => x.AdvertiseId == request.Id);
+                var ad = await dataContext.UserAdvertise.FirstOrDefaultAsync(x => x.Advertise.UniqueId == request.Id);
                 if (ad is null)
                     throw new HttpContextException(System.Net.HttpStatusCode.NotFound, new { Advertise = "Advertise is not found" });
 

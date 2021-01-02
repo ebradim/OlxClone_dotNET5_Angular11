@@ -1,4 +1,4 @@
-﻿using Application.Models;
+using Application.Models;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
@@ -11,13 +11,13 @@ using System.Threading.Tasks;
 
 namespace Application.RequestsHandler.UserAdvertises
 {
-    public class UserAdsDetails
+    public class UserAdLoad
     {
-        public  class AdDetails : IRequest<UserAdvertiseDetailsDTO>
+        
+        public class LoadAds : IRequest<List<UserAdvertiseDetailsDTO>>
         {
-            public string Id { get; set; }
         }
-        public class Handler : IRequestHandler<AdDetails, UserAdvertiseDetailsDTO>
+        public class Handler : IRequestHandler<LoadAds, List<UserAdvertiseDetailsDTO>>
         {
             private readonly DataContext dataContext;
 
@@ -25,24 +25,22 @@ namespace Application.RequestsHandler.UserAdvertises
             {
                 this.dataContext = dataContext;
             }
-            public async Task<UserAdvertiseDetailsDTO> Handle(AdDetails request, CancellationToken cancellationToken)
+            public async Task<List<UserAdvertiseDetailsDTO>> Handle(LoadAds request, CancellationToken cancellationToken)
             {
-                var ad = await dataContext
-                    .UserAdvertise
-                    .Where(x=>x.Advertise.UniqueId == request.Id)
-                    .Select(x=>new UserAdvertiseDetailsDTO
+                var ad = await dataContext.UserAdvertise
+                .Where(x=>x.Status != Domain.Status.Sold).OrderByDescending(x=>x.Advertise.PublishedAt).Select(x=>new UserAdvertiseDetailsDTO
                     {
                         Root = new Root
                         {
-                            Status =x.Status,
+                           Category= x.Category,
                             IsNegotiate =x.IsNegotiate,
                             IsOnWarranty =x.IsOnWarranty,
                             PaymentOption =x.PaymentOption,
                             AdvertiseDTO = new AdvertiseDTO
                             {
                                 
-                            Id = x.Advertise.Id,
-                            UniqueId =x.Advertise.UniqueId,
+                                Id = x.AdvertiseId,
+                                UniqueId =x.Advertise.UniqueId,
                                 City =x.Advertise.City,
                                 District=x.Advertise.District,
                                 PublishedAt=x.Advertise.PublishedAt,
@@ -56,18 +54,15 @@ namespace Application.RequestsHandler.UserAdvertises
                                     Quantity =x.Advertise.AdvertiseInfo.Advertise.AdvertiseInfo.Quantity,
                                 }
                             },
-                              User = new AdvertiseUser
-                                {
-                                    FirstName = x.AppUser.FirstName,
-                                    LastName = x.AppUser.LastName,
-                                    UserName = x.AppUser.UserName,
-                                }
+                             User = new AdvertiseUser
+                        {
+                            FirstName = x.AppUser.FirstName,
+                            LastName = x.AppUser.LastName,
+                            UserName = x.AppUser.UserName,
                         }
-                      
-                    })
-                    .AsNoTracking().FirstOrDefaultAsync();
-                if (ad is null)
-                    throw new HttpContextException(System.Net.HttpStatusCode.NotFound, new { Advertise = "Advertise is not found" });
+                        }
+                       
+                    }).Take(20).AsNoTracking().ToListAsync();
                 return ad;
             }
         }

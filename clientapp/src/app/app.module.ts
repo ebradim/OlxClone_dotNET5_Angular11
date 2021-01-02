@@ -29,6 +29,9 @@ import { NzAvatarModule } from 'ng-zorro-antd/avatar';
 import { TokenEffects } from './root/effects/token.effects';
 import { TokenInterceptor } from './root/interceptors/token.interceptor';
 import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
+import { ErrorComponentsModule } from './errors/errors.module';
+import { HomeEffects } from './root/home/effects/home.effects';
+import { NzNotificationModule } from 'ng-zorro-antd/notification';
 
 const icons: IconDefinition[] = [
   SearchOutline,
@@ -46,13 +49,14 @@ registerLocaleData(en);
   imports: [
     BrowserModule,
     HttpClientModule,
-
+    ErrorComponentsModule,
     StoreModule.forRoot({}, { metaReducers }),
     StoreModule.forFeature('root', reducers),
-    EffectsModule.forRoot([TokenEffects]),
+    EffectsModule.forRoot([TokenEffects, HomeEffects]),
     StoreRouterConnectingModule.forRoot(),
     AppRouting,
     NzMenuModule,
+    NzNotificationModule,
     NzButtonModule,
     NzAvatarModule,
     NzDropDownModule,

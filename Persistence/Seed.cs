@@ -81,7 +81,7 @@ namespace Persistence
                     
                 };
 
-                userAd.Advertise.Id = AdvertiseUniqueId.NewId(userAd.Advertise.Title);
+                userAd.Advertise.UniqueId = AdvertiseUniqueId.NewId(userAd.Advertise.Title);
                 await dataContext.UserAdvertise.AddAsync(userAd);
          
                 await dataContext.SaveChangesAsync();

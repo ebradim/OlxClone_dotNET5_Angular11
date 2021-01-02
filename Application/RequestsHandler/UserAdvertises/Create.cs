@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using Persistence;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Net;
 using System.Text;
@@ -18,18 +19,25 @@ namespace Application.RequestsHandler.UserAdvertises
     {
         public class NewAdd : IRequest<UserAdvertiseDTO>
         {
+            [Required]
             public bool IsNegotiate { get; set; }
+            [Required]
             public bool IsOnWarranty { get; set; }
+            [Required]
             public Status Status { get; set; }
+            [Required]
             public PaymentOption PaymentOption { get; set; }
-
+            [Required]
             public string Title { get; set; }
+            [Required]
+            public string Category { get; set; }
             public string District { get; set; }
+            [Required]
             public string City { get; set; }
+            [Required]
             public double Price { get; set; }
-
-            public AdvertiseInfo AdvertiseInfo { get; set; }
-          
+            [Required]
+            public AdvertiseInfoDTO AdvertiseInfo { get; set; }        
         }
 
         public class Handler : IRequestHandler<NewAdd, UserAdvertiseDTO>
@@ -67,9 +75,10 @@ namespace Application.RequestsHandler.UserAdvertises
                     },
                              
                 };
-                advertise.Id = AdvertiseUniqueId.NewId(advertise.Title);
+                advertise.UniqueId = AdvertiseUniqueId.NewId(advertise.Title);
                 var userAdvertise = new UserAdvertise
                 {
+                    Category=request.Category,
                     Status = Status.Pending,
                     IsNegotiate = request.IsNegotiate,
                     IsOnWarranty = request.IsOnWarranty,

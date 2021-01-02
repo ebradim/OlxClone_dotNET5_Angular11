@@ -29,7 +29,7 @@ namespace API.AuthPolicy.Handler
                 var userId = contextAccessor.HttpContext.User?.Claims?.FirstOrDefault(x => x.Type == "_cuser")?.Value;
                 var advertiseId = contextAccessor.HttpContext.GetRouteValue("id").ToString();
 
-                var userAdvertise = await dataContext.UserAdvertise.Where(x => x.AdvertiseId == advertiseId && x.AppUserId == userId)
+                var userAdvertise = await dataContext.UserAdvertise.Where(x => x.Advertise.UniqueId == advertiseId && x.AppUserId == userId)
                     .AsNoTracking().FirstOrDefaultAsync();
 
                 if(userAdvertise is not null)

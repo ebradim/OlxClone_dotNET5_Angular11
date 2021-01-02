@@ -18,13 +18,14 @@ namespace Application.Models
             
             Root = new Root
             {
-                Id = userAdvertise.AdvertiseId,
+               
                 IsNegotiate = userAdvertise.IsNegotiate,
                 IsOnWarranty = userAdvertise.IsOnWarranty,
                 PaymentOption = userAdvertise.PaymentOption,
                 Status = userAdvertise.Status,
                 AdvertiseDTO = new AdvertiseDTO
-                {
+                { Id = userAdvertise.Advertise.Id,
+                UniqueId = userAdvertise.Advertise.UniqueId,
                     Title = userAdvertise.Advertise.Title,
                     District = userAdvertise.Advertise.District,
                     City = userAdvertise.Advertise.City,
@@ -46,7 +47,8 @@ namespace Application.Models
     }
     public class AdvertiseDTO
     {
-
+        public int Id { get; set; }
+        public string UniqueId { get; set; }
         public string Title { get;  set; }
         public string District { get;  set; }
         public string City { get;  set; }
@@ -65,13 +67,22 @@ namespace Application.Models
     }
     public class Root
     {
-        public string Id { get; set; }
+    
+        public string Category{get;set;}
         public bool IsNegotiate { get; set; }
         public bool IsOnWarranty { get; set; }
         public Status Status { get; set; }
         public PaymentOption PaymentOption { get; set; }
         [JsonProperty("advertise")]
         public AdvertiseDTO AdvertiseDTO { get; set; }
+         [JsonProperty("user")]
+        public AdvertiseUser User { get; set; }
 
+    }
+      public class AdvertiseUser
+    {
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public string UserName { get; set; }
     }
 }

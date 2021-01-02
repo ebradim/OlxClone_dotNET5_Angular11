@@ -17,7 +17,7 @@ namespace Domain
         public string Color { get; set; }
         public byte Quantity { get; set; }
 
-        public string AdvertiseId { get; set; }
+        public int AdvertiseId { get; set; }
         public Advertise Advertise { get; set; }
 
     }

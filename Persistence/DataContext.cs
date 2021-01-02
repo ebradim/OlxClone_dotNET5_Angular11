@@ -51,15 +51,15 @@ namespace Persistence
 
             });
 
-
-
-
             builder.Entity<UserAdvertise>(opt =>
             {
+
                 opt.HasKey(x => new { x.AdvertiseId, x.AppUserId });
+
                 opt.HasOne(x => x.Advertise)
                     .WithMany(x => x.UserAdvertises)
                     .HasForeignKey(x => x.AdvertiseId);
+
                 opt.HasOne(x => x.AppUser)
                   .WithMany(x => x.UserAdvertises)
                   .HasForeignKey(x => x.AppUserId);
@@ -69,9 +69,11 @@ namespace Persistence
             builder.Entity<UserAdvertiseFavorite>(opt =>
             {
                 opt.HasKey(x => new { x.AdvertiseId, x.AppUserId });
+
                 opt.HasOne(x => x.Advertise)
                     .WithMany(x => x.UserAdvertiseFavorites)
                     .HasForeignKey(x => x.AdvertiseId);
+
                 opt.HasOne(x => x.AppUser)
                   .WithMany(x => x.UserAdvertiseFavorites)
                   .HasForeignKey(x => x.AppUserId);
@@ -82,7 +84,7 @@ namespace Persistence
 
             builder.Entity<Advertise>(opt =>
             {
-                opt.HasKey(x => x.Id);
+                opt.HasIndex(x => x.UniqueId);
 
                 opt.HasOne(x => x.AdvertiseInfo)
                     .WithOne(x => x.Advertise)

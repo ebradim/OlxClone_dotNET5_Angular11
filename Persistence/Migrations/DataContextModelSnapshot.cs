@@ -21,8 +21,10 @@ namespace Persistence.Migrations
 
             modelBuilder.Entity("Domain.Advertise", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasColumnType("text");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .UseIdentityByDefaultColumn();
 
                     b.Property<string>("City")
                         .HasColumnType("text");
@@ -39,7 +41,12 @@ namespace Persistence.Migrations
                     b.Property<string>("Title")
                         .HasColumnType("text");
 
+                    b.Property<string>("UniqueId")
+                        .HasColumnType("text");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("UniqueId");
 
                     b.ToTable("Advertise");
                 });
@@ -51,8 +58,8 @@ namespace Persistence.Migrations
                         .HasColumnType("integer")
                         .UseIdentityByDefaultColumn();
 
-                    b.Property<string>("AdvertiseId")
-                        .HasColumnType("text");
+                    b.Property<int>("AdvertiseId")
+                        .HasColumnType("integer");
 
                     b.Property<string>("Color")
                         .HasColumnType("text");
@@ -214,10 +221,13 @@ namespace Persistence.Migrations
 
             modelBuilder.Entity("Domain.UserAdvertise", b =>
                 {
-                    b.Property<string>("AdvertiseId")
-                        .HasColumnType("text");
+                    b.Property<int>("AdvertiseId")
+                        .HasColumnType("integer");
 
                     b.Property<string>("AppUserId")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Category")
                         .HasColumnType("text");
 
                     b.Property<bool>("IsNegotiate")
@@ -241,8 +251,8 @@ namespace Persistence.Migrations
 
             modelBuilder.Entity("Domain.UserAdvertiseFavorite", b =>
                 {
-                    b.Property<string>("AdvertiseId")
-                        .HasColumnType("text");
+                    b.Property<int>("AdvertiseId")
+                        .HasColumnType("integer");
 
                     b.Property<string>("AppUserId")
                         .HasColumnType("text");
@@ -362,7 +372,9 @@ namespace Persistence.Migrations
                 {
                     b.HasOne("Domain.Advertise", "Advertise")
                         .WithOne("AdvertiseInfo")
-                        .HasForeignKey("Domain.AdvertiseInfo", "AdvertiseId");
+                        .HasForeignKey("Domain.AdvertiseInfo", "AdvertiseId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Advertise");
                 });

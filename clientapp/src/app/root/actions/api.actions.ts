@@ -1,5 +1,6 @@
 import { createAction, props } from '@ngrx/store';
 import { IUser } from '../../auth/models/API';
+import { IHomeAdvertises } from '../home/models/Advertise';
 
 export const loginSuccess = createAction(
   '[API] Login Success',
@@ -27,5 +28,13 @@ export const refreshTokenSuccess = createAction(
 );
 export const refreshTokenError = createAction(
   '[Auth/User/Token] Refresh Token Error',
+  props<{ error: any }>()
+);
+export const loadHomeAdvertisesSuccess = createAction(
+  '[Advertise/API] Load Advertise Success',
+  props<{ advertises: IHomeAdvertises[] }>()
+);
+export const loadHomeAdvertisesError = createAction(
+  '[Advertise/API] Load Advertise Error',
   props<{ error: any }>()
 );

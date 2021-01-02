@@ -4,9 +4,6 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -17,7 +14,7 @@ namespace Application.RequestsHandler.UserAdvertises
 
         public class EditAD : IRequest<UserAdvertiseDTO>
         {
-            public string Id { get; set; }
+            public string UniqueId { get; set; }
             public bool IsNegotiate { get; set; }
             public bool IsOnWarranty { get; set; }
             public Status Status { get; set; }
@@ -40,7 +37,7 @@ namespace Application.RequestsHandler.UserAdvertises
 
             public async Task<UserAdvertiseDTO> Handle(EditAD request, CancellationToken cancellationToken)
             {
-                var ad = await dataContext.UserAdvertise.Include(x=>x.Advertise).ThenInclude(x=>x.AdvertiseInfo).FirstOrDefaultAsync(x => x.AdvertiseId == request.Id);
+                var ad = await dataContext.UserAdvertise.Include(x=>x.Advertise).ThenInclude(x=>x.AdvertiseInfo).FirstOrDefaultAsync(x => x.Advertise.UniqueId == request.UniqueId);
                 if (ad is null)
                     throw new HttpContextException(System.Net.HttpStatusCode.NotFound, new { Advertise = "Advertise is not found" });
           

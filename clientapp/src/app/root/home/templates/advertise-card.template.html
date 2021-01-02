@@ -1,0 +1,71 @@
+<div class="advertise-card-container">
+  <div
+    *ngIf="(isLoadingAds$| async) as loading ;else ok "
+    class="advertise-card-container"
+  >
+    <nz-card
+      style="width: 300px; margin-top: 16px"
+      *ngFor="let i of [].constructor(20)"
+    >
+      <nz-skeleton [nzActive]="loading" [nzLoading]="loading">
+        <div class="card-info">
+          <div>
+            <img
+              src="https://www.maxgaming.com/bilder/artiklar/15623.jpg?m=1588925276"
+            />
+          </div>
+          <div class="ad-info-middle">
+            <nz-card-meta
+              class="ad-info"
+              nzTitle="Title"
+              nzDescription="Description"
+            >
+            </nz-card-meta>
+            <strong style="color: #17ac7f">Price</strong>
+          </div>
+          <div class="ad-info-bottom">
+            <small>Seller</small>
+            <p>Name</p>
+            <p><small style="color: gray">@Username</small></p>
+          </div>
+        </div>
+      </nz-skeleton>
+    </nz-card>
+  </div>
+  <ng-template #ok>
+    <nz-card
+      style="width: 300px; margin-top: 16px"
+      *ngFor="let ad of homeAds$ | async"
+    >
+      <nz-skeleton #ok [nzActive]="false" [nzLoading]="false">
+        <div class="card-info">
+          <div>
+            <img
+              src="https://www.maxgaming.com/bilder/artiklar/15623.jpg?m=1588925276"
+            />
+          </div>
+          <div class="ad-info-middle">
+            <nz-card-meta
+              class="ad-info"
+              nzTitle="{{ad.advertise.advertise.title}}"
+              nzDescription="{{ad.advertise.advertise.advertiseInfo.hint}}"
+            >
+            </nz-card-meta>
+            <strong style="color: #17ac7f"
+              >${{ad.advertise.advertise.price}}</strong
+            >
+          </div>
+          <div class="ad-info-bottom">
+            <small>Seller</small>
+            <p>
+              {{ad.advertise.user.firstName}} {{ad.advertise.user.lastName}}
+            </p>
+            <p>
+              <small style="color: gray">@{{ad.advertise.user.userName}}</small>
+            </p>
+          </div>
+        </div>
+      </nz-skeleton>
+    </nz-card>
+  </ng-template>
+</div>
