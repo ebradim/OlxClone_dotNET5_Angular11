@@ -4,13 +4,13 @@ import { NzNotificationService } from 'ng-zorro-antd/notification';
 import { of } from 'rxjs';
 import { catchError, exhaustMap, map, tap } from 'rxjs/operators';
 import { fromAPIActions, fromHomeActions } from '../../actions';
-import { HomeService } from '../services/home.service';
+import { AdvertiseService } from '../../advertise/services/advertise.service';
 
 @Injectable()
 export class HomeEffects {
   constructor(
     private notification: NzNotificationService,
-    private homeService: HomeService,
+    private homeService: AdvertiseService,
     private action$: Actions
   ) {}
 

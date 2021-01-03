@@ -1,0 +1,113 @@
+<div class="form-container">
+  <form
+    [formGroup]="createAdForm"
+    nz-form
+    class="from-section"
+    (ngSubmit)="onSubmit()"
+  >
+    <div class="details-section">
+      <label> Details about the item</label>
+
+      <div class="details-inputs">
+        <input
+          id="title"
+          type="text"
+          nz-input
+          nzSize="large"
+          placeholder="What is title of the ad?"
+          formControlName="title"
+        />
+        <nz-select
+          nzShowSearch
+          nzAllowClear
+          nzPlaceHolder="Which category does this ad belong to?"
+          formControlName="category"
+        >
+          <nz-option nzLabel="Electronics" nzValue="Electronics"></nz-option>
+          <nz-option nzLabel="Sports" nzValue="Sports"></nz-option>
+          <nz-option nzLabel="Vechiles" nzValue="Vechiles"></nz-option>
+          <nz-option nzLabel="Pets" nzValue="Pets"></nz-option>
+          <nz-option nzLabel="Accessories" nzValue="Accessories"></nz-option>
+          <nz-option nzLabel="Workout" nzValue="Workout"></nz-option>
+          <nz-option nzLabel="Mobiles" nzValue="Mobiles"></nz-option>
+          <nz-option nzLabel="Laptops" nzValue="Laptops"></nz-option>
+        </nz-select>
+        <div class="address-section">
+          <input
+            id="title"
+            type="text"
+            nz-input
+            nzSize="large"
+            placeholder="City"
+            formControlName="city"
+          />
+          <input
+            id="title"
+            type="text"
+            nz-input
+            nzSize="large"
+            placeholder="District"
+            formControlName="district"
+          />
+        </div>
+        <input
+          id="title"
+          type="number"
+          nz-input
+          nzSize="large"
+          placeholder="Price"
+          formControlName="price"
+        />
+      </div>
+    </div>
+    <div class="advertiseInfo-section" formGroupName="advertiseInfo">
+      <div class="details-inputs">
+        <input
+          id="title"
+          type="text"
+          nz-input
+          nzSize="large"
+          placeholder="Color"
+          formControlName="color"
+        />
+        <input
+          id="title"
+          type="text"
+          nz-input
+          nzSize="large"
+          placeholder="Description"
+          formControlName="description"
+        />
+        <input
+          id="title"
+          type="text"
+          nz-input
+          nzSize="large"
+          placeholder="Hint"
+          formControlName="hint"
+        />
+        <input
+          id="title"
+          type="number"
+          nz-input
+          nzSize="large"
+          placeholder="Quantity"
+          formControlName="quantity"
+        />
+      </div>
+    </div>
+    <div style="display: flex; flex-flow: column wrap; gap: 5px">
+      <label nz-checkbox style="visibility: hidden"></label>
+      <label nz-checkbox formControlName="isNegotiate"
+        >Allow negotiation for this item</label
+      >
+      <label nz-checkbox formControlName="isOnWarranty"
+        >This item has warrant from official company</label
+      >
+      <br />
+    </div>
+    <button nz-button style="float: right; margin-bottom: 10px" type="submit">
+      Publish
+    </button>
+  </form>
+</div>

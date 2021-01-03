@@ -1,8 +1,47 @@
-<div class="root">
+<div class="root" dir="ltr">
   <div class="search-box">
     <home-searchbox></home-searchbox>
   </div>
-  <div class="advertise-card">
+
+  <div *ngIf="!(isHomeError$ |async) else error" class="advertise-card">
     <advertise-card></advertise-card>
   </div>
+  <ng-template #error>
+    <div class="error">
+      <article>
+        <h1>We&rsquo;ll be back soon!</h1>
+        <div>
+          <p>
+            Sorry for the inconvenience but we&rsquo;re performing some
+            maintenance at the moment. we&rsquo;ll be back online shortly!
+          </p>
+          <p>&mdash; The Olx Team</p>
+        </div>
+      </article>
+    </div>
+  </ng-template>
 </div>
+<button
+  class="fab-button"
+  nz-button
+  nzType="dashed"
+  nzSize="large"
+  nzShape="circle"
+  nz-tooltip
+  nzTooltipTitle="Place an advertise"
+  nzTooltipColor="geekblue"
+  [routerLink]="['/advertise/create']"
+>
+  <i nz-icon nzType="plus-circle" nzTheme="fill"></i>
+</button>
+<style>
+  .fab-button {
+    position: fixed;
+    right: 10%;
+    bottom: 10%;
+    background-color: transparent;
+    box-shadow: 0px 0px 15px 12px #e5e5e5;
+    width: 60px;
+    height: 60px;
+  }
+</style>

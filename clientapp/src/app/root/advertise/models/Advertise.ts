@@ -1,7 +1,33 @@
-export interface IHomeAdvertises {
-  advertise: IRoot;
+export interface IResponseAdvertise {
+  userAdvertise: IRoot;
 }
 
+export interface IAddAdvertise {
+  isNegotiate: boolean;
+  isOnWarranty: boolean;
+  paymentOption: PaymentOption;
+  title: string;
+  category: string;
+  district: string;
+  city: string;
+  price: number;
+  advertiseInfo: AdvertiseInfo;
+}
+
+interface AdvertiseInfo {
+  color: string;
+  description: string;
+  hint: string;
+  quantity: number;
+}
+enum Status {
+  Pending = 0,
+  Sold = 1,
+}
+export enum PaymentOption {
+  Cash = 0,
+  Exchange = 1,
+}
 interface IRoot {
   category: string;
   isNegotiate: boolean;

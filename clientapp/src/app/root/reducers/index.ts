@@ -1,6 +1,6 @@
 import * as fromRouter from '@ngrx/router-store';
 import * as fromUser from './user-api.reducer';
-import * as fromHomeAdvertise from '../home/reducers/home-advertise.reducer';
+import * as fromAdvertise from '../advertise/reducers/advertise.reducer';
 import * as fromHomeAPI from '../home/reducers/home-api.reducer';
 import {
   createFeatureSelector,
@@ -13,8 +13,8 @@ import { environment } from 'src/environments/environment';
 export interface RootState {
   router: fromRouter.RouterReducerState<any>;
   user: fromUser.State;
-  homeAdvertise: fromHomeAdvertise.State;
-  homeAPI: fromHomeAPI.State;
+  advertise: fromAdvertise.State;
+  home: fromHomeAPI.State;
 }
 
 export const featureSelector = createFeatureSelector<RootState>('root');
@@ -23,25 +23,22 @@ export const routerState = createSelector(featureSelector, (x) => x.router);
 export const userState = createSelector(featureSelector, (x) => x.user);
 export const homeAdvertiseState = createSelector(
   featureSelector,
-  (x) => x.homeAdvertise
+  (x) => x.advertise
 );
-export const homeAPIState = createSelector(featureSelector, (x) => x.homeAPI);
+export const homeState = createSelector(featureSelector, (x) => x.home);
 
 export const getCurrentUser = createSelector(userState, fromUser.getUser);
 export const isAuthenticated = createSelector(userState, (x) => !!x.user);
 
 export const isHomeAdsLoading = createSelector(
-  homeAPIState,
+  homeState,
   fromHomeAPI.isConnecting
 );
-export const isHomeAdsError = createSelector(
-  homeAPIState,
-  fromHomeAPI.getError
-);
+export const isHomeAdsError = createSelector(homeState, fromHomeAPI.getError);
 
 export const selectHomeAdvertises = createSelector(
   homeAdvertiseState,
-  fromHomeAdvertise.getHomeAds
+  fromAdvertise.getHomeAds
 );
 
 export const {
@@ -58,8 +55,8 @@ export const {
 export const reducers: ActionReducerMap<RootState> = {
   router: fromRouter.routerReducer,
   user: fromUser.reducer,
-  homeAdvertise: fromHomeAdvertise.reducer,
-  homeAPI: fromHomeAPI.reducer,
+  advertise: fromAdvertise.reducer,
+  home: fromHomeAPI.reducer,
 };
 export function debug(reducer: ActionReducer<any>): ActionReducer<any> {
   return (state, action) => {

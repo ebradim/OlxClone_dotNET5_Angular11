@@ -7,7 +7,7 @@ namespace Application.Models
     public class UserAdvertiseDetailsDTO
     {
 
-        [JsonProperty("advertise")]
+        [JsonProperty("userAdvertise")]
         public Root Root { get; set; }
      
 

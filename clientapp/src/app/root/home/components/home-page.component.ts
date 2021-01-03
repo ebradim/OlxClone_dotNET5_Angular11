@@ -1,11 +1,15 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { select, Store } from '@ngrx/store';
-import { of } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { map, switchMap, take, takeUntil, tap } from 'rxjs/operators';
 import { fromHomeActions } from '../../actions';
-import { RootState, selectHomeAdvertises } from '../../reducers';
-import { getHomeAds } from '../reducers/home-advertise.reducer';
-import { HomeService } from '../services/home.service';
+import {
+  isHomeAdsError,
+  RootState,
+  selectHomeAdvertises,
+} from '../../reducers';
+import { getHomeAds } from '../../advertise/reducers/advertise.reducer';
+import { AdvertiseService } from '../../advertise/services/advertise.service';
 
 @Component({
   // tslint:disable-next-line: component-selector
@@ -15,8 +19,9 @@ import { HomeService } from '../services/home.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HomePageComponent {
+  isHomeError$: Observable<boolean>;
   constructor(
-    private homeSerivce: HomeService,
+    private homeSerivce: AdvertiseService,
     private store: Store<RootState>
   ) {
     // everytime component renders, it will dispatch and send request
@@ -30,5 +35,6 @@ export class HomePageComponent {
       this.store.dispatch(fromHomeActions.loadHomeAdvertises());
       this.homeSerivce.lastTimeUpdate = new Date().getMinutes();
     }
+    this.isHomeError$ = this.store.pipe(select(isHomeAdsError));
   }
 }

@@ -23,6 +23,7 @@ namespace Application.Models
                 IsOnWarranty = userAdvertise.IsOnWarranty,
                 PaymentOption = userAdvertise.PaymentOption,
                 Status = userAdvertise.Status,
+                Category= userAdvertise.Category,
                 AdvertiseDTO = new AdvertiseDTO
                 { Id = userAdvertise.Advertise.Id,
                 UniqueId = userAdvertise.Advertise.UniqueId,
@@ -38,6 +39,11 @@ namespace Application.Models
                         Color = userAdvertise.Advertise.AdvertiseInfo.Color,
                         Description = userAdvertise.Advertise.AdvertiseInfo.Description
                     }
+                },
+                User = new AdvertiseUser{
+                    FirstName= userAdvertise.AppUser.FirstName,
+                    LastName = userAdvertise.AppUser.LastName,
+                    UserName= userAdvertise.AppUser.UserName,
                 }
             };
 

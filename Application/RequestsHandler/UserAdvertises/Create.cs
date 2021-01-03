@@ -24,8 +24,6 @@ namespace Application.RequestsHandler.UserAdvertises
             [Required]
             public bool IsOnWarranty { get; set; }
             [Required]
-            public Status Status { get; set; }
-            [Required]
             public PaymentOption PaymentOption { get; set; }
             [Required]
             public string Title { get; set; }

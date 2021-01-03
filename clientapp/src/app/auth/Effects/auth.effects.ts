@@ -10,14 +10,15 @@ import { AuthService } from '../services/auth.service';
 import { catchError, exhaustMap, map, switchMap, tap } from 'rxjs/operators';
 import { ILogin } from '../models/Login';
 import { of } from 'rxjs';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { IRegister } from '../models/Register';
 @Injectable()
 export class AuthEffects {
   constructor(
     private authService: AuthService,
     private action$: Actions,
-    private router: Router
+    private router: Router,
+    private activatedRoute: ActivatedRoute
   ) {}
 
   login$ = createEffect(() =>
@@ -59,7 +60,15 @@ export class AuthEffects {
     () =>
       this.action$.pipe(
         ofType(fromAPIActions.loginSuccess, fromAPIActions.registerSuccess),
-        tap(() => this.router.navigate(['/']))
+        tap(() => {
+          if (
+            this.activatedRoute.snapshot.queryParams.redirect === 'create-ad'
+          ) {
+            this.router.navigate(['../advertise/create']);
+          } else {
+            this.router.navigate(['/']);
+          }
+        })
       ),
     { dispatch: false }
   );

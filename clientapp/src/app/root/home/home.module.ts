@@ -13,6 +13,8 @@ import { AdvertiseCardComponent } from './components/advertise-card.component';
 import { NzCardModule } from 'ng-zorro-antd/card';
 import { NzSkeletonModule } from 'ng-zorro-antd/skeleton';
 import { NzAvatarModule } from 'ng-zorro-antd/avatar';
+import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
+import { NzButtonModule } from 'ng-zorro-antd/button';
 
 export const COMPONENTS = [
   HomePageComponent,
@@ -27,6 +29,8 @@ const icons: IconDefinition[] = [SearchOutline, StarFill];
     FormsModule,
     CommonModule,
     HomeRouting,
+    NzToolTipModule,
+    NzButtonModule,
     NzIconModule.forChild(icons),
     NzAutocompleteModule,
     NzInputModule,

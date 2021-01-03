@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { select, Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
-import { IHomeAdvertises } from '../models/Advertise';
+import { IResponseAdvertise } from '../../advertise/models/Advertise';
 import {
   isHomeAdsError,
   isHomeAdsLoading,
@@ -18,7 +18,7 @@ import {
 export class AdvertiseCardComponent implements OnInit {
   isLoadingAds$: Observable<boolean>;
   isError$: Observable<any>;
-  homeAds$: Observable<IHomeAdvertises[]>;
+  homeAds$: Observable<IResponseAdvertise[]>;
   ngOnInit(): void {
     console.log('xD');
   }

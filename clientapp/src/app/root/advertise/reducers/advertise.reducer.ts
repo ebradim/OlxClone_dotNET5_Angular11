@@ -1,15 +1,15 @@
 import { createReducer, on } from '@ngrx/store';
 import { fromAPIActions } from '../../actions';
 import { createEntityAdapter, EntityAdapter, EntityState } from '@ngrx/entity';
-import { IHomeAdvertises } from '../models/Advertise';
-export interface State extends EntityState<IHomeAdvertises> {
+import { IResponseAdvertise } from '../models/Advertise';
+export interface State extends EntityState<IResponseAdvertise> {
   // additional entities state properties
   selectedAdvertiseId: number | null;
 }
 
-export const adapter: EntityAdapter<IHomeAdvertises> = createEntityAdapter<IHomeAdvertises>(
+export const adapter: EntityAdapter<IResponseAdvertise> = createEntityAdapter<IResponseAdvertise>(
   {
-    selectId: (ad) => ad.advertise.advertise.id,
+    selectId: (ad) => ad.userAdvertise.advertise.id,
     sortComparer: false,
   }
 );
@@ -23,7 +23,11 @@ export const reducer = createReducer(
   initialState,
   on(fromAPIActions.loadHomeAdvertisesSuccess, (state, { advertises }) => {
     return adapter.setAll(advertises, state);
+  }),
+  on(fromAPIActions.addAdvertiseSuccess, (state, { advertise }) => {
+    return adapter.addOne(advertise, state);
   })
+
   // on error leave them in state
 );
 export const getSelectedUserId = (state: State) => state.selectedAdvertiseId;

@@ -47,21 +47,24 @@
           <div class="ad-info-middle">
             <nz-card-meta
               class="ad-info"
-              nzTitle="{{ad.advertise.advertise.title}}"
-              nzDescription="{{ad.advertise.advertise.advertiseInfo.hint}}"
+              nzTitle="{{ad.userAdvertise.advertise.title}}"
+              nzDescription="{{ad.userAdvertise.advertise.advertiseInfo.hint}}"
             >
             </nz-card-meta>
             <strong style="color: #17ac7f"
-              >${{ad.advertise.advertise.price}}</strong
+              >${{ad.userAdvertise.advertise.price}}</strong
             >
           </div>
           <div class="ad-info-bottom">
             <small>Seller</small>
             <p>
-              {{ad.advertise.user.firstName}} {{ad.advertise.user.lastName}}
+              {{ad.userAdvertise.user.firstName}}
+              {{ad.userAdvertise.user.lastName}}
             </p>
             <p>
-              <small style="color: gray">@{{ad.advertise.user.userName}}</small>
+              <small style="color: gray"
+                >@{{ad.userAdvertise.user.userName}}</small
+              >
             </p>
           </div>
         </div>

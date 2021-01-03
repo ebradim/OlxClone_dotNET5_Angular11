@@ -1,0 +1,46 @@
+.add-ad-form {
+  margin: 5% 5%;
+}
+@mixin columncenter {
+  display: flex;
+  flex-flow: column wrap;
+  justify-content: center;
+}
+.details-section {
+  @include columncenter();
+  > label {
+    font-family: Roboto;
+    color: rgb(104, 104, 104);
+    font-size: large;
+  }
+}
+.form-section {
+  @include columncenter();
+}
+.form-container {
+  @include columncenter();
+  margin: 3% 20%;
+}
+.details-inputs {
+  margin-top: 20px;
+  display: flex;
+  flex-flow: column wrap;
+  justify-content: center;
+  gap: 10px;
+  input {
+    height: 40px;
+    font-family: Quicksand;
+    font-weight: bold;
+    font-size: 14px;
+  }
+  nz-select {
+    font-family: Quicksand;
+    font-weight: bold;
+    font-size: 14px;
+  }
+}
+.address-section {
+  display: flex !important;
+  flex-flow: row wrap !important;
+  justify-content: center !important;
+}

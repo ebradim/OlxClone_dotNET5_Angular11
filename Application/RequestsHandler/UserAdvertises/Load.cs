@@ -14,10 +14,10 @@ namespace Application.RequestsHandler.UserAdvertises
     public class UserAdLoad
     {
         
-        public class LoadAds : IRequest<List<UserAdvertiseDetailsDTO>>
+        public class LoadAds : IRequest<List<UserAdvertiseDTO>>
         {
         }
-        public class Handler : IRequestHandler<LoadAds, List<UserAdvertiseDetailsDTO>>
+        public class Handler : IRequestHandler<LoadAds, List<UserAdvertiseDTO>>
         {
             private readonly DataContext dataContext;
 
@@ -25,14 +25,14 @@ namespace Application.RequestsHandler.UserAdvertises
             {
                 this.dataContext = dataContext;
             }
-            public async Task<List<UserAdvertiseDetailsDTO>> Handle(LoadAds request, CancellationToken cancellationToken)
+            public async Task<List<UserAdvertiseDTO>> Handle(LoadAds request, CancellationToken cancellationToken)
             {
                 var ad = await dataContext.UserAdvertise
-                .Where(x=>x.Status != Domain.Status.Sold).OrderByDescending(x=>x.Advertise.PublishedAt).Select(x=>new UserAdvertiseDetailsDTO
+                .Where(x=>x.Status != Domain.Status.Sold).OrderByDescending(x=>x.Advertise.PublishedAt).Select(x=>new UserAdvertiseDTO
                     {
                         Root = new Root
                         {
-                           Category= x.Category,
+                            Category= x.Category,
                             IsNegotiate =x.IsNegotiate,
                             IsOnWarranty =x.IsOnWarranty,
                             PaymentOption =x.PaymentOption,
