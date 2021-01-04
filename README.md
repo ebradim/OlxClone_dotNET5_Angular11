@@ -1,6 +1,7 @@
 <p align="center">
   <a href="" rel="noopener">
  <img width=500px height=300px src="https://i.imgur.com/uypmykz.png" alt="Project logo"></a>
+   <img width=500px height=300px src="https://i.imgur.com/tHn2PTC.png" alt="Project logo"></a>
 </p>
 
 <h3 align="center">OlxClone in Arabic Tutorial</h3>
@@ -27,6 +28,8 @@
 <p align="center">
 
  <img  src="https://user-images.githubusercontent.com/50548116/103432223-4e1bbf00-4be4-11eb-9d4a-3bdbaf948b22.png" alt="Project logo"></a>
+  <img  src="https://user-images.githubusercontent.com/50548116/103589963-541be380-4ef5-11eb-9643-f89b1e79929d.png" alt="Project logo"></a>
+
 </p>
 
 This project is still in progress.
