@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
-import { RootState } from '../../reducers';
+import { RootState } from 'src/app/root/reducers';
 import { fromAdvertise } from '../actions';
 import { IAddAdvertise, PaymentOption } from '../models/Advertise';
 

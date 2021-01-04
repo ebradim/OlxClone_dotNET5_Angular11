@@ -2,14 +2,13 @@ import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { select, Store } from '@ngrx/store';
 import { Observable, of } from 'rxjs';
 import { map, switchMap, take, takeUntil, tap } from 'rxjs/operators';
+import { AdvertiseService } from 'src/app/advertise/services/advertise.service';
 import { fromHomeActions } from '../../actions';
 import {
   isHomeAdsError,
   RootState,
   selectHomeAdvertises,
 } from '../../reducers';
-import { getHomeAds } from '../../advertise/reducers/advertise.reducer';
-import { AdvertiseService } from '../../advertise/services/advertise.service';
 
 @Component({
   // tslint:disable-next-line: component-selector
@@ -30,10 +29,10 @@ export class HomePageComponent {
     // data will be cached in the backend, refresh every one hour
     if (
       this.homeSerivce.lastTimeUpdate === 0 ||
-      new Date().getMinutes() - homeSerivce.lastTimeUpdate >= 5
+      new Date().getSeconds() - homeSerivce.lastTimeUpdate >= 10
     ) {
       this.store.dispatch(fromHomeActions.loadHomeAdvertises());
-      this.homeSerivce.lastTimeUpdate = new Date().getMinutes();
+      this.homeSerivce.lastTimeUpdate = new Date().getSeconds();
     }
     this.isHomeError$ = this.store.pipe(select(isHomeAdsError));
   }

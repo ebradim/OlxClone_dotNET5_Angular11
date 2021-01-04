@@ -1,6 +1,6 @@
 import * as fromRouter from '@ngrx/router-store';
 import * as fromUser from './user-api.reducer';
-import * as fromAdvertise from '../advertise/reducers/advertise.reducer';
+import * as fromAdvertise from '../../advertise/reducers/advertise.reducer';
 import * as fromHomeAPI from '../home/reducers/home-api.reducer';
 import {
   createFeatureSelector,
@@ -21,26 +21,12 @@ export const featureSelector = createFeatureSelector<RootState>('root');
 
 export const routerState = createSelector(featureSelector, (x) => x.router);
 export const userState = createSelector(featureSelector, (x) => x.user);
-export const homeAdvertiseState = createSelector(
+export const advertiseState = createSelector(
   featureSelector,
   (x) => x.advertise
 );
+
 export const homeState = createSelector(featureSelector, (x) => x.home);
-
-export const getCurrentUser = createSelector(userState, fromUser.getUser);
-export const isAuthenticated = createSelector(userState, (x) => !!x.user);
-
-export const isHomeAdsLoading = createSelector(
-  homeState,
-  fromHomeAPI.isConnecting
-);
-export const isHomeAdsError = createSelector(homeState, fromHomeAPI.getError);
-
-export const selectHomeAdvertises = createSelector(
-  homeAdvertiseState,
-  fromAdvertise.getHomeAds
-);
-
 export const {
   selectCurrentRoute, // select the current route
   selectFragment, // select the current route fragment
@@ -51,6 +37,19 @@ export const {
   selectRouteData, // select the current route data
   selectUrl, // select the current url
 } = fromRouter.getSelectors(routerState);
+export const getCurrentUser = createSelector(userState, fromUser.getUser);
+export const isAuthenticated = createSelector(userState, (x) => !!x.user);
+
+export const isHomeAdsLoading = createSelector(
+  homeState,
+  fromHomeAPI.isConnecting
+);
+export const isHomeAdsError = createSelector(homeState, fromHomeAPI.getError);
+
+export const selectHomeAdvertises = createSelector(
+  advertiseState,
+  fromAdvertise.getHomeAds
+);
 
 export const reducers: ActionReducerMap<RootState> = {
   router: fromRouter.routerReducer,

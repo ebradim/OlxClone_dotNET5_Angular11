@@ -1,6 +1,6 @@
 import { createAction, props } from '@ngrx/store';
+import { IResponseAdvertise } from 'src/app/advertise/models/Advertise';
 import { IUser } from '../../auth/models/API';
-import { IResponseAdvertise } from '../advertise/models/Advertise';
 
 export const loginSuccess = createAction(
   '[API] Login Success',

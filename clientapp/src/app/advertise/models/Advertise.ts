@@ -33,6 +33,7 @@ interface IRoot {
   isNegotiate: boolean;
   isOnWarranty: boolean;
   paymentOption: number;
+  status: number;
   advertise: IAdvertise;
   user: User;
 }

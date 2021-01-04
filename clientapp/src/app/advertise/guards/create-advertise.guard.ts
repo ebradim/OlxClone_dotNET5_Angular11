@@ -10,7 +10,7 @@ import { select, State } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { IUser } from 'src/app/auth/models/API';
-import { RootState, getCurrentUser } from '../../reducers';
+import { getCurrentUser, RootState } from 'src/app/root/reducers';
 
 @Injectable({
   providedIn: 'root',

@@ -16,9 +16,7 @@ const routes: Routes = [
   {
     path: 'advertise',
     loadChildren: () =>
-      import('././root/advertise/advertise.module').then(
-        (x) => x.AdvertiseModule
-      ),
+      import('./advertise/advertise.module').then((x) => x.AdvertiseModule),
   },
   {
     path: '',

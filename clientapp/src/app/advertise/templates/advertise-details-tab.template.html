@@ -1,0 +1,64 @@
+<div class="container" *ngIf="SelectedAdvertise; else loading">
+  <nz-tabset
+    [nzSelectedIndex]="0"
+    nzSize="small"
+    [nzTabPosition]="tabposition"
+    [style.margin]="tabposition == 'left' ?  '5% 7%':  '20% 7%'"
+  >
+    <nz-tab nzTitle="Specification">
+      <nz-descriptions
+        nzTitle="User Info"
+        nzBordered
+        [nzColumn]="{ xxl: 4, xl: 1, lg: 1, md: 1, sm: 1, xs: 1 }"
+      >
+        <nz-descriptions-item nzTitle="Product"
+          >{{SelectedAdvertise.userAdvertise.advertise.title}}</nz-descriptions-item
+        >
+        <nz-descriptions-item nzTitle="Billing Mode"
+          >{{SelectedAdvertise.userAdvertise.paymentOption ==0 ?
+          'Cache':'Exchange'}}</nz-descriptions-item
+        >
+        <nz-descriptions-item nzTitle="Category"
+          >{{SelectedAdvertise.userAdvertise.category}}</nz-descriptions-item
+        >
+        <nz-descriptions-item nzTitle="Published At">
+          {{SelectedAdvertise.userAdvertise.advertise.publishedAt | date}}
+        </nz-descriptions-item>
+        <nz-descriptions-item nzTitle="Quantity">
+          {{SelectedAdvertise.userAdvertise.advertise.advertiseInfo.quantity}}</nz-descriptions-item
+        >
+
+        <nz-descriptions-item nzTitle="Color">
+          {{SelectedAdvertise.userAdvertise.advertise.advertiseInfo.color}}
+        </nz-descriptions-item>
+        <nz-descriptions-item nzTitle="Status" [nzSpan]="3">
+          <span style="color: #189b64"
+            >{{SelectedAdvertise.userAdvertise.status ===0 ?'Available in stock'
+            :'Out of stock'}}</span
+          >
+        </nz-descriptions-item>
+        <nz-descriptions-item nzTitle="Warranty">
+          <span style="color: #189b64"
+            >{{SelectedAdvertise.userAdvertise.isOnWarranty ? 'YES'
+            :'NO'}}</span
+          >
+        </nz-descriptions-item>
+        <nz-descriptions-item nzTitle="Negotiated Amount"
+          >${{SelectedAdvertise.userAdvertise.advertise.price}}</nz-descriptions-item
+        >
+        <nz-descriptions-item nzTitle="Location"
+          >{{SelectedAdvertise.userAdvertise.advertise.city}},
+          {{SelectedAdvertise.userAdvertise.advertise.district}}</nz-descriptions-item
+        >
+
+        <nz-descriptions-item nzTitle="Description" [nzSpan]="2">
+          {{SelectedAdvertise.userAdvertise.advertise.advertiseInfo.description}}
+        </nz-descriptions-item>
+      </nz-descriptions>
+    </nz-tab>
+    <nz-tab nzTitle="Photos"> </nz-tab>
+  </nz-tabset>
+</div>
+<ng-template #loading>
+  <div>loading</div>
+</ng-template>

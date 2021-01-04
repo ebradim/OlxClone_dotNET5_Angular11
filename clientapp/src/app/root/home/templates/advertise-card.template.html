@@ -35,10 +35,14 @@
   <ng-template #ok>
     <nz-card
       style="width: 300px; margin-top: 16px"
-      *ngFor="let ad of homeAds$ | async"
+      *ngFor="let ad of homeAds$  |async"
     >
       <nz-skeleton #ok [nzActive]="false" [nzLoading]="false">
-        <div class="card-info">
+        <div
+          class="card-info"
+          (click)="selectAdvertise(ad.userAdvertise.advertise.id,
+        ad.userAdvertise.advertise.uniqueId)"
+        >
           <div>
             <img
               src="https://www.maxgaming.com/bilder/artiklar/15623.jpg?m=1588925276"

@@ -1,0 +1,50 @@
+$star_bg: #fffcdf;
+$star_fg: #d3ae0b;
+$offer_bg: #dfffef;
+$offer_fg: #0bd386;
+$edit_bg: #dfe9ff;
+$edit_fg: #0b68d3;
+$like_bg: #f0f0f0;
+$like_fg: #3b3b3b;
+.container {
+  margin: 2% 5%;
+}
+.starbutton {
+  background-color: $star_bg;
+  color: $star_fg;
+  font-family: Roboto;
+  border: 1px solid $star_bg;
+  &:hover {
+    background-color: darken($color: $star_bg, $amount: 5);
+  }
+}
+.offerbutton {
+  background-color: $offer_bg;
+  color: $offer_fg;
+  font-family: Roboto;
+  border: 1px solid $offer_bg;
+  &:hover {
+    background-color: darken($color: $offer_bg, $amount: 5);
+  }
+}
+.editbutton {
+  background-color: $edit_bg;
+  color: $edit_fg;
+  font-family: Roboto;
+  border: 1px solid $edit_bg;
+  &:hover {
+    background-color: darken($color: $edit_bg, $amount: 5);
+  }
+}
+.ant-tag {
+  font-family: Roboto !important;
+}
+.likebutton {
+  background-color: $like_bg;
+  color: $like_fg;
+  font-family: Roboto;
+  border: 1px solid $like_bg;
+  &:hover {
+    background-color: darken($color: $like_bg, $amount: 5);
+  }
+}

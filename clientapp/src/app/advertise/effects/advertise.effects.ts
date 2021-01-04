@@ -3,9 +3,10 @@ import { Router } from '@angular/router';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { of } from 'rxjs';
 import { catchError, map, switchMap, tap } from 'rxjs/operators';
-import { fromAPIActions } from '../../actions';
+import { fromAPIActions } from 'src/app/root/actions';
 import { AdvertiseService } from '../../advertise/services/advertise.service';
 import { fromAdvertise } from '../actions';
+import { AdvertiseModule } from '../advertise.module';
 
 @Injectable()
 export class AdvertiseEffects {
