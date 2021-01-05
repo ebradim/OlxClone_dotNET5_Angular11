@@ -47,12 +47,7 @@ export const addAdvertiseError = createAction(
   '[Advertise/API] Add Advertise Error',
   props<{ error: any }>()
 );
-
 export const loadAdvertiseFromAPISuccess = createAction(
-  '[Advertise/API] load Advertise Success',
+  '[Advertise/API] Load Advertise API Success',
   props<{ advertise: IResponseAdvertise }>()
-);
-export const loadAdvertiseFromAPIError = createAction(
-  '[Advertise/API] load Advertise Error',
-  props<{ error: any }>()
 );

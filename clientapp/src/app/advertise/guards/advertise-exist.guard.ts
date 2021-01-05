@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import {
   ActivatedRouteSnapshot,
   CanActivate,
+  Router,
   RouterStateSnapshot,
   UrlTree,
 } from '@angular/router';
@@ -9,7 +10,6 @@ import { select, Store } from '@ngrx/store';
 import { Observable, of } from 'rxjs';
 import { catchError, map, switchMap, take, tap } from 'rxjs/operators';
 import { fromAPIActions } from 'src/app/root/actions';
-import { loadAdvertiseFromAPISuccess } from 'src/app/root/actions/api.actions';
 import { RootState } from 'src/app/root/reducers';
 import { fromAdvertise } from '../actions';
 import { IResponseAdvertise } from '../models/Advertise';
@@ -21,12 +21,20 @@ import { AdvertiseService } from '../services/advertise.service';
 })
 export class AdvertiseExistGuard implements CanActivate {
   loadItemFromEntity$: Observable<'' | IResponseAdvertise | null | undefined>;
+
   constructor(
     private store: Store<RootState>,
-    private advertiseService: AdvertiseService
+    private advertiseService: AdvertiseService,
+    private router: Router
   ) {
     this.loadItemFromEntity$ = this.store.pipe(
       select(getSelectedAdvertiseIdEntity)
+    );
+  }
+  hasAdvertiseInStore(): Observable<boolean> {
+    return this.loadItemFromEntity$.pipe(
+      map((x) => !!x),
+      take(1)
     );
   }
 
@@ -45,15 +53,9 @@ export class AdvertiseExistGuard implements CanActivate {
       ),
       map((advertise) => !!advertise),
       catchError(() => {
+        this.router.navigate(['./notfound']);
         return of(false);
       })
-    );
-  }
-
-  hasAdvertiseInStore(): Observable<boolean> {
-    return this.loadItemFromEntity$.pipe(
-      map((x) => !!x),
-      take(1)
     );
   }
 
@@ -68,7 +70,6 @@ export class AdvertiseExistGuard implements CanActivate {
       })
     );
   }
-
   canActivate(
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot

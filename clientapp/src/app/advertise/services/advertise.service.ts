@@ -27,8 +27,8 @@ export class AdvertiseService {
     });
   }
 
-  public getAdvetise(uniqueId: string): Observable<IResponseAdvertise> {
-    const endpoint = environment.url + this.routes.root + uniqueId;
+  public getAdvetise(id: string): Observable<IResponseAdvertise> {
+    const endpoint = environment.url + this.routes.root + id;
     return this.client.get<IResponseAdvertise>(endpoint, {
       withCredentials: true,
     });
