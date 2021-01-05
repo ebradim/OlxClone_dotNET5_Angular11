@@ -13,8 +13,8 @@ import { State } from '../reducers/advertise.reducer';
   styleUrls: ['../styles/advertise-details.style.scss'],
 })
 export class AdvertiseDetailsComponent {
-  advertise$: Observable<0 | IResponseAdvertise | null | undefined> | undefined;
   currentUser$: Observable<IUser | null>;
+  advertise$: Observable<'' | IResponseAdvertise | null | undefined>;
 
   constructor(private store: Store<State>) {
     this.advertise$ = this.store.pipe(select(getSelectedAdvertiseIdEntity));

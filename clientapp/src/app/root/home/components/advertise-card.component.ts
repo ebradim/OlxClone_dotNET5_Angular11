@@ -30,7 +30,7 @@ export class AdvertiseCardComponent implements OnInit {
     this.homeAds$ = this.store.pipe(select(selectHomeAdvertises));
   }
 
-  selectAdvertise(id: number, uniqueId: string): void {
-    this.store.dispatch(fromAdvertise.selectAdvertise({ id, uniqueId }));
+  selectAdvertise(uniqueId: string): void {
+    this.store.dispatch(fromAdvertise.selectAdvertise({ uniqueId }));
   }
 }

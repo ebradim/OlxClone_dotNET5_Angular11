@@ -6,12 +6,12 @@ import { fromAdvertise } from '../actions';
 import { advertiseState, RootState } from 'src/app/root/reducers';
 export interface State extends EntityState<IResponseAdvertise> {
   // additional entities state properties
-  selectedAdvertiseId: number | null;
+  selectedAdvertiseId: string | null;
 }
 
 export const adapter: EntityAdapter<IResponseAdvertise> = createEntityAdapter<IResponseAdvertise>(
   {
-    selectId: (ad) => ad.userAdvertise.advertise.id,
+    selectId: (ad) => ad.userAdvertise.advertise.uniqueId,
     sortComparer: false,
   }
 );
@@ -24,23 +24,27 @@ export const initialState: State = adapter.getInitialState({
 export const reducer = createReducer(
   initialState,
   on(fromAPIActions.loadHomeAdvertisesSuccess, (state, { advertises }) => {
-    return adapter.setAll(advertises, state);
+    return adapter.upsertMany(advertises, state);
   }),
   on(fromAPIActions.addAdvertiseSuccess, (state, { advertise }) => {
-    return adapter.addOne(advertise, state);
+    return adapter.upsertOne(advertise, state);
   }),
-  on(fromAdvertise.selectAdvertise, (state, { id }) => {
+
+  on(fromAdvertise.selectAdvertise, (state, { uniqueId }) => {
     return {
       ...state,
-      selectedAdvertiseId: id,
+      selectedAdvertiseId: uniqueId,
     };
+  }),
+  on(fromAPIActions.loadAdvertiseFromAPISuccess, (state, { advertise }) => {
+    return adapter.upsertOne(advertise, state);
   })
 
   // on error leave them in state
 );
 
 // get the selectors
-const {
+export const {
   selectIds,
   selectAll,
   selectEntities,

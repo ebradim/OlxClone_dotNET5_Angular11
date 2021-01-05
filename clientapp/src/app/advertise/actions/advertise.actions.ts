@@ -7,5 +7,5 @@ export const addAdvertise = createAction(
 );
 export const selectAdvertise = createAction(
   '[Advertise/API] Select Advertise',
-  props<{ id: number; uniqueId: string }>()
+  props<{ uniqueId: string }>()
 );

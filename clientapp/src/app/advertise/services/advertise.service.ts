@@ -9,6 +9,7 @@ export class AdvertiseService {
   routes = {
     loadHome: '/advertise/load',
     addAdvertise: '/advertise/add',
+    root: '/advertise/',
   };
   lastTimeUpdate = 0;
   constructor(private client: HttpClient) {}
@@ -22,6 +23,13 @@ export class AdvertiseService {
   public addAdvetise(advertise: IAddAdvertise): Observable<IResponseAdvertise> {
     const endpoint = environment.url + this.routes.addAdvertise;
     return this.client.post<IResponseAdvertise>(endpoint, advertise, {
+      withCredentials: true,
+    });
+  }
+
+  public getAdvetise(uniqueId: string): Observable<IResponseAdvertise> {
+    const endpoint = environment.url + this.routes.root + uniqueId;
+    return this.client.get<IResponseAdvertise>(endpoint, {
       withCredentials: true,
     });
   }
