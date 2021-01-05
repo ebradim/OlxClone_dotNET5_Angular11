@@ -78,8 +78,6 @@ export class AdvertiseExistGuard implements CanActivate {
     | UrlTree
     | Observable<boolean | UrlTree>
     | Promise<boolean | UrlTree> {
-    return this.isAdvertiseExist(route.params.id).pipe(
-      map((advertise) => !!advertise)
-    );
+    return this.isAdvertiseExist(route.params.id);
   }
 }
