@@ -37,25 +37,33 @@
 
     <!--extra-->
     <nz-page-header-extra>
-      <button nz-button class="likebutton" nzShape="round">
+      <button nz-button class="likebutton" nzSize="large" nzShape="round">
         <i nz-icon nzType="like" nzTheme="outline"></i>
         Like
       </button>
-      <button nz-button class="offerbutton" nzShape="round">
+      <button nz-button class="offerbutton" nzSize="large" nzShape="round">
         <i nz-icon nzType="send"></i>Send offer
       </button>
-      <button nz-button class="starbutton" nzShape="round">
+      <button nz-button class="starbutton" nzSize="large" nzShape="round">
         <i nz-icon nzType="star"></i>Add to favorites
       </button>
       <ng-container *ngIf="currentUser$|async as user">
-        <button
+        <ng-container
           *ngIf="user.userName === advertise.userAdvertise.user.userName"
-          nz-button
-          class="editbutton"
-          nzShape="round"
         >
-          <i nz-icon nzType="edit"></i>Edit
-        </button>
+          <button nz-button class="editbutton" nzSize="large" nzShape="round">
+            <i nz-icon nzType="edit"></i>Edit
+          </button>
+          <button
+            nz-button
+            class="deletebutton"
+            nzSize="large"
+            nzShape="round"
+            (click)="deleteAdvertise(advertise.userAdvertise.advertise.uniqueId)"
+          >
+            <i nz-icon nzType="delete"></i>Edit
+          </button>
+        </ng-container>
       </ng-container>
     </nz-page-header-extra>
 

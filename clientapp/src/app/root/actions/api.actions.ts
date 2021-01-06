@@ -51,3 +51,11 @@ export const loadAdvertiseFromAPISuccess = createAction(
   '[Advertise/API] Load Advertise API Success',
   props<{ advertise: IResponseAdvertise }>()
 );
+export const deleteAdvertiseSuccess = createAction(
+  '[Advertise/API] Delete Advertise Success',
+  props<{ result: boolean }>()
+);
+export const deleteAdvertiseError = createAction(
+  '[Advertise/API] Delete Advertise Error',
+  props<{ error: any }>()
+);

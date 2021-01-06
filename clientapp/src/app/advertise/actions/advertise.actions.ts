@@ -9,3 +9,7 @@ export const selectAdvertise = createAction(
   '[Advertise/API] Select Advertise',
   props<{ uniqueId: string }>()
 );
+export const deleteAdvertise = createAction(
+  '[Advertise/API] Delete Advertise',
+  props<{ uniqueId: string }>()
+);

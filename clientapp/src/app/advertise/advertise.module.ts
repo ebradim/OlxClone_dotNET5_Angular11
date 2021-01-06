@@ -28,6 +28,7 @@ import {
 import { AdvertiseDetailsTabComponent } from './components/advertise-details-tab.component';
 import { StoreModule } from '@ngrx/store';
 import { reducer } from './reducers/advertise.reducer';
+import { NzModalModule } from 'ng-zorro-antd/modal';
 
 const icons: IconDefinition[] = [
   InfoCircleOutline,
@@ -57,6 +58,7 @@ const icons: IconDefinition[] = [
     NzIconModule.forChild(icons),
     NzTabsModule,
     NzTagModule,
+    NzModalModule,
     NzSelectModule,
   ],
 })

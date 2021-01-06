@@ -29,7 +29,6 @@ export const reducer = createReducer(
   on(fromAPIActions.addAdvertiseSuccess, (state, { advertise }) => {
     return adapter.upsertOne(advertise, state);
   }),
-
   on(fromAdvertise.selectAdvertise, (state, { uniqueId }) => {
     return {
       ...state,
@@ -38,6 +37,10 @@ export const reducer = createReducer(
   }),
   on(fromAPIActions.loadAdvertiseFromAPISuccess, (state, { advertise }) => {
     return adapter.upsertOne(advertise, state);
+  }),
+  on(fromAPIActions.deleteAdvertiseSuccess, (state) => {
+    // tslint:disable-next-line: no-non-null-assertion
+    return adapter.removeOne(state.selectedAdvertiseId!, state);
   })
 
   // on error leave them in state

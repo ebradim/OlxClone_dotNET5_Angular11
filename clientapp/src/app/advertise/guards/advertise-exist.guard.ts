@@ -1,3 +1,4 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import {
   ActivatedRouteSnapshot,
@@ -7,6 +8,7 @@ import {
   UrlTree,
 } from '@angular/router';
 import { select, Store } from '@ngrx/store';
+import { NzNotificationService } from 'ng-zorro-antd/notification';
 import { Observable, of } from 'rxjs';
 import { catchError, map, switchMap, take, tap } from 'rxjs/operators';
 import { fromAPIActions } from 'src/app/root/actions';
@@ -25,7 +27,8 @@ export class AdvertiseExistGuard implements CanActivate {
   constructor(
     private store: Store<RootState>,
     private advertiseService: AdvertiseService,
-    private router: Router
+    private router: Router,
+    private notification: NzNotificationService
   ) {
     this.loadItemFromEntity$ = this.store.pipe(
       select(getSelectedAdvertiseIdEntity)
@@ -52,7 +55,16 @@ export class AdvertiseExistGuard implements CanActivate {
         )
       ),
       map((advertise) => !!advertise),
-      catchError(() => {
+      catchError((error: HttpErrorResponse) => {
+        if (error.status === 0) {
+          this.notification.error(
+            'Server is down',
+            'Unable to connect to server',
+            {
+              nzPlacement: 'bottomLeft',
+            }
+          );
+        }
         this.router.navigate(['./notfound']);
         return of(false);
       })

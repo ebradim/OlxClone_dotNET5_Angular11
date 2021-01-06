@@ -33,4 +33,11 @@ export class AdvertiseService {
       withCredentials: true,
     });
   }
+
+  public deleteAdvetise(id: string): Observable<boolean> {
+    const endpoint = environment.url + this.routes.root + id;
+    return this.client.delete<boolean>(endpoint, {
+      withCredentials: true,
+    });
+  }
 }

@@ -6,6 +6,8 @@ $edit_bg: #dfe9ff;
 $edit_fg: #0b68d3;
 $like_bg: #f0f0f0;
 $like_fg: #3b3b3b;
+$delete_bg: #ffdfdf;
+$delete_fg: #d30b0b;
 .container {
   margin: 2% 5%;
 }
@@ -46,5 +48,14 @@ $like_fg: #3b3b3b;
   border: 1px solid $like_bg;
   &:hover {
     background-color: darken($color: $like_bg, $amount: 5);
+  }
+}
+.deletebutton {
+  background-color: $delete_bg;
+  color: $delete_fg;
+  font-family: Roboto;
+  border: 1px solid $delete_bg;
+  &:hover {
+    background-color: darken($color: $delete_bg, $amount: 5);
   }
 }
