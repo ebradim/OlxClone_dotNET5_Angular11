@@ -54,10 +54,31 @@ export class AdvertiseEffects {
       })
     )
   );
+  editAdertise$ = createEffect(() =>
+    this.action$.pipe(
+      ofType(fromAdvertise.editAdvertise),
+      map((action) => action),
+      exhaustMap(({ uniqueId, advertise }) => {
+        return this.advertiseService.editAdvetise(uniqueId, advertise).pipe(
+          throttleTime(5000),
+          map((advertise) =>
+            fromAPIActions.editAdvertiseSuccess({ advertise })
+          ),
+          catchError((error) =>
+            of(fromAPIActions.editAdvertiseError({ error }))
+          )
+        );
+      })
+    )
+  );
+
   afterPublishingAd$ = createEffect(
     () =>
       this.action$.pipe(
-        ofType(fromAPIActions.addAdvertiseSuccess),
+        ofType(
+          fromAPIActions.addAdvertiseSuccess,
+          fromAPIActions.editAdvertiseSuccess
+        ),
         tap(() => this.route.navigate(['/']))
       ),
 

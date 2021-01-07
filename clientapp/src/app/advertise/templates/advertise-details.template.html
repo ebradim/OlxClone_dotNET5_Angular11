@@ -51,7 +51,13 @@
         <ng-container
           *ngIf="user.userName === advertise.userAdvertise.user.userName"
         >
-          <button nz-button class="editbutton" nzSize="large" nzShape="round">
+          <button
+            nz-button
+            class="editbutton"
+            nzSize="large"
+            nzShape="round"
+            (click)="openEditModal(modalTitle,modalContent,modalFooter)"
+          >
             <i nz-icon nzType="edit"></i>Edit
           </button>
           <button
@@ -94,7 +100,19 @@
       </nz-tabset>
     </nz-page-header-footer>
   </nz-page-header>
+
+  <ng-template #modalTitle>
+    <b>{{advertise.userAdvertise.advertise.title}}</b>
+  </ng-template>
+
+  <ng-template #modalContent>
+    <advertie-edit [selectedAdvertise]="advertise$ |async"></advertie-edit>
+  </ng-template>
+  <ng-template #modalFooter let-footerRef="modalRef">
+    <button nz-button (click)="modalRef.destroy()">Close</button>
+  </ng-template>
 </div>
+
 <ng-template #detailsTemplate>
   <i nz-icon [nzType]="'info-circle'"></i>
   Details

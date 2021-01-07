@@ -61,3 +61,6 @@ interface User {
   lastName: string;
   userName: string;
 }
+export interface IEditAdvertise extends Omit<IAddAdvertise, 'title'> {
+  status: number;
+}

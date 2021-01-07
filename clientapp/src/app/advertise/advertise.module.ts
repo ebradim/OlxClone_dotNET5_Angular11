@@ -26,9 +26,8 @@ import {
   EditOutline,
 } from '@ant-design/icons-angular/icons';
 import { AdvertiseDetailsTabComponent } from './components/advertise-details-tab.component';
-import { StoreModule } from '@ngrx/store';
-import { reducer } from './reducers/advertise.reducer';
 import { NzModalModule } from 'ng-zorro-antd/modal';
+import { AdvertiseEditComponent } from './components/advertise-edit.component';
 
 const icons: IconDefinition[] = [
   InfoCircleOutline,
@@ -41,6 +40,7 @@ const icons: IconDefinition[] = [
     AddAdvertiseComponent,
     AdvertiseDetailsComponent,
     AdvertiseDetailsTabComponent,
+    AdvertiseEditComponent,
   ],
   imports: [
     CommonModule,

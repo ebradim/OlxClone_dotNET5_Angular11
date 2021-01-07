@@ -23,7 +23,7 @@ export class UnSavedChangesGuard
     | UrlTree
     | Observable<boolean | UrlTree>
     | Promise<boolean | UrlTree> {
-    if (!component.createAdForm.touched) {
+    if (component.createAdForm.untouched || component.createAdForm.valid) {
       return true;
     } else {
       return window.confirm('Unsaved changes!\n Are you sure to go back?');

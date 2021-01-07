@@ -1,0 +1,133 @@
+<ng-container *ngIf="editForm ;else loading">
+  <form
+    [formGroup]="editForm"
+    (ngSubmit)="submit()"
+    style="
+      display: flex;
+      flex-flow: column wrap;
+      justify-content: center;
+      gap: 5px;
+    "
+  >
+    <div>
+      <b style="margin-bottom: 5px; font-family: Roboto">Price</b>
+      <input
+        nz-input
+        [formControl]="editForm.controls.price"
+        type="text"
+        name="price"
+        id="price"
+        placeholder="Price"
+      />
+    </div>
+    <div>
+      <b style="margin-bottom: 5px; font-family: Roboto">Description</b>
+
+      <input
+        nz-input
+        [formControl]="editForm.controls.description"
+        type="text"
+        name="description"
+        id="description"
+        placeholder="Description"
+      />
+    </div>
+    <div>
+      <b style="margin-bottom: 5px; font-family: Roboto">Hint</b>
+
+      <input
+        nz-input
+        [formControl]="editForm.controls.hint"
+        type="text"
+        name="hint"
+        id="hint"
+      />
+    </div>
+    <div>
+      <b style="margin-bottom: 5px; font-family: Roboto">Color</b>
+
+      <input
+        nz-input
+        [formControl]="editForm.controls.color"
+        type="text"
+        name="title"
+        id="title"
+        placeholder="Color"
+      />
+    </div>
+    <div>
+      <b style="margin-bottom: 5px; font-family: Roboto">Quantity</b>
+
+      <input
+        nz-input
+        [formControl]="editForm.controls.quantity"
+        type="number"
+        name="quantity"
+        id="quantity"
+      />
+    </div>
+
+    <div
+      style="display: flex; flex-flow: row wrap; justify-content: space-between"
+    >
+      <div>
+        <b style="margin-bottom: 5px; font-family: Roboto">Category</b>
+        <br />
+        <nz-select
+          nzSize="large"
+          nzShowSearch
+          [nzPlaceHolder]="editForm.get('category').value"
+          [formControl]="editForm.controls.category"
+        >
+          <nz-option nzLabel="Electronics" nzValue="Electronics"></nz-option>
+          <nz-option nzLabel="Sports" nzValue="Sports"></nz-option>
+          <nz-option nzLabel="Vechiles" nzValue="Vechiles"></nz-option>
+          <nz-option nzLabel="Pets" nzValue="Pets"></nz-option>
+          <nz-option nzLabel="Accessories" nzValue="Accessories"></nz-option>
+          <nz-option nzLabel="Workout" nzValue="Workout"></nz-option>
+          <nz-option nzLabel="Mobiles" nzValue="Mobiles"></nz-option>
+          <nz-option nzLabel="Laptops" nzValue="Laptops"></nz-option>
+        </nz-select>
+      </div>
+      <div>
+        <b style="margin-bottom: 5px; font-family: Roboto">Payment Option</b>
+        <br />
+
+        <nz-select
+          nzSize="large"
+          [nzPlaceHolder]="editForm.controls.paymentOption.value ==0 ?'Cache':'Exchange' "
+          [formControl]="editForm.controls.paymentOption"
+        >
+          <nz-option nzLabel="Cache" nzValue="0"></nz-option>
+          <nz-option nzLabel="Exchange" nzValue="1"></nz-option>
+        </nz-select>
+      </div>
+
+      <div>
+        <b style="margin-bottom: 5px; font-family: Roboto">Status</b>
+        <br />
+        <nz-select
+          nzSize="large"
+          [nzPlaceHolder]="editForm.controls.status.value ==0 ?'Available in stock':'Out of stock' "
+          [formControl]="editForm.controls.status"
+        >
+          <nz-option nzLabel="Available in stock" nzValue="0"></nz-option>
+          <nz-option nzLabel="Out of stock" nzValue="1"></nz-option>
+        </nz-select>
+      </div>
+    </div>
+
+    <button
+      nz-button
+      [disabled]="!editForm.valid"
+      nzType="primary"
+      type="submit"
+    >
+      Update
+    </button>
+  </form>
+</ng-container>
+
+<ng-template #loading>
+  <div>loading...</div>
+</ng-template>

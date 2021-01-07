@@ -7,7 +7,7 @@
   >
     <nz-tab nzTitle="Specification">
       <nz-descriptions
-        nzTitle="User Info"
+        nzTitle="Advertise Info"
         nzBordered
         [nzColumn]="{ xxl: 4, xl: 1, lg: 1, md: 1, sm: 1, xs: 1 }"
       >
@@ -32,16 +32,24 @@
           {{SelectedAdvertise.userAdvertise.advertise.advertiseInfo.color}}
         </nz-descriptions-item>
         <nz-descriptions-item nzTitle="Status" [nzSpan]="3">
-          <span style="color: #189b64"
-            >{{SelectedAdvertise.userAdvertise.status ===0 ?'Available in stock'
-            :'Out of stock'}}</span
+          <ng-container
+            *ngIf="SelectedAdvertise.userAdvertise.status ===0;else out"
           >
+            <span style="color: #189b64">Available in stock</span>
+          </ng-container>
+          <ng-template #out>
+            <span style="color: #c5163c">NO</span>
+          </ng-template>
         </nz-descriptions-item>
         <nz-descriptions-item nzTitle="Warranty">
-          <span style="color: #189b64"
-            >{{SelectedAdvertise.userAdvertise.isOnWarranty ? 'YES'
-            :'NO'}}</span
+          <ng-container
+            *ngIf="SelectedAdvertise.userAdvertise.isOnWarranty;else noWarranty"
           >
+            <span style="color: #189b64">YES</span>
+          </ng-container>
+          <ng-template #noWarranty>
+            <span style="color: #c5163c">NO</span>
+          </ng-template>
         </nz-descriptions-item>
         <nz-descriptions-item nzTitle="Negotiated Amount"
           >${{SelectedAdvertise.userAdvertise.advertise.price}}</nz-descriptions-item

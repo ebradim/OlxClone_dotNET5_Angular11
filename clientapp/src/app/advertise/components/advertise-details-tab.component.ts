@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { EventManager } from '@angular/platform-browser';
 import { NzTabPosition } from 'ng-zorro-antd/tabs';
-import { fromEvent, Observable, Subscription } from 'rxjs';
+import { selectAdvertise } from '../actions/advertise.actions';
 import { IResponseAdvertise } from '../models/Advertise';
 
 @Component({

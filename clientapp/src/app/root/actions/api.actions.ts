@@ -59,3 +59,11 @@ export const deleteAdvertiseError = createAction(
   '[Advertise/API] Delete Advertise Error',
   props<{ error: any }>()
 );
+export const editAdvertiseSuccess = createAction(
+  '[Advertise/API] Edit Advertise Success',
+  props<{ advertise: IResponseAdvertise }>()
+);
+export const editAdvertiseError = createAction(
+  '[Advertise/API] Edit Advertise Error',
+  props<{ error: any }>()
+);

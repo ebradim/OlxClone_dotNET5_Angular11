@@ -2,7 +2,11 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
-import { IAddAdvertise, IResponseAdvertise } from '../models/Advertise';
+import {
+  IAddAdvertise,
+  IEditAdvertise,
+  IResponseAdvertise,
+} from '../models/Advertise';
 
 @Injectable({ providedIn: 'root' })
 export class AdvertiseService {
@@ -37,6 +41,16 @@ export class AdvertiseService {
   public deleteAdvetise(id: string): Observable<boolean> {
     const endpoint = environment.url + this.routes.root + id;
     return this.client.delete<boolean>(endpoint, {
+      withCredentials: true,
+    });
+  }
+
+  public editAdvetise(
+    uniqueId: string,
+    advertise: IEditAdvertise
+  ): Observable<IResponseAdvertise> {
+    const endpoint = environment.url + this.routes.root + uniqueId;
+    return this.client.put<IResponseAdvertise>(endpoint, advertise, {
       withCredentials: true,
     });
   }

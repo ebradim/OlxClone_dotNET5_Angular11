@@ -4,6 +4,7 @@ import { IResponseAdvertise } from '../models/Advertise';
 import { fromAPIActions } from 'src/app/root/actions';
 import { fromAdvertise } from '../actions';
 import { advertiseState, RootState } from 'src/app/root/reducers';
+import { state } from '@angular/animations';
 export interface State extends EntityState<IResponseAdvertise> {
   // additional entities state properties
   selectedAdvertiseId: string | null;
@@ -19,6 +20,7 @@ export const adapter: EntityAdapter<IResponseAdvertise> = createEntityAdapter<IR
 export const initialState: State = adapter.getInitialState({
   // additional entity state properties
   selectedAdvertiseId: null,
+  pending: false,
 });
 
 export const reducer = createReducer(
@@ -39,8 +41,7 @@ export const reducer = createReducer(
     return adapter.upsertOne(advertise, state);
   }),
   on(fromAPIActions.deleteAdvertiseSuccess, (state) => {
-    // tslint:disable-next-line: no-non-null-assertion
-    return adapter.removeOne(state.selectedAdvertiseId!, state);
+    return adapter.removeOne(state.selectedAdvertiseId as string, state);
   })
 
   // on error leave them in state

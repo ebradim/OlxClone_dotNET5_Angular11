@@ -1,9 +1,8 @@
-import { Component } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { Component, OnDestroy, TemplateRef } from '@angular/core';
 import { select, Store } from '@ngrx/store';
+import { NzModalRef, NzModalService } from 'ng-zorro-antd/modal';
 import { Observable } from 'rxjs';
 import { IUser } from 'src/app/auth/models/API';
-import { fromAPIActions } from 'src/app/root/actions';
 import { getCurrentUser, RootState } from 'src/app/root/reducers';
 import { fromAdvertise } from '../actions';
 import { IResponseAdvertise } from '../models/Advertise';
@@ -15,16 +14,33 @@ import { State } from '../reducers/advertise.reducer';
   templateUrl: '../templates/advertise-details.template.html',
   styleUrls: ['../styles/advertise-details.style.scss'],
 })
-export class AdvertiseDetailsComponent {
+export class AdvertiseDetailsComponent implements OnDestroy {
   currentUser$: Observable<IUser | null>;
   advertise$: Observable<'' | IResponseAdvertise | null | undefined>;
+  modalRef: NzModalRef | undefined;
 
-  constructor(private store: Store<State>) {
+  constructor(private store: Store<State>, private modal: NzModalService) {
     this.advertise$ = this.store.pipe(select(getSelectedAdvertiseIdEntity));
     this.currentUser$ = this.store.pipe(select(getCurrentUser));
   }
+  ngOnDestroy(): void {
+    this.modalRef?.destroy();
+  }
 
-  deleteAdvertise(uniqueId: string) {
+  openEditModal(
+    title: TemplateRef<{}>,
+    content: TemplateRef<{}>,
+    footer: TemplateRef<{}>
+  ): void {
+    this.modalRef = this.modal.create({
+      nzTitle: title,
+      nzContent: content,
+      nzFooter: footer,
+      nzCloseOnNavigation: true,
+    });
+  }
+
+  deleteAdvertise(uniqueId: string): void {
     this.store.dispatch(fromAdvertise.deleteAdvertise({ uniqueId }));
   }
 }

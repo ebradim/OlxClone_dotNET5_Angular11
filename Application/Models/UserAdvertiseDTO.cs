@@ -25,8 +25,9 @@ namespace Application.Models
                 Status = userAdvertise.Status,
                 Category= userAdvertise.Category,
                 AdvertiseDTO = new AdvertiseDTO
-                { Id = userAdvertise.Advertise.Id,
-                UniqueId = userAdvertise.Advertise.UniqueId,
+                { 
+                    Id = userAdvertise.Advertise.Id,
+                    UniqueId = userAdvertise.Advertise.UniqueId,
                     Title = userAdvertise.Advertise.Title,
                     District = userAdvertise.Advertise.District,
                     City = userAdvertise.Advertise.City,

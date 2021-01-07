@@ -1,5 +1,5 @@
 import { createAction, props } from '@ngrx/store';
-import { IAddAdvertise } from '../models/Advertise';
+import { IAddAdvertise, IEditAdvertise } from '../models/Advertise';
 
 export const addAdvertise = createAction(
   '[Advertise/API] Add Advertise',
@@ -12,4 +12,8 @@ export const selectAdvertise = createAction(
 export const deleteAdvertise = createAction(
   '[Advertise/API] Delete Advertise',
   props<{ uniqueId: string }>()
+);
+export const editAdvertise = createAction(
+  '[Advertise/API] Edit Advertise',
+  props<{ uniqueId: string; advertise: IEditAdvertise }>()
 );

@@ -38,6 +38,7 @@ namespace Application.RequestsHandler.UserAdvertises
                             IsNegotiate =x.IsNegotiate,
                             IsOnWarranty =x.IsOnWarranty,
                             PaymentOption =x.PaymentOption,
+                            Category=x.Category,
                             AdvertiseDTO = new AdvertiseDTO
                             {
                                 
