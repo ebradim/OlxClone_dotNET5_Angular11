@@ -76,6 +76,14 @@ namespace API
                 {
                     policy.Requirements.Add(new AdvertiseOwnerRequirement());
                 });
+                options.AddPolicy(AppPolicy.IS_ADVERTISE_IN_FAVORITE, policy =>
+                {
+                    policy.Requirements.Add(new IsAdvertiseInFavoritesRequirement(FavoriteRequirement.Adding));
+                });
+                    options.AddPolicy(AppPolicy.IS_ADVERTISE_NOT_IN_FAVORITE, policy =>
+                {
+                    policy.Requirements.Add(new IsAdvertiseInFavoritesRequirement(FavoriteRequirement.Removing));
+                });
             });
             services.AddStackExchangeRedisCache(options =>
             {
@@ -83,6 +91,7 @@ namespace API
                 options.InstanceName = "OlxClone-";
             });
             services.AddTransient<IAuthorizationHandler, AdvertiseOwnerHandler>();
+            services.AddTransient<IAuthorizationHandler, IsAdvertiseInFavoritesHandler>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

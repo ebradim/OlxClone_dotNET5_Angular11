@@ -1,6 +1,8 @@
 ﻿using API.AuthPolicy;
 using Application.Models;
+using Application.RequestsHandler.AdvertiseFavorites;
 using Application.RequestsHandler.UserAdvertises;
+using Domain;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
@@ -49,6 +51,33 @@ namespace API.Controllers
         {
             editAD.UniqueId = id;
             return await mediator.Send(editAD);
+        }
+
+
+
+        [HttpPost("fav/{id}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme,Policy=AppPolicy.IS_ADVERTISE_IN_FAVORITE)]
+        [IgnoreAntiforgeryToken]
+        public async Task<ActionResult<bool>> AddToFavorite(string id)
+        {
+            return await mediator.Send(new UserAdFavAdd.AdFavAdd { AdvertiseId = id });
+        }
+
+        [HttpDelete("fav/{id}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme,Policy=AppPolicy.IS_ADVERTISE_NOT_IN_FAVORITE)]
+        [IgnoreAntiforgeryToken]
+        public async Task<ActionResult<bool>> RemoveFromFavorite(string id)
+        {
+            return await mediator.Send(new UserAdFavRemove.AdFavRemove { AdvertiseId = id });
+        }
+
+
+        [HttpGet("fav")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [IgnoreAntiforgeryToken]
+        public async Task<ActionResult<List<FavoriteAdvertiseDTO>>> GetFavorite()
+        {
+            return await mediator.Send(new LoadFavorites.LoadAdsUserFavorites());
         }
     }
 }

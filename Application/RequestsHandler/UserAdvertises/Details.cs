@@ -1,4 +1,5 @@
-﻿using Application.Models;
+﻿using Application.Interfaces;
+using Application.Models;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
@@ -20,10 +21,12 @@ namespace Application.RequestsHandler.UserAdvertises
         public class Handler : IRequestHandler<AdDetails, UserAdvertiseDetailsDTO>
         {
             private readonly DataContext dataContext;
+            private readonly ICurrentUser currentUser;
 
-            public Handler(DataContext dataContext)
+            public Handler(DataContext dataContext,ICurrentUser currentUser)
             {
                 this.dataContext = dataContext;
+                this.currentUser = currentUser;
             }
             public async Task<UserAdvertiseDetailsDTO> Handle(AdDetails request, CancellationToken cancellationToken)
             {
@@ -34,6 +37,7 @@ namespace Application.RequestsHandler.UserAdvertises
                     {
                         Root = new Root
                         {
+                            
                             Status =x.Status,
                             IsNegotiate =x.IsNegotiate,
                             IsOnWarranty =x.IsOnWarranty,
@@ -67,8 +71,17 @@ namespace Application.RequestsHandler.UserAdvertises
                       
                     })
                     .AsNoTracking().FirstOrDefaultAsync();
+           
+           
                 if (ad is null)
                     throw new HttpContextException(System.Net.HttpStatusCode.NotFound, new { Advertise = "Advertise is not found" });
+
+                var userFav = await dataContext.UserAdvertiseFavorite.AsNoTracking()
+                    .FirstOrDefaultAsync(x => x.Advertise.UniqueId == ad.Root.AdvertiseDTO.UniqueId
+                    && x.AppUserId == currentUser.UserId
+                        
+                );
+                ad.Root.IsFavorite = userFav is not null ? true:false;
                 return ad;
             }
         }

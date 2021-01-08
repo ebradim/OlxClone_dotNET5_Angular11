@@ -63,7 +63,6 @@ namespace Application.Models
         public DateTime PublishedAt { get;  set; }
         [JsonProperty("advertiseInfo")]
         public AdvertiseInfoDTO AdvertiseInfoDTO { get; set; }
-
     }
     public class AdvertiseInfoDTO
     {
@@ -79,6 +78,7 @@ namespace Application.Models
         public bool IsNegotiate { get; set; }
         public bool IsOnWarranty { get; set; }
         public Status Status { get; set; }
+        public bool IsFavorite { get; set; }
         public PaymentOption PaymentOption { get; set; }
         [JsonProperty("advertise")]
         public AdvertiseDTO AdvertiseDTO { get; set; }

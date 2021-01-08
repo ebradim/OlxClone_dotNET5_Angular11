@@ -1,3 +1,4 @@
+using Application.Interfaces;
 using Application.Models;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -20,15 +21,18 @@ namespace Application.RequestsHandler.UserAdvertises
         public class Handler : IRequestHandler<LoadAds, List<UserAdvertiseDTO>>
         {
             private readonly DataContext dataContext;
+            private readonly ICurrentUser currentUser;
 
-            public Handler(DataContext dataContext)
+            public Handler(DataContext dataContext,ICurrentUser currentUser)
             {
                 this.dataContext = dataContext;
+                this.currentUser = currentUser;
             }
             public async Task<List<UserAdvertiseDTO>> Handle(LoadAds request, CancellationToken cancellationToken)
             {
                 var ad = await dataContext.UserAdvertise
-                .Where(x=>x.Status != Domain.Status.Sold).OrderByDescending(x=>x.Advertise.PublishedAt).Select(x=>new UserAdvertiseDTO
+                .Where(x=>x.Status != Domain.Status.Sold)
+                .OrderByDescending(x=>x.Advertise.PublishedAt).Select(x=>new UserAdvertiseDTO
                     {
                         Root = new Root
                         {
@@ -63,7 +67,9 @@ namespace Application.RequestsHandler.UserAdvertises
                         }
                        
                     }).Take(20).AsNoTracking().ToListAsync();
-                return ad;
+           
+                    return ad;
+
             }
         }
     }
