@@ -16,43 +16,43 @@ import { State } from '../reducers/advertise.reducer';
   styleUrls: ['../styles/advertise-edit.style.scss'],
 })
 export class AdvertiseEditComponent {
-  @Input() selectedAdvertise: IResponseAdvertise | undefined;
+  @Input() selectedAdvertise: '' | IResponseAdvertise | null | undefined;
   editForm: FormGroup | undefined;
   constructor(private fb: FormBuilder, private store: Store<State>) {
     setTimeout(() => {
+      const toSelectedAdvertise = this.selectedAdvertise as IResponseAdvertise;
       this.editForm = this.fb.group({
         color: [
-          this.selectedAdvertise?.userAdvertise.advertise.advertiseInfo.color,
+          toSelectedAdvertise?.userAdvertise.advertise.advertiseInfo.color,
           Validators.required,
         ],
         hint: [
-          this.selectedAdvertise?.userAdvertise.advertise.advertiseInfo.hint,
+          toSelectedAdvertise?.userAdvertise.advertise.advertiseInfo.hint,
           Validators.required,
         ],
         paymentOption: [
-          this.selectedAdvertise?.userAdvertise.paymentOption,
+          toSelectedAdvertise?.userAdvertise.paymentOption,
           Validators.required,
         ],
         status: [
-          this.selectedAdvertise?.userAdvertise.status,
+          toSelectedAdvertise?.userAdvertise.status,
           Validators.required,
         ],
         description: [
-          this.selectedAdvertise?.userAdvertise.advertise.advertiseInfo
+          toSelectedAdvertise?.userAdvertise.advertise.advertiseInfo
             .description,
           Validators.required,
         ],
         price: [
-          this.selectedAdvertise?.userAdvertise.advertise.price,
+          toSelectedAdvertise?.userAdvertise.advertise.price,
           Validators.required,
         ],
         category: [
-          this.selectedAdvertise?.userAdvertise.category,
+          toSelectedAdvertise?.userAdvertise.category,
           Validators.required,
         ],
         quantity: [
-          this.selectedAdvertise?.userAdvertise.advertise.advertiseInfo
-            .quantity,
+          toSelectedAdvertise?.userAdvertise.advertise.advertiseInfo.quantity,
           Validators.required,
         ],
       });
@@ -60,16 +60,16 @@ export class AdvertiseEditComponent {
   }
 
   submit(): void {
+    const toSelectedAdvertise = this.selectedAdvertise as IResponseAdvertise;
+
     const advertise: IEditAdvertise = {
-      isNegotiate: this.selectedAdvertise?.userAdvertise.isNegotiate as boolean,
-      isOnWarranty: this.selectedAdvertise?.userAdvertise
-        .isOnWarranty as boolean,
+      isNegotiate: toSelectedAdvertise.userAdvertise.isNegotiate as boolean,
+      isOnWarranty: toSelectedAdvertise.userAdvertise.isOnWarranty as boolean,
       category: this.editForm?.get('category')?.value,
       paymentOption: parseInt(this.editForm?.get('paymentOption')?.value, 0),
       status: parseInt(this.editForm?.get('status')?.value, 0),
-      district: this.selectedAdvertise?.userAdvertise.advertise
-        .district as string,
-      city: this.selectedAdvertise?.userAdvertise.advertise.city as string,
+      district: toSelectedAdvertise.userAdvertise.advertise.district as string,
+      city: toSelectedAdvertise.userAdvertise.advertise.city as string,
       price: parseInt(this.editForm?.get('price')?.value, 0),
 
       advertiseInfo: {
@@ -79,7 +79,7 @@ export class AdvertiseEditComponent {
         quantity: this.editForm?.get('quantity')?.value,
       },
     };
-    const uniqueId = this.selectedAdvertise?.userAdvertise.advertise
+    const uniqueId = toSelectedAdvertise.userAdvertise.advertise
       .uniqueId as string;
 
     this.store.dispatch(fromAdvertise.editAdvertise({ uniqueId, advertise }));

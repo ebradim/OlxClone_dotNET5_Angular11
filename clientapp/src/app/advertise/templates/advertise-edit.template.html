@@ -13,7 +13,7 @@
       <b style="margin-bottom: 5px; font-family: Roboto">Price</b>
       <input
         nz-input
-        [formControl]="editForm.controls.price"
+        formControlName="price"
         type="text"
         name="price"
         id="price"
@@ -23,21 +23,22 @@
     <div>
       <b style="margin-bottom: 5px; font-family: Roboto">Description</b>
 
-      <input
+      <textarea
+        [nzAutosize]="{ minRows: 2, maxRows: 6 }"
         nz-input
-        [formControl]="editForm.controls.description"
+        formControlName="description"
         type="text"
         name="description"
         id="description"
         placeholder="Description"
-      />
+      ></textarea>
     </div>
     <div>
       <b style="margin-bottom: 5px; font-family: Roboto">Hint</b>
 
       <input
         nz-input
-        [formControl]="editForm.controls.hint"
+        formControlName="hint"
         type="text"
         name="hint"
         id="hint"
@@ -48,7 +49,7 @@
 
       <input
         nz-input
-        [formControl]="editForm.controls.color"
+        formControlName="color"
         type="text"
         name="title"
         id="title"
@@ -60,7 +61,7 @@
 
       <input
         nz-input
-        [formControl]="editForm.controls.quantity"
+        formControlName="quantity"
         type="number"
         name="quantity"
         id="quantity"
@@ -76,8 +77,8 @@
         <nz-select
           nzSize="large"
           nzShowSearch
-          [nzPlaceHolder]="editForm.get('category').value"
-          [formControl]="editForm.controls.category"
+          [nzPlaceHolder]="editForm?.get('category')?.value"
+          formControlName="category"
         >
           <nz-option nzLabel="Electronics" nzValue="Electronics"></nz-option>
           <nz-option nzLabel="Sports" nzValue="Sports"></nz-option>
@@ -95,8 +96,8 @@
 
         <nz-select
           nzSize="large"
-          [nzPlaceHolder]="editForm.controls.paymentOption.value ==0 ?'Cache':'Exchange' "
-          [formControl]="editForm.controls.paymentOption"
+          [nzPlaceHolder]="editForm?.get('paymentOption')?.value ==0 ?'Cache':'Exchange' "
+          formControlName="paymentOption"
         >
           <nz-option nzLabel="Cache" nzValue="0"></nz-option>
           <nz-option nzLabel="Exchange" nzValue="1"></nz-option>
@@ -108,8 +109,8 @@
         <br />
         <nz-select
           nzSize="large"
-          [nzPlaceHolder]="editForm.controls.status.value ==0 ?'Available in stock':'Out of stock' "
-          [formControl]="editForm.controls.status"
+          [nzPlaceHolder]="editForm?.get('status')?.value ==0 ?'Available in stock':'Out of stock' "
+          formControlName="status"
         >
           <nz-option nzLabel="Available in stock" nzValue="0"></nz-option>
           <nz-option nzLabel="Out of stock" nzValue="1"></nz-option>
@@ -119,7 +120,7 @@
 
     <button
       nz-button
-      [disabled]="!editForm.valid"
+      [disabled]="!editForm?.valid"
       nzType="primary"
       type="submit"
     >

@@ -109,7 +109,7 @@
     <advertie-edit [selectedAdvertise]="advertise$ |async"></advertie-edit>
   </ng-template>
   <ng-template #modalFooter let-footerRef="modalRef">
-    <button nz-button (click)="modalRef.destroy()">Close</button>
+    <button nz-button (click)="modalRef?.destroy()">Close</button>
   </ng-template>
 </div>
 

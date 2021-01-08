@@ -20,28 +20,41 @@ export const adapter: EntityAdapter<IResponseAdvertise> = createEntityAdapter<IR
 export const initialState: State = adapter.getInitialState({
   // additional entity state properties
   selectedAdvertiseId: null,
-  pending: false,
 });
-
 export const reducer = createReducer(
   initialState,
+  // tslint:disable-next-line: no-shadowed-variable
   on(fromAPIActions.loadHomeAdvertisesSuccess, (state, { advertises }) => {
     return adapter.upsertMany(advertises, state);
   }),
+  // tslint:disable-next-line: no-shadowed-variable
   on(fromAPIActions.addAdvertiseSuccess, (state, { advertise }) => {
     return adapter.upsertOne(advertise, state);
   }),
+  // tslint:disable-next-line: no-shadowed-variable
   on(fromAdvertise.selectAdvertise, (state, { uniqueId }) => {
     return {
       ...state,
       selectedAdvertiseId: uniqueId,
     };
   }),
+  // tslint:disable-next-line: no-shadowed-variable
   on(fromAPIActions.loadAdvertiseFromAPISuccess, (state, { advertise }) => {
     return adapter.upsertOne(advertise, state);
   }),
+  // tslint:disable-next-line: no-shadowed-variable
   on(fromAPIActions.deleteAdvertiseSuccess, (state) => {
     return adapter.removeOne(state.selectedAdvertiseId as string, state);
+  }),
+  // tslint:disable-next-line: no-shadowed-variable
+  on(fromAPIActions.editAdvertiseSuccess, (state, { advertise }) => {
+    return adapter.updateOne(
+      {
+        id: state.selectedAdvertiseId as string,
+        changes: advertise,
+      },
+      state
+    );
   })
 
   // on error leave them in state
