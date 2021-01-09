@@ -32,6 +32,7 @@ import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
 import { ErrorComponentsModule } from './errors/errors.module';
 import { HomeEffects } from './root/home/effects/home.effects';
 import { NzNotificationModule } from 'ng-zorro-antd/notification';
+import { FormsModule } from '@angular/forms';
 
 const icons: IconDefinition[] = [
   SearchOutline,

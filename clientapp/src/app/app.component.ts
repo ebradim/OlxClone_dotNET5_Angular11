@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { fromTokenActions } from './root/actions';
-import { AuthState } from './auth/reducers';
 import { RootState } from './root/reducers';
 
 @Component({

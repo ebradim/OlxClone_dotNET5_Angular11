@@ -21,15 +21,16 @@
 
     <!--tags-->
     <nz-page-header-tags>
-      <ng-template
+      <ng-container
         *ngIf="advertise.userAdvertise.status == 0 ; else outofstock "
       >
-        <nz-tag [nzColor]="'green'">Available</nz-tag>
-        <nz-tag
-          >InStock:
-          {{advertise.userAdvertise.advertise.advertiseInfo.quantity}}</nz-tag
+        <nz-tag [nzColor]="'green'"
+          >Available:
+          <b
+            >{{advertise.userAdvertise.advertise.advertiseInfo.quantity}}</b
+          ></nz-tag
         >
-      </ng-template>
+      </ng-container>
       <ng-template #outofstock>
         <nz-tag [nzColor]="'red'">Out of stock</nz-tag>
       </ng-template>
@@ -44,9 +45,31 @@
       <button nz-button class="offerbutton" nzSize="large" nzShape="round">
         <i nz-icon nzType="send"></i>Send offer
       </button>
-      <button nz-button class="starbutton" nzSize="large" nzShape="round">
-        <i nz-icon nzType="star"></i>Add to favorites
-      </button>
+      <ng-container
+        *ngIf="advertise.userAdvertise.isFavorite else addFavoriteTpl"
+      >
+        <button
+          nz-button
+          class="staredbutton"
+          nzSize="large"
+          nzShape="round"
+          (click)="removeFromFavorite(advertise.userAdvertise.advertise.uniqueId)"
+        >
+          <i nz-icon nzType="check"></i>Added to favorites
+        </button>
+      </ng-container>
+      <ng-template #addFavoriteTpl>
+        <button
+          nz-button
+          class="starbutton"
+          nzSize="large"
+          nzShape="round"
+          (click)="addToFavorite(advertise.userAdvertise.advertise.uniqueId)"
+        >
+          <i nz-icon nzType="star"></i>Add to favorites
+        </button>
+      </ng-template>
+
       <ng-container *ngIf="currentUser$|async as user">
         <ng-container
           *ngIf="user.userName === advertise.userAdvertise.user.userName"

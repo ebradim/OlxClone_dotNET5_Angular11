@@ -1,10 +1,8 @@
 import { createReducer, on } from '@ngrx/store';
 import { createEntityAdapter, EntityAdapter, EntityState } from '@ngrx/entity';
-import { IResponseAdvertise } from '../models/Advertise';
+import { IResponseAdvertise, IRoot } from '../models/Advertise';
 import { fromAPIActions } from 'src/app/root/actions';
 import { fromAdvertise } from '../actions';
-import { advertiseState, RootState } from 'src/app/root/reducers';
-import { state } from '@angular/animations';
 export interface State extends EntityState<IResponseAdvertise> {
   // additional entities state properties
   selectedAdvertiseId: string | null;
@@ -23,10 +21,6 @@ export const initialState: State = adapter.getInitialState({
 });
 export const reducer = createReducer(
   initialState,
-  // tslint:disable-next-line: no-shadowed-variable
-  on(fromAPIActions.loadHomeAdvertisesSuccess, (state, { advertises }) => {
-    return adapter.upsertMany(advertises, state);
-  }),
   // tslint:disable-next-line: no-shadowed-variable
   on(fromAPIActions.addAdvertiseSuccess, (state, { advertise }) => {
     return adapter.upsertOne(advertise, state);
@@ -55,16 +49,45 @@ export const reducer = createReducer(
       },
       state
     );
+  }),
+  on(fromAPIActions.addAdvertiseToFavSuccess, (state) => {
+    return adapter.updateOne(
+      {
+        id: state.selectedAdvertiseId as string,
+        changes: {
+          ...(state.entities[
+            state.selectedAdvertiseId as string
+          ] as IResponseAdvertise),
+          userAdvertise: {
+            ...(state.entities[state.selectedAdvertiseId as string]
+              ?.userAdvertise as IRoot),
+            isFavorite: true,
+          },
+        },
+      },
+      state
+    );
+  }),
+  on(fromAPIActions.removeAdvertiseFromFavSuccess, (state) => {
+    return adapter.updateOne(
+      {
+        id: state.selectedAdvertiseId as string,
+        changes: {
+          ...(state.entities[
+            state.selectedAdvertiseId as string
+          ] as IResponseAdvertise),
+          userAdvertise: {
+            ...(state.entities[state.selectedAdvertiseId as string]
+              ?.userAdvertise as IRoot),
+            isFavorite: false,
+          },
+        },
+      },
+      state
+    );
   })
 
   // on error leave them in state
 );
 
 // get the selectors
-export const {
-  selectIds,
-  selectAll,
-  selectEntities,
-  selectTotal,
-} = adapter.getSelectors();
-export const getHomeAds = selectAll;

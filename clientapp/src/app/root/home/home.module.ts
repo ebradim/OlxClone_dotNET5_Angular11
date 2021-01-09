@@ -15,6 +15,8 @@ import { NzSkeletonModule } from 'ng-zorro-antd/skeleton';
 import { NzAvatarModule } from 'ng-zorro-antd/avatar';
 import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
 import { NzButtonModule } from 'ng-zorro-antd/button';
+import { NzDividerModule } from 'ng-zorro-antd/divider';
+import { NzTagModule } from 'ng-zorro-antd/tag';
 
 export const COMPONENTS = [
   HomePageComponent,
@@ -29,8 +31,10 @@ const icons: IconDefinition[] = [SearchOutline, StarFill];
     FormsModule,
     CommonModule,
     HomeRouting,
+    NzDividerModule,
     NzToolTipModule,
     NzButtonModule,
+    NzTagModule,
     NzIconModule.forChild(icons),
     NzAutocompleteModule,
     NzInputModule,

@@ -28,12 +28,13 @@ export enum PaymentOption {
   Cash = 0,
   Exchange = 1,
 }
-interface IRoot {
+export interface IRoot {
   category: string;
   isNegotiate: boolean;
   isOnWarranty: boolean;
   paymentOption: number;
   status: number;
+  isFavorite: boolean;
   advertise: IAdvertise;
   user: User;
 }
@@ -64,3 +65,14 @@ interface User {
 export interface IEditAdvertise extends Omit<IAddAdvertise, 'title'> {
   status: number;
 }
+
+export interface IResponseHomeAdvertise {
+  userAdvertise: IHomeAdvertise;
+}
+interface IHomeAdvertise
+  extends Omit<IAdvertise, 'id' | 'publishedAt' | 'advertiseInfo'> {
+  advertiseInfo: IHomeAdvertiseInfo;
+  user: User;
+}
+
+interface IHomeAdvertiseInfo extends Pick<IAdvertiseInfo, 'hint'> {}

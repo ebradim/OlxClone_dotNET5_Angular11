@@ -72,6 +72,40 @@ export class AdvertiseEffects {
     )
   );
 
+  addToFavoriteAdertise$ = createEffect(() =>
+    this.action$.pipe(
+      ofType(fromAdvertise.addToFavorite),
+      map((action) => action),
+      exhaustMap(({ uniqueId }) => {
+        return this.advertiseService.addAdvetiseToFavorite(uniqueId).pipe(
+          throttleTime(5000),
+          map((result) => fromAPIActions.addAdvertiseToFavSuccess({ result })),
+          catchError((error) =>
+            of(fromAPIActions.addAdvertiseToFavError({ error }))
+          )
+        );
+      })
+    )
+  );
+
+  removeFromFavoriteAdertise$ = createEffect(() =>
+    this.action$.pipe(
+      ofType(fromAdvertise.removeFromFavorite),
+      map((action) => action),
+      exhaustMap(({ uniqueId }) => {
+        return this.advertiseService.removeAdvetiseFromFavorite(uniqueId).pipe(
+          throttleTime(5000),
+          map((result) =>
+            fromAPIActions.removeAdvertiseFromFavSuccess({ result })
+          ),
+          catchError((error) =>
+            of(fromAPIActions.removeAdvertiseFromFavError({ error }))
+          )
+        );
+      })
+    )
+  );
+
   afterPublishingAd$ = createEffect(
     () =>
       this.action$.pipe(

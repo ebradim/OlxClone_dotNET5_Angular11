@@ -43,6 +43,7 @@ namespace Application.RequestsHandler.UserAdvertises
                             IsOnWarranty =x.IsOnWarranty,
                             PaymentOption =x.PaymentOption,
                             Category=x.Category,
+                            
                             AdvertiseDTO = new AdvertiseDTO
                             {
                                 
@@ -76,12 +77,15 @@ namespace Application.RequestsHandler.UserAdvertises
                 if (ad is null)
                     throw new HttpContextException(System.Net.HttpStatusCode.NotFound, new { Advertise = "Advertise is not found" });
 
-                var userFav = await dataContext.UserAdvertiseFavorite.AsNoTracking()
-                    .FirstOrDefaultAsync(x => x.Advertise.UniqueId == ad.Root.AdvertiseDTO.UniqueId
-                    && x.AppUserId == currentUser.UserId
-                        
-                );
-                ad.Root.IsFavorite = userFav is not null ? true:false;
+
+                if(currentUser.UserId is not null || currentUser.UserId.Length >1){
+                    var userFav = await dataContext.UserAdvertiseFavorite.AsNoTracking()
+                            .FirstOrDefaultAsync(x => x.Advertise.UniqueId == ad.Root.AdvertiseDTO.UniqueId
+                                                                            && x.AppUserId == currentUser.UserId);
+                    ad.Root.IsFavorite = userFav is not null ? true:false;
+
+                }
+             
                 return ad;
             }
         }

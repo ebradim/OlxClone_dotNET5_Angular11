@@ -39,7 +39,13 @@ export class AdvertiseDetailsComponent implements OnDestroy {
       nzCloseOnNavigation: true,
     });
   }
+  addToFavorite(uniqueId: string): void {
+    this.store.dispatch(fromAdvertise.addToFavorite({ uniqueId }));
+  }
 
+  removeFromFavorite(uniqueId: string): void {
+    this.store.dispatch(fromAdvertise.removeFromFavorite({ uniqueId }));
+  }
   deleteAdvertise(uniqueId: string): void {
     this.store.dispatch(fromAdvertise.deleteAdvertise({ uniqueId }));
   }

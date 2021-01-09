@@ -2,8 +2,18 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { NzNotificationService } from 'ng-zorro-antd/notification';
-import { of } from 'rxjs';
-import { catchError, delay, exhaustMap, map, tap } from 'rxjs/operators';
+import { of, pipe } from 'rxjs';
+import {
+  catchError,
+  delay,
+  distinctUntilKeyChanged,
+  exhaustMap,
+  map,
+  skipUntil,
+  takeUntil,
+  tap,
+  withLatestFrom,
+} from 'rxjs/operators';
 import { fromAdvertise } from 'src/app/advertise/actions';
 import { AdvertiseService } from 'src/app/advertise/services/advertise.service';
 import { fromAPIActions, fromHomeActions } from '../../actions';
@@ -49,15 +59,15 @@ export class HomeEffects {
     { dispatch: false }
   );
 
-  onSelectAdvertise$ = createEffect(
-    () =>
-      this.action$.pipe(
-        ofType(fromAdvertise.selectAdvertise),
-        tap((advertise) =>
-          this.router.navigate(['/advertise', advertise.uniqueId])
-        )
-      ),
+  // onSelectAdvertise$ = createEffect(
+  //   () =>
+  //     this.action$.pipe(
+  //       ofType(fromAdvertise.selectAdvertise),
+  //       tap((advertise) =>
+  //         this.router.navigate(['/advertise', advertise.uniqueId])
+  //       )
+  //     ),
 
-    { dispatch: false }
-  );
+  //   { dispatch: false }
+  // );
 }

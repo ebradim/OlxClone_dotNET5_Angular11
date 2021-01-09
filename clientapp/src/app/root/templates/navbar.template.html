@@ -111,7 +111,11 @@
     </div>
     <nz-dropdown-menu #menu="nzDropdownMenu">
       <ul nz-menu class="profile-dropdown">
-        <li nz-menu-item style="margin: 10px; padding: 10px; font-weight: bold">
+        <li
+          nz-menu-item
+          style="margin: 10px; padding: 10px; font-weight: bold"
+          [routerLink]="['/advertise/create']"
+        >
           <i nz-icon nzType="appstore-add" nzTheme="outline"></i>Create new
           Advertise
         </li>

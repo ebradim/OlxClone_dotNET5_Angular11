@@ -23,7 +23,7 @@ namespace API.Controllers
             this.mediator = mediator;
         }
         [Route("load"), HttpGet,AllowAnonymous, IgnoreAntiforgeryToken]
-        public async Task<ActionResult<List<UserAdvertiseDTO>>> GetHomeAdsAsync()
+        public async Task<ActionResult<List<LoadHomeAdvertiseDTO>>> GetHomeAdsAsync()
         {
             return await mediator.Send(new UserAdLoad.LoadAds());
         }

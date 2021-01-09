@@ -3,7 +3,10 @@ import { Router } from '@angular/router';
 import { select, Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { fromAdvertise } from 'src/app/advertise/actions';
-import { IResponseAdvertise } from 'src/app/advertise/models/Advertise';
+import {
+  IResponseAdvertise,
+  IResponseHomeAdvertise,
+} from 'src/app/advertise/models/Advertise';
 import {
   isHomeAdsError,
   isHomeAdsLoading,
@@ -20,7 +23,7 @@ import {
 export class AdvertiseCardComponent implements OnInit {
   isLoadingAds$: Observable<boolean>;
   isError$: Observable<any>;
-  homeAds$: Observable<IResponseAdvertise[]>;
+  homeAds$: Observable<IResponseHomeAdvertise[]>;
   ngOnInit(): void {
     console.log('xD');
   }
@@ -31,6 +34,7 @@ export class AdvertiseCardComponent implements OnInit {
   }
 
   selectAdvertise(uniqueId: string): void {
-    this.store.dispatch(fromAdvertise.selectAdvertise({ uniqueId }));
+    this.router.navigate(['/advertise', uniqueId]);
+    //this.store.dispatch(fromAdvertise.selectAdvertise({ uniqueId }));
   }
 }

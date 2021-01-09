@@ -6,7 +6,7 @@
     transition: box-shadow 500ms;
     cursor: pointer;
     &:hover {
-      border: 1px solid rgb(226, 226, 226);
+      border: 1px solid #e2e2e2;
       box-shadow: 0px 0px 10px 5px #e4e4e4;
       transition: box-shadow 500ms;
     }
@@ -35,15 +35,28 @@
 .ad-info-middle {
   display: flex !important;
   flex-flow: row wrap;
+
   justify-content: space-between;
+  height: 70px;
 }
 .ad-info-bottom {
-  padding-top: 20px;
+  padding-top: 5px;
 
   small {
     font-style: italic;
   }
   p {
     font-family: Roboto;
+  }
+}
+$star_bg: #dfffeb;
+$star_fg: #0bd380;
+.userbutton {
+  background-color: $star_bg;
+  color: $star_fg;
+  font-family: Roboto;
+  border: 1px solid $star_bg;
+  &:hover {
+    background-color: darken($color: $star_bg, $amount: 10);
   }
 }

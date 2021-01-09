@@ -69,14 +69,16 @@
           placeholder="Color"
           formControlName="color"
         />
-        <input
+        <textarea
+          [nzAutosize]="{ minRows: 3, maxRows: 6 }"
           id="title"
           type="text"
           nz-input
           nzSize="large"
           placeholder="Description"
           formControlName="description"
-        />
+        ></textarea>
+
         <input
           id="title"
           type="text"

@@ -17,3 +17,11 @@ export const editAdvertise = createAction(
   '[Advertise/API] Edit Advertise',
   props<{ uniqueId: string; advertise: IEditAdvertise }>()
 );
+export const addToFavorite = createAction(
+  '[Advertise/API] Add Advertise to favorite',
+  props<{ uniqueId: string }>()
+);
+export const removeFromFavorite = createAction(
+  '[Advertise/API] Remove Advertise from favorite',
+  props<{ uniqueId: string }>()
+);

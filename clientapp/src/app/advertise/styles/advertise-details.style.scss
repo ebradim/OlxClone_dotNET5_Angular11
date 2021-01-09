@@ -20,6 +20,16 @@ $delete_fg: #d30b0b;
     background-color: darken($color: $star_bg, $amount: 5);
   }
 }
+
+.staredbutton {
+  background-color: darken($color: $star_bg, $amount: 10);
+  color: $star_fg;
+  font-family: Roboto;
+  border: 1px solid $star_bg;
+  &:hover {
+    background-color: darken($color: $star_bg, $amount: 5);
+  }
+}
 .offerbutton {
   background-color: $offer_bg;
   color: $offer_fg;

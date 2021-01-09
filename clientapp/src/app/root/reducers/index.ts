@@ -1,6 +1,7 @@
 import * as fromRouter from '@ngrx/router-store';
 import * as fromUser from './user-api.reducer';
 import * as fromAdvertise from '../../advertise/reducers/advertise.reducer';
+import * as fromAdvertiseHome from '../../advertise/reducers/advertise-home.reducer';
 import * as fromHomeAPI from '../home/reducers/home-api.reducer';
 import {
   createFeatureSelector,
@@ -15,6 +16,7 @@ export interface RootState {
   user: fromUser.State;
   advertise: fromAdvertise.State;
   home: fromHomeAPI.State;
+  advertiseHome: fromAdvertiseHome.State;
 }
 
 export const featureSelector = createFeatureSelector<RootState>('root');
@@ -25,7 +27,10 @@ export const advertiseState = createSelector(
   featureSelector,
   (x) => x.advertise
 );
-
+export const advertiseHomeState = createSelector(
+  featureSelector,
+  (x) => x.advertiseHome
+);
 export const homeState = createSelector(featureSelector, (x) => x.home);
 export const {
   selectCurrentRoute, // select the current route
@@ -47,8 +52,8 @@ export const isHomeAdsLoading = createSelector(
 export const isHomeAdsError = createSelector(homeState, fromHomeAPI.getError);
 
 export const selectHomeAdvertises = createSelector(
-  advertiseState,
-  fromAdvertise.getHomeAds
+  advertiseHomeState,
+  fromAdvertiseHome.getHomeAds
 );
 
 export const reducers: ActionReducerMap<RootState> = {
@@ -56,6 +61,7 @@ export const reducers: ActionReducerMap<RootState> = {
   user: fromUser.reducer,
   advertise: fromAdvertise.reducer,
   home: fromHomeAPI.reducer,
+  advertiseHome: fromAdvertiseHome.reducer,
 };
 export function debug(reducer: ActionReducer<any>): ActionReducer<any> {
   return (state, action) => {

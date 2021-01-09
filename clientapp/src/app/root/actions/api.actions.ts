@@ -1,5 +1,8 @@
 import { createAction, props } from '@ngrx/store';
-import { IResponseAdvertise } from 'src/app/advertise/models/Advertise';
+import {
+  IResponseAdvertise,
+  IResponseHomeAdvertise,
+} from 'src/app/advertise/models/Advertise';
 import { IUser } from '../../auth/models/API';
 
 export const loginSuccess = createAction(
@@ -32,7 +35,7 @@ export const refreshTokenError = createAction(
 );
 export const loadHomeAdvertisesSuccess = createAction(
   '[Advertise/API/Home] Load Advertise Success',
-  props<{ advertises: IResponseAdvertise[] }>()
+  props<{ advertises: IResponseHomeAdvertise[] }>()
 );
 export const loadHomeAdvertisesError = createAction(
   '[Advertise/API/Home] Load Advertise Error',
@@ -65,5 +68,22 @@ export const editAdvertiseSuccess = createAction(
 );
 export const editAdvertiseError = createAction(
   '[Advertise/API] Edit Advertise Error',
+  props<{ error: any }>()
+);
+
+export const addAdvertiseToFavSuccess = createAction(
+  '[Advertise/API] Add Advertise To Fav Success',
+  props<{ result: boolean }>()
+);
+export const addAdvertiseToFavError = createAction(
+  '[Advertise/API] Add Advertise To Fav Error',
+  props<{ error: any }>()
+);
+export const removeAdvertiseFromFavSuccess = createAction(
+  '[Advertise/API] Remove Advertise From Fav Success',
+  props<{ result: boolean }>()
+);
+export const removeAdvertiseFromFavError = createAction(
+  '[Advertise/API] Remove Advertise From Fav Error',
   props<{ error: any }>()
 );

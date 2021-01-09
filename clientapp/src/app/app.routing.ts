@@ -19,8 +19,13 @@ const routes: Routes = [
       import('./advertise/advertise.module').then((x) => x.AdvertiseModule),
   },
   {
+    path: 'user',
+    loadChildren: () => import('./user/user.module').then((x) => x.UserModule),
+  },
+
+  {
     path: '',
-    redirectTo: 'home',
+    redirectTo: '/home',
     pathMatch: 'full',
   },
   {

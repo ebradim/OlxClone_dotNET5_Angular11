@@ -34,45 +34,54 @@
   </div>
   <ng-template #ok>
     <nz-card
+      [nzActions]="[actionFavorite]"
       style="width: 300px; margin-top: 16px"
       *ngFor="let ad of homeAds$  |async"
     >
       <nz-skeleton #ok [nzActive]="false" [nzLoading]="false">
         <div
+          nz-tooltip
+          nzTooltipTitle="Click to view full details"
+          nzTooltipColor="geekblue"
           class="card-info"
           (click)="selectAdvertise(
-        ad.userAdvertise.advertise.uniqueId)"
+        ad.userAdvertise.uniqueId)"
         >
           <div>
             <img
               src="https://www.maxgaming.com/bilder/artiklar/15623.jpg?m=1588925276"
             />
           </div>
+
           <div class="ad-info-middle">
             <nz-card-meta
+              style="width: 70%; overflow: hidden"
               class="ad-info"
-              nzTitle="{{ad.userAdvertise.advertise.title}}"
-              nzDescription="{{ad.userAdvertise.advertise.advertiseInfo.hint}}"
+              nzTitle="{{ad.userAdvertise.title}}"
+              nzDescription="{{ad.userAdvertise.advertiseInfo.hint}}"
             >
             </nz-card-meta>
-            <strong style="color: #17ac7f"
-              >${{ad.userAdvertise.advertise.price}}</strong
-            >
+            <strong style="color: #17ac7f">${{ad.userAdvertise.price}}</strong>
           </div>
+          <nz-divider nzText="Location" nzOrientation="center"></nz-divider>
+
           <div class="ad-info-bottom">
-            <small>Seller</small>
-            <p>
-              {{ad.userAdvertise.user.firstName}}
-              {{ad.userAdvertise.user.lastName}}
-            </p>
-            <p>
-              <small style="color: gray"
-                >@{{ad.userAdvertise.user.userName}}</small
-              >
-            </p>
+            <nz-tag nzColor="processing"> {{ad.userAdvertise.city}} </nz-tag>
+            <nz-tag nzColor="cyan"> {{ad.userAdvertise.district}}</nz-tag>
           </div>
         </div>
       </nz-skeleton>
+      <ng-template #actionFavorite>
+        <button nz-button class="userbutton" nzShape="round">
+          <i nz-icon nzType="user"></i>{{ad.userAdvertise.user.firstName}}
+          {{ad.userAdvertise.user.lastName}}
+        </button></ng-template
+      >
     </nz-card>
   </ng-template>
 </div>
+
+<ng-template #actionDetails>
+  <button nz-button>
+    <i nz-icon nzType="star"></i></button
+></ng-template>

@@ -10,7 +10,15 @@ import {
 import { select, Store } from '@ngrx/store';
 import { NzNotificationService } from 'ng-zorro-antd/notification';
 import { Observable, of } from 'rxjs';
-import { catchError, map, switchMap, take, tap } from 'rxjs/operators';
+import {
+  catchError,
+  map,
+  switchMap,
+  take,
+  takeLast,
+  takeUntil,
+  tap,
+} from 'rxjs/operators';
 import { fromAPIActions } from 'src/app/root/actions';
 import { RootState } from 'src/app/root/reducers';
 import { fromAdvertise } from '../actions';
@@ -22,7 +30,7 @@ import { AdvertiseService } from '../services/advertise.service';
   providedIn: 'root',
 })
 export class AdvertiseExistGuard implements CanActivate {
-  loadItemFromEntity$: Observable<'' | IResponseAdvertise | null | undefined>;
+  // loadItemFromEntity$: Observable<'' | IResponseAdvertise | null | undefined>;
 
   constructor(
     private store: Store<RootState>,
@@ -30,16 +38,16 @@ export class AdvertiseExistGuard implements CanActivate {
     private router: Router,
     private notification: NzNotificationService
   ) {
-    this.loadItemFromEntity$ = this.store.pipe(
-      select(getSelectedAdvertiseIdEntity)
-    );
+    // this.loadItemFromEntity$ = this.store.pipe(
+    //   select(getSelectedAdvertiseIdEntity)
+    // );
   }
-  hasAdvertiseInStore(): Observable<boolean> {
-    return this.loadItemFromEntity$.pipe(
-      map((x) => !!x),
-      take(1)
-    );
-  }
+  // hasAdvertiseInStore(): Observable<boolean> {
+  //   return this.loadItemFromEntity$.pipe(
+  //     map((x) => !!x),
+  //     take(1)
+  //   );
+  // }
 
   hasAdvertiseInAPI(id: string): Observable<boolean> {
     return this.advertiseService.getAdvetise(id).pipe(
@@ -55,6 +63,7 @@ export class AdvertiseExistGuard implements CanActivate {
         )
       ),
       map((advertise) => !!advertise),
+
       catchError((error: HttpErrorResponse) => {
         if (error.status === 0) {
           this.notification.error(
@@ -71,17 +80,17 @@ export class AdvertiseExistGuard implements CanActivate {
     );
   }
 
-  isAdvertiseExist(id: string): Observable<boolean> {
-    return this.hasAdvertiseInStore().pipe(
-      switchMap((advertiseInStore) => {
-        if (advertiseInStore) {
-          return of(advertiseInStore);
-        } else {
-          return this.hasAdvertiseInAPI(id);
-        }
-      })
-    );
-  }
+  // isAdvertiseExist(id: string): Observable<boolean> {
+  //   return this.hasAdvertiseInStore().pipe(
+  //     switchMap((advertiseInStore) => {
+  //       if (advertiseInStore) {
+  //         return of(advertiseInStore);
+  //       } else {
+  //         return this.hasAdvertiseInAPI(id);
+  //       }
+  //     })
+  //   );
+  // }
   canActivate(
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
@@ -90,6 +99,6 @@ export class AdvertiseExistGuard implements CanActivate {
     | UrlTree
     | Observable<boolean | UrlTree>
     | Promise<boolean | UrlTree> {
-    return this.isAdvertiseExist(route.params.id);
+    return this.hasAdvertiseInAPI(route.params.id);
   }
 }
