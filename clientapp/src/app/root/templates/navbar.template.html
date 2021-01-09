@@ -126,7 +126,11 @@
             <li nz-menu-item style="font-weight: 700">
               <i nz-icon nzType="user" nzTheme="outline"></i>Profile
             </li>
-            <li nz-menu-item style="font-weight: 700">
+            <li
+              nz-menu-item
+              style="font-weight: 700"
+              [routerLink]="['/user/favorites']"
+            >
               <i nz-icon nzType="star" nzTheme="outline"></i>Favorites
             </li>
 

@@ -3,6 +3,15 @@
     <home-searchbox></home-searchbox>
   </div>
 
+  <ng-container *ngIf="!!!(currentUser$|async)">
+    <nz-alert
+      style="margin: 4% 20% 0%"
+      nzType="info"
+      nzMessage="Suggested Ads!"
+      nzDescription="If you want to improve your exprience, please login or register in order to get personalized ads"
+      nzShowIcon
+    ></nz-alert>
+  </ng-container>
   <div *ngIf="!(isHomeError$ |async) else error" class="advertise-card">
     <advertise-card></advertise-card>
   </div>

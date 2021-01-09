@@ -3,8 +3,10 @@ import { select, Store } from '@ngrx/store';
 import { Observable, of } from 'rxjs';
 import { map, switchMap, take, takeUntil, tap } from 'rxjs/operators';
 import { AdvertiseService } from 'src/app/advertise/services/advertise.service';
+import { IUser } from 'src/app/auth/models/API';
 import { fromHomeActions } from '../../actions';
 import {
+  getCurrentUser,
   isHomeAdsError,
   RootState,
   selectHomeAdvertises,
@@ -19,6 +21,7 @@ import {
 })
 export class HomePageComponent {
   isHomeError$: Observable<boolean>;
+  currentUser$: Observable<IUser | null>;
   constructor(
     private homeSerivce: AdvertiseService,
     private store: Store<RootState>
@@ -34,6 +37,7 @@ export class HomePageComponent {
       this.store.dispatch(fromHomeActions.loadHomeAdvertises());
       this.homeSerivce.lastTimeUpdate = new Date().getSeconds();
     }
+    this.currentUser$ = this.store.pipe(select(getCurrentUser));
     this.isHomeError$ = this.store.pipe(select(isHomeAdsError));
   }
 }

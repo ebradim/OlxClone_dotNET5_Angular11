@@ -1,1 +1,65 @@
-<p>favorites</p>
+<ng-container *ngIf="favoriteAds$|async as favAds ;else loading">
+  <ng-container *ngIf="favAds.length >0; else empty">
+    <div class="container">
+      <div class="summary">
+        <b>Total</b>
+        <p>${{totalCache$|async}}</p>
+      </div>
+      <ng-container *ngFor="let ad of favAds">
+        <div class="card-container">
+          <div class="card">
+            <div class="card-header">
+              <div class="header">
+                <p>{{ad.title}}</p>
+                <p>{{ad.advertiseInfo.hint}}</p>
+              </div>
+              <div class="content">
+                <p>${{ad.price}}</p>
+              </div>
+            </div>
+
+            <div class="card-footer">
+              <button
+                nz-button
+                nzShape="round"
+                nzType="default"
+                nzSize="default"
+              >
+                <i nz-icon nzType="user" nzTheme="outline"></i>
+
+                Profile
+              </button>
+              <button
+                nz-button
+                nzShape="round"
+                nzType="primary"
+                nzSize="default"
+                (click)="viewDetails(ad.uniqueId)"
+              >
+                View Details
+              </button>
+              <button
+                nz-button
+                nzShape="round"
+                nzType="primary"
+                nzDanger
+                nzSize="default"
+                (click)="removeFromFavorite(ad.uniqueId)"
+              >
+                <i nz-icon nzType="close" nzTheme="outline"></i>
+                Remove
+              </button>
+            </div>
+          </div>
+        </div>
+      </ng-container>
+    </div>
+  </ng-container>
+</ng-container>
+
+<ng-template #loading>
+  <p>loading</p>
+</ng-template>
+<ng-template #empty>
+  <nz-empty style="margin-top: 15%"></nz-empty>
+</ng-template>
