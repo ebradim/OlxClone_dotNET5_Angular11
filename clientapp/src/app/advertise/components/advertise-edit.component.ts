@@ -7,6 +7,7 @@ import {
   IEditAdvertise,
   IResponseAdvertise,
 } from '../models/Advertise';
+import { AdvertiseState } from '../reducers';
 import { State } from '../reducers/advertise.reducer';
 
 @Component({
@@ -18,7 +19,7 @@ import { State } from '../reducers/advertise.reducer';
 export class AdvertiseEditComponent {
   @Input() selectedAdvertise: '' | IResponseAdvertise | null | undefined;
   editForm: FormGroup | undefined;
-  constructor(private fb: FormBuilder, private store: Store<State>) {
+  constructor(private fb: FormBuilder, private store: Store<AdvertiseState>) {
     setTimeout(() => {
       const toSelectedAdvertise = this.selectedAdvertise as IResponseAdvertise;
       this.editForm = this.fb.group({

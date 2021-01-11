@@ -5,8 +5,8 @@
         <b>Total</b>
         <p>${{totalCache$|async}}</p>
       </div>
-      <ng-container *ngFor="let ad of favAds">
-        <div class="card-container">
+      <div class="card-container">
+        <ng-container *ngFor="let ad of favAds">
           <div class="card">
             <div class="card-header">
               <div class="header">
@@ -51,8 +51,8 @@
               </button>
             </div>
           </div>
-        </div>
-      </ng-container>
+        </ng-container>
+      </div>
     </div>
   </ng-container>
 </ng-container>

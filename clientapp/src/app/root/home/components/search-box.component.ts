@@ -1,11 +1,28 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  EventEmitter,
+  OnInit,
+  Output,
+} from '@angular/core';
+import { select, Store } from '@ngrx/store';
+import { Observable } from 'rxjs';
+import { getAdvertiseSearchResult, RootState } from '../../reducers';
+import { IGroupedAdvertise } from '../models/SearchAdvertise';
 @Component({
   // tslint:disable-next-line: component-selector
   selector: 'home-searchbox',
   styleUrls: ['../styles/searchbox.styles.scss'],
   templateUrl: '../templates/searchbox.template.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SearchBoxComponent implements OnInit {
+  @Output() search = new EventEmitter<string>();
+  searchResults$: Observable<IGroupedAdvertise[]>;
+
+  constructor(private store: Store<RootState>) {
+    this.searchResults$ = this.store.pipe(select(getAdvertiseSearchResult));
+  }
   inputValue?: string;
   optionGroups: AutocompleteOptionGroups[] = [
     {
@@ -37,8 +54,6 @@ export class SearchBoxComponent implements OnInit {
       },
     },
   ];
-
-  constructor() {}
 
   onChange(value: string): void {
     console.log(value);

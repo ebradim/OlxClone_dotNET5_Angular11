@@ -7,23 +7,12 @@ import {
   RouterStateSnapshot,
   UrlTree,
 } from '@angular/router';
-import { select, Store } from '@ngrx/store';
+import { Store } from '@ngrx/store';
 import { NzNotificationService } from 'ng-zorro-antd/notification';
 import { Observable, of } from 'rxjs';
-import {
-  catchError,
-  map,
-  switchMap,
-  take,
-  takeLast,
-  takeUntil,
-  tap,
-} from 'rxjs/operators';
-import { fromAPIActions } from 'src/app/root/actions';
+import { catchError, map, tap } from 'rxjs/operators';
 import { RootState } from 'src/app/root/reducers';
-import { fromAdvertise } from '../actions';
-import { IResponseAdvertise } from '../models/Advertise';
-import { getSelectedAdvertiseIdEntity } from '../reducers';
+import { fromAdvertise, fromAdvertiseAPI } from '../actions';
 import { AdvertiseService } from '../services/advertise.service';
 
 @Injectable({
@@ -52,7 +41,7 @@ export class AdvertiseExistGuard implements CanActivate {
   hasAdvertiseInAPI(id: string): Observable<boolean> {
     return this.advertiseService.getAdvetise(id).pipe(
       map((advertise) =>
-        fromAPIActions.loadAdvertiseFromAPISuccess({ advertise })
+        fromAdvertiseAPI.loadAdvertiseFromAPISuccess({ advertise })
       ),
       tap((action) => this.store.dispatch(action)),
       tap((action) =>

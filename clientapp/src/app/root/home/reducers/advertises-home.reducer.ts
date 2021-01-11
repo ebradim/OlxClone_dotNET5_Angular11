@@ -1,7 +1,7 @@
 import { createEntityAdapter, EntityAdapter, EntityState } from '@ngrx/entity';
 import { createReducer, on } from '@ngrx/store';
 import { fromAPIActions } from 'src/app/root/actions';
-import { IResponseHomeAdvertise } from '../models/Advertise';
+import { IResponseHomeAdvertise } from '../../../advertise/models/Advertise';
 
 export interface State extends EntityState<IResponseHomeAdvertise> {
   // additional entities state properties

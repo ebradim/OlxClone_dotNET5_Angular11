@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { select, Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
@@ -19,6 +19,7 @@ import {
   selector: 'advertise-card',
   styleUrls: ['../styles/advertise-card.styles.scss'],
   templateUrl: '../templates/advertise-card.template.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AdvertiseCardComponent implements OnInit {
   isLoadingAds$: Observable<boolean>;

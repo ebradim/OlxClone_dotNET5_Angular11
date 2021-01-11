@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { IGroupedAdvertise } from 'src/app/root/home/models/SearchAdvertise';
 import { environment } from 'src/environments/environment';
 import {
   IAddAdvertise,
@@ -16,6 +17,7 @@ export class AdvertiseService {
     addAdvertise: '/advertise/add',
     root: '/advertise/',
     fav: '/advertise/fav/',
+    search: '/advertise/search/',
   };
   lastTimeUpdate = 0;
   constructor(private client: HttpClient) {}
@@ -71,6 +73,13 @@ export class AdvertiseService {
   public removeAdvetiseFromFavorite(uniqueId: string): Observable<boolean> {
     const endpoint = environment.url + this.routes.fav + uniqueId;
     return this.client.delete<boolean>(endpoint, {
+      withCredentials: true,
+    });
+  }
+
+  public searchForAdvertise(term: string): Observable<IGroupedAdvertise[]> {
+    const endpoint = environment.url + this.routes.search + term;
+    return this.client.get<IGroupedAdvertise[]>(endpoint, {
       withCredentials: true,
     });
   }

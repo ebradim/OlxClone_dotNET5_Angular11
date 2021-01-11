@@ -6,7 +6,7 @@ import { IUser } from 'src/app/auth/models/API';
 import { getCurrentUser, RootState } from 'src/app/root/reducers';
 import { fromAdvertise } from '../actions';
 import { IResponseAdvertise } from '../models/Advertise';
-import { getSelectedAdvertiseIdEntity } from '../reducers';
+import { AdvertiseState, getSelectedAdvertiseIdEntity } from '../reducers';
 import { State } from '../reducers/advertise.reducer';
 @Component({
   // tslint:disable-next-line: component-selector
@@ -19,7 +19,10 @@ export class AdvertiseDetailsComponent implements OnDestroy {
   advertise$: Observable<'' | IResponseAdvertise | null | undefined>;
   modalRef: NzModalRef | undefined;
 
-  constructor(private store: Store<State>, private modal: NzModalService) {
+  constructor(
+    private store: Store<AdvertiseState>,
+    private modal: NzModalService
+  ) {
     this.advertise$ = this.store.pipe(select(getSelectedAdvertiseIdEntity));
     this.currentUser$ = this.store.pipe(select(getCurrentUser));
   }

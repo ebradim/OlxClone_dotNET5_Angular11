@@ -1,6 +1,6 @@
 <div class="root" dir="ltr">
   <div class="search-box">
-    <home-searchbox></home-searchbox>
+    <home-searchbox (search)="search($event)"></home-searchbox>
   </div>
 
   <ng-container *ngIf="!!!(currentUser$|async)">

@@ -2,17 +2,16 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { NzNotificationService } from 'ng-zorro-antd/notification';
-import { of, pipe } from 'rxjs';
+import { asyncScheduler, EMPTY, of } from 'rxjs';
 import {
   catchError,
-  delay,
-  distinctUntilKeyChanged,
+  debounceTime,
   exhaustMap,
   map,
-  skipUntil,
+  skip,
+  switchMap,
   takeUntil,
   tap,
-  withLatestFrom,
 } from 'rxjs/operators';
 import { fromAdvertise } from 'src/app/advertise/actions';
 import { AdvertiseService } from 'src/app/advertise/services/advertise.service';
@@ -23,6 +22,7 @@ export class HomeEffects {
   constructor(
     private notification: NzNotificationService,
     private homeService: AdvertiseService,
+    private advertiseService: AdvertiseService,
     private action$: Actions,
     private router: Router
   ) {}
@@ -38,6 +38,27 @@ export class HomeEffects {
           catchError((error) =>
             of(fromAPIActions.loadHomeAdvertisesError({ error }))
           )
+        );
+      })
+    )
+  );
+
+  searchForAdvertise$ = createEffect(() =>
+    this.action$.pipe(
+      ofType(fromHomeActions.searchForAdvertises),
+      debounceTime(1000, asyncScheduler),
+      switchMap(({ term }) => {
+        if (term.length === 0 || term === undefined || term === '') {
+          return EMPTY;
+        }
+
+        const next$ = this.action$.pipe(
+          ofType(fromHomeActions.searchForAdvertises),
+          skip(1)
+        );
+        return this.advertiseService.searchForAdvertise(term).pipe(
+          takeUntil(next$),
+          map((result) => fromAPIActions.searchForAdvertisesSuccess({ result }))
         );
       })
     )

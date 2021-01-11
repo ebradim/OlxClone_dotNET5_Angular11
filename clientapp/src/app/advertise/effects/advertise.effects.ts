@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
+import { NzMessageService } from 'ng-zorro-antd/message';
 import { NzModalService } from 'ng-zorro-antd/modal';
 import { NzNotificationService } from 'ng-zorro-antd/notification';
 import { of } from 'rxjs';
@@ -10,21 +11,23 @@ import {
   exhaustMap,
   map,
   switchMap,
+  takeUntil,
   tap,
   throttleTime,
 } from 'rxjs/operators';
-import { fromAPIActions } from 'src/app/root/actions';
 import { AdvertiseService } from '../../advertise/services/advertise.service';
-import { fromAdvertise } from '../actions';
-import { AdvertiseModule } from '../advertise.module';
+import { fromAdvertise, fromAdvertiseAPI } from '../actions';
+import { getConnecting } from '../reducers';
 
 @Injectable()
 export class AdvertiseEffects {
+  id = '';
   constructor(
     private route: Router,
     private advertiseService: AdvertiseService,
     private action$: Actions,
-    private notification: NzNotificationService
+    private notification: NzNotificationService,
+    private message: NzMessageService
   ) {}
 
   addAdertise$ = createEffect(() =>
@@ -33,8 +36,12 @@ export class AdvertiseEffects {
       map((action) => action.advertise),
       switchMap((request) => {
         return this.advertiseService.addAdvetise(request).pipe(
-          map((advertise) => fromAPIActions.addAdvertiseSuccess({ advertise })),
-          catchError((error) => of(fromAPIActions.addAdvertiseError({ error })))
+          map((advertise) =>
+            fromAdvertiseAPI.addAdvertiseSuccess({ advertise })
+          ),
+          catchError((error) =>
+            of(fromAdvertiseAPI.addAdvertiseError({ error }))
+          )
         );
       })
     )
@@ -46,9 +53,9 @@ export class AdvertiseEffects {
       exhaustMap((id) => {
         return this.advertiseService.deleteAdvetise(id).pipe(
           throttleTime(5000),
-          map((result) => fromAPIActions.deleteAdvertiseSuccess({ result })),
+          map((result) => fromAdvertiseAPI.deleteAdvertiseSuccess({ result })),
           catchError((error) =>
-            of(fromAPIActions.deleteAdvertiseError({ error }))
+            of(fromAdvertiseAPI.deleteAdvertiseError({ error }))
           )
         );
       })
@@ -62,10 +69,10 @@ export class AdvertiseEffects {
         return this.advertiseService.editAdvetise(uniqueId, advertise).pipe(
           throttleTime(5000),
           map((advertise) =>
-            fromAPIActions.editAdvertiseSuccess({ advertise })
+            fromAdvertiseAPI.editAdvertiseSuccess({ advertise })
           ),
           catchError((error) =>
-            of(fromAPIActions.editAdvertiseError({ error }))
+            of(fromAdvertiseAPI.editAdvertiseError({ error }))
           )
         );
       })
@@ -79,9 +86,11 @@ export class AdvertiseEffects {
       exhaustMap(({ uniqueId }) => {
         return this.advertiseService.addAdvetiseToFavorite(uniqueId).pipe(
           throttleTime(5000),
-          map((result) => fromAPIActions.addAdvertiseToFavSuccess({ result })),
+          map((result) =>
+            fromAdvertiseAPI.addAdvertiseToFavSuccess({ result })
+          ),
           catchError((error) =>
-            of(fromAPIActions.addAdvertiseToFavError({ error }))
+            of(fromAdvertiseAPI.addAdvertiseToFavError({ error }))
           )
         );
       })
@@ -96,10 +105,10 @@ export class AdvertiseEffects {
         return this.advertiseService.removeAdvetiseFromFavorite(uniqueId).pipe(
           throttleTime(5000),
           map((result) =>
-            fromAPIActions.removeAdvertiseFromFavSuccess({ result })
+            fromAdvertiseAPI.removeAdvertiseFromFavSuccess({ result })
           ),
           catchError((error) =>
-            of(fromAPIActions.removeAdvertiseFromFavError({ error }))
+            of(fromAdvertiseAPI.removeAdvertiseFromFavError({ error }))
           )
         );
       })
@@ -110,8 +119,8 @@ export class AdvertiseEffects {
     () =>
       this.action$.pipe(
         ofType(
-          fromAPIActions.addAdvertiseSuccess,
-          fromAPIActions.editAdvertiseSuccess
+          fromAdvertiseAPI.addAdvertiseSuccess,
+          fromAdvertiseAPI.editAdvertiseSuccess
         ),
         tap(() => this.route.navigate(['/']))
       ),
@@ -122,7 +131,7 @@ export class AdvertiseEffects {
   afterDeletingAd$ = createEffect(
     () =>
       this.action$.pipe(
-        ofType(fromAPIActions.deleteAdvertiseSuccess),
+        ofType(fromAdvertiseAPI.deleteAdvertiseSuccess),
         tap(() => this.route.navigate(['/']))
       ),
 
@@ -132,7 +141,7 @@ export class AdvertiseEffects {
   afterDeletingErrorAd$ = createEffect(
     () =>
       this.action$.pipe(
-        ofType(fromAPIActions.deleteAdvertiseError),
+        ofType(fromAdvertiseAPI.deleteAdvertiseError),
         tap(() => {
           this.notification.error(
             'Something went wrong',
@@ -140,6 +149,45 @@ export class AdvertiseEffects {
             { nzPlacement: 'bottomLeft' }
           );
           this.route.navigate(['/']);
+        })
+      ),
+
+    { dispatch: false }
+  );
+
+  onRequestingStart = createEffect(
+    () =>
+      this.action$.pipe(
+        ofType(
+          fromAdvertise.removeFromFavorite,
+          fromAdvertise.addToFavorite,
+          fromAdvertise.deleteAdvertise,
+          fromAdvertise.editAdvertise
+        ),
+        tap(() => {
+          this.id = this.message.loading('Please wait...').messageId;
+        })
+      ),
+
+    { dispatch: false }
+  );
+  onRequestingEnd = createEffect(
+    () =>
+      this.action$.pipe(
+        ofType(
+          fromAdvertiseAPI.addAdvertiseSuccess,
+          fromAdvertiseAPI.addAdvertiseToFavSuccess,
+          fromAdvertiseAPI.deleteAdvertiseSuccess,
+          fromAdvertiseAPI.removeAdvertiseFromFavSuccess,
+          fromAdvertiseAPI.editAdvertiseSuccess,
+          fromAdvertiseAPI.addAdvertiseError,
+          fromAdvertiseAPI.addAdvertiseToFavError,
+          fromAdvertiseAPI.deleteAdvertiseError,
+          fromAdvertiseAPI.removeAdvertiseFromFavError,
+          fromAdvertiseAPI.editAdvertiseError
+        ),
+        tap(() => {
+          this.message.remove(this.id);
         })
       ),
 

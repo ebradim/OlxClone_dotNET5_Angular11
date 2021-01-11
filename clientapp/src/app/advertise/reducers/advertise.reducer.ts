@@ -1,8 +1,7 @@
 import { createReducer, on } from '@ngrx/store';
 import { createEntityAdapter, EntityAdapter, EntityState } from '@ngrx/entity';
 import { IResponseAdvertise, IRoot } from '../models/Advertise';
-import { fromAPIActions } from 'src/app/root/actions';
-import { fromAdvertise } from '../actions';
+import { fromAdvertise, fromAdvertiseAPI } from '../actions';
 export interface State extends EntityState<IResponseAdvertise> {
   // additional entities state properties
   selectedAdvertiseId: string | null;
@@ -22,7 +21,7 @@ export const initialState: State = adapter.getInitialState({
 export const reducer = createReducer(
   initialState,
   // tslint:disable-next-line: no-shadowed-variable
-  on(fromAPIActions.addAdvertiseSuccess, (state, { advertise }) => {
+  on(fromAdvertiseAPI.addAdvertiseSuccess, (state, { advertise }) => {
     return adapter.upsertOne(advertise, state);
   }),
   // tslint:disable-next-line: no-shadowed-variable
@@ -33,15 +32,15 @@ export const reducer = createReducer(
     };
   }),
   // tslint:disable-next-line: no-shadowed-variable
-  on(fromAPIActions.loadAdvertiseFromAPISuccess, (state, { advertise }) => {
+  on(fromAdvertiseAPI.loadAdvertiseFromAPISuccess, (state, { advertise }) => {
     return adapter.upsertOne(advertise, state);
   }),
   // tslint:disable-next-line: no-shadowed-variable
-  on(fromAPIActions.deleteAdvertiseSuccess, (state) => {
+  on(fromAdvertiseAPI.deleteAdvertiseSuccess, (state) => {
     return adapter.removeOne(state.selectedAdvertiseId as string, state);
   }),
   // tslint:disable-next-line: no-shadowed-variable
-  on(fromAPIActions.editAdvertiseSuccess, (state, { advertise }) => {
+  on(fromAdvertiseAPI.editAdvertiseSuccess, (state, { advertise }) => {
     return adapter.updateOne(
       {
         id: state.selectedAdvertiseId as string,
@@ -50,7 +49,7 @@ export const reducer = createReducer(
       state
     );
   }),
-  on(fromAPIActions.addAdvertiseToFavSuccess, (state) => {
+  on(fromAdvertiseAPI.addAdvertiseToFavSuccess, (state) => {
     return adapter.updateOne(
       {
         id: state.selectedAdvertiseId as string,
@@ -68,7 +67,7 @@ export const reducer = createReducer(
       state
     );
   }),
-  on(fromAPIActions.removeAdvertiseFromFavSuccess, (state) => {
+  on(fromAdvertiseAPI.removeAdvertiseFromFavSuccess, (state) => {
     return adapter.updateOne(
       {
         id: state.selectedAdvertiseId as string,
@@ -91,3 +90,4 @@ export const reducer = createReducer(
 );
 
 // get the selectors
+export const getSelectedId = (state: State) => state.selectedAdvertiseId;

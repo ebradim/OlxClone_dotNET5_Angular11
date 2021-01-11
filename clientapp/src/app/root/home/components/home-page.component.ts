@@ -40,4 +40,8 @@ export class HomePageComponent {
     this.currentUser$ = this.store.pipe(select(getCurrentUser));
     this.isHomeError$ = this.store.pipe(select(isHomeAdsError));
   }
+
+  search(term: string): void {
+    this.store.dispatch(fromHomeActions.searchForAdvertises({ term }));
+  }
 }

@@ -4,6 +4,7 @@ import { Store } from '@ngrx/store';
 import { RootState } from 'src/app/root/reducers';
 import { fromAdvertise } from '../actions';
 import { IAddAdvertise, PaymentOption } from '../models/Advertise';
+import { AdvertiseState } from '../reducers';
 
 @Component({
   // tslint:disable-next-line: component-selector
@@ -14,7 +15,7 @@ import { IAddAdvertise, PaymentOption } from '../models/Advertise';
 export class AddAdvertiseComponent {
   createAdForm: FormGroup;
 
-  constructor(private fb: FormBuilder, private store: Store<RootState>) {
+  constructor(private fb: FormBuilder, private store: Store<AdvertiseState>) {
     this.createAdForm = this.fb.group({
       isNegotiate: [false, Validators.required],
       isOnWarranty: [false, Validators.required],

@@ -16,15 +16,14 @@
     }
   }
   .card-container {
-    cursor: default;
     display: flex;
     flex-flow: row wrap;
-    gap: 30px;
-
+    gap: 20px;
     justify-content: space-around;
-    align-items: center;
+
     margin: 1% 5%;
     .card {
+      cursor: default;
       background-color: #fff;
       box-shadow: 0px 0px 10px 8px #f5f5f5;
       border-radius: 10px;

@@ -4,8 +4,7 @@
       nzPrefixIcon="search"
       placeholder="What are you looking for?"
       nz-input
-      [(ngModel)]="inputValue"
-      (ngModelChange)="onChange($event)"
+      (keyup)="search.emit($event.target.value)"
       [nzAutocomplete]="auto"
     />
   </nz-input-group>
@@ -13,39 +12,45 @@
     <i nz-icon nzType="search"></i>
   </ng-template>
   <nz-autocomplete #auto>
-    <nz-auto-optgroup *ngFor="let group of optionGroups" [nzLabel]="groupTitle">
-      <ng-template #groupTitle>
-        <span>
-          <b>{{ group.category}}</b> from
-          <a class="more-link" href="#" target="_blank"> Ebrahim Elsayed</a>
-        </span>
-      </ng-template>
-      <nz-auto-option
-        [nzLabel]="group.children.title"
-        [nzValue]="group.children.title"
-      >
-        <div
-          style="
-            display: flex;
-            flex-flow: row wrap;
-            justify-content: space-between;
-          "
+    <ng-container *ngIf="searchResults$|async as results">
+      <nz-auto-optgroup *ngFor="let group of results" [nzLabel]="groupTitle">
+        <ng-template #groupTitle>
+          <span>
+            <b>{{ group.category}}</b>
+          </span>
+        </ng-template>
+        <nz-auto-option
+          *ngFor="let children of group.advertiseResult"
+          [nzLabel]="children.title"
+          [nzValue]="children.title"
         >
-          <div>
-            <p>{{ group.children.title }}</p>
-            <p style="margin-top: -10px; color: gray">
-              {{group.children.hint}}
-            </p>
-          </div>
+          <div
+            [routerLink]="['/advertise',children.uniqueId]"
+            style="
+              display: flex;
+              flex-flow: row wrap;
+              justify-content: space-between;
+            "
+          >
+            <div>
+              <p>{{ children.title }}</p>
+              <p style="margin-top: -10px; color: gray">{{children.hint}}</p>
+            </div>
 
-          <div>
-            <p>
-              <span><b style="color: green">$450</b>&nbsp;from</span>
-              <a class="more-link" href="#" target="_blank"> Ebrahim Elsayed</a>
-            </p>
+            <div>
+              <p>
+                <span
+                  ><b style="color: green">{{children.price}}</b
+                  >&nbsp;from</span
+                >
+                <a class="more-link" href="#" target="_blank">
+                  {{children.sellerName}}</a
+                >
+              </p>
+            </div>
           </div>
-        </div>
-      </nz-auto-option>
-    </nz-auto-optgroup>
+        </nz-auto-option>
+      </nz-auto-optgroup>
+    </ng-container>
   </nz-autocomplete>
 </div>
