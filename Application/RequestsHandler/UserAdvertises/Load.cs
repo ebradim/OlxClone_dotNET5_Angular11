@@ -1,25 +1,21 @@
-using Application.Interfaces;
 using Application.Models;
 using MediatR;
-using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace Application.RequestsHandler.UserAdvertises
 {
-    public class UserAdLoad
+    public class Load
     {
         
-        public class LoadAds : IRequest<List<LoadHomeAdvertiseDTO>>
+        public class Query : IRequest<List<LoadHomeAdvertiseDTO>>
         {
         }
-        public class Handler : IRequestHandler<LoadAds, List<LoadHomeAdvertiseDTO>>
+        public class Handler : IRequestHandler<Query, List<LoadHomeAdvertiseDTO>>
         {
             private readonly DataContext dataContext;
 
@@ -27,7 +23,7 @@ namespace Application.RequestsHandler.UserAdvertises
             {
                 this.dataContext = dataContext;
             }
-            public async Task<List<LoadHomeAdvertiseDTO>> Handle(LoadAds request, CancellationToken cancellationToken)
+            public async Task<List<LoadHomeAdvertiseDTO>> Handle(Query request, CancellationToken cancellationToken)
             {
                 var ad = await dataContext.UserAdvertise
                 .Where(x=>x.Status != Domain.Status.Sold)

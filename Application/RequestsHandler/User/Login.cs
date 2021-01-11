@@ -8,8 +8,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Distributed;
 using Persistence;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading;
@@ -19,12 +17,12 @@ namespace Application.RequestsHandler.User
 {
     public class Login
     {
-        public class AccountLogin : IRequest<AuthUserDTO>
+        public class Command : IRequest<AuthUserDTO>
         {
             public string UserName { get; set; }
             public string Password { get; set; }
         }
-        public class Handler : IRequestHandler<AccountLogin, AuthUserDTO>
+        public class Handler : IRequestHandler<Command, AuthUserDTO>
         {
             private readonly DataContext dataContext;
             private readonly UserManager<AppUser> userManager;
@@ -47,7 +45,7 @@ namespace Application.RequestsHandler.User
                 this.authCookies = authCookies;
                 this.cache = cache;
             }
-            public async Task<AuthUserDTO> Handle(AccountLogin request, CancellationToken cancellationToken)
+            public async Task<AuthUserDTO> Handle(Command request, CancellationToken cancellationToken)
             {
                 var user = await dataContext.Users.FirstOrDefaultAsync(x=>x.UserName == request.UserName);
 

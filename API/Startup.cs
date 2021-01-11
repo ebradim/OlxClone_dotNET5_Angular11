@@ -1,4 +1,3 @@
-using System.ComponentModel;
 using API.AuthPolicy;
 using API.AuthPolicy.Handler;
 using API.AuthPolicy.Requirements;
@@ -44,6 +43,7 @@ namespace API
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "API", Version = "v1" });
+                c.CustomSchemaIds(x => x.FullName);
             });
             services.AddAntiforgery(options => 
             {

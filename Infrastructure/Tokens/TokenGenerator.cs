@@ -61,9 +61,9 @@ namespace Infrastructure.Tokens
 
         public async Task<(string, string, string)> GenerateRequired(AppUser user)
         {
-            var token = await this.GenerateJwtAsync(user);
-            var rt =  this.GenerateRefreshToken(user.UserName);
-            var st =  this.GenerateStateToken(user.UserName);
+            var token = await GenerateJwtAsync(user);
+            var rt =  GenerateRefreshToken(user.UserName);
+            var st =  GenerateStateToken(user.UserName);
 
             return (token, rt, st);
         }

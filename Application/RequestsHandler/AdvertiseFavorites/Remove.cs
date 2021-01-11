@@ -1,25 +1,20 @@
 ﻿using Application.Interfaces;
-using Domain;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace Application.RequestsHandler.AdvertiseFavorites
 {
-    public class UserAdFavRemove
+    public class Remove
     {
-        public class AdFavRemove : IRequest<bool>
+        public class Command : IRequest<bool>
         {
             public string AdvertiseId { get; set; }
         }
 
-        public class Handler : IRequestHandler<AdFavRemove, bool>
+        public class Handler : IRequestHandler<Command, bool>
         {
             private readonly DataContext dataContext;
             private readonly ICurrentUser currentUser;
@@ -29,7 +24,7 @@ namespace Application.RequestsHandler.AdvertiseFavorites
                 this.dataContext = dataContext;
                 this.currentUser = currentUser;
             }
-            public async Task<bool> Handle(AdFavRemove request, CancellationToken cancellationToken)
+            public async Task<bool> Handle(Command request, CancellationToken cancellationToken)
             {
                 var user = await dataContext.Users.FirstOrDefaultAsync(x => x.Id == currentUser.UserId);
                 if (user is null)

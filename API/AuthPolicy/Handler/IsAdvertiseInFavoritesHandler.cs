@@ -1,11 +1,11 @@
-using System.Linq;
-using System.Threading.Tasks;
 using API.AuthPolicy.Requirements;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace API.AuthPolicy.Handler
 {
@@ -28,32 +28,33 @@ namespace API.AuthPolicy.Handler
 
                 var userAdvertise = await dataContext.UserAdvertiseFavorite.Where(x => x.Advertise.UniqueId == advertiseId && x.AppUserId == userId)
                     .AsNoTracking().FirstOrDefaultAsync();
-                 
-                if(requirement.FavoriteRequirement == FavoriteRequirement.Adding)
+
+                switch (requirement.FavoriteRequirement)
                 {
-                    // user is adding the advertise to favorite list
-                    // requirement check if the advertise in favorite list                           
-                    if(userAdvertise is null)
-                    {
-                        // not in favorite list
-                        context.Succeed(requirement);
-                    }
-                    else
-                    {
-                        context.Fail();
-                    }
-                }
-                else if(requirement.FavoriteRequirement == FavoriteRequirement.Removing)
-                {   //in case of FavoriteRequirement.Removing                       
-                    if(userAdvertise is not null)
-                    {
-                        // is in favorite list
-                        context.Succeed(requirement);
-                    }
-                    else
-                    {
-                        context.Fail();
-                    }
+                    case FavoriteRequirement.Adding:
+                        // user is adding the advertise to favorite list
+                        // requirement check if the advertise in favorite list                           
+                        if (userAdvertise is null)
+                        {
+                            // not in favorite list
+                            context.Succeed(requirement);
+                        }
+                        else
+                        {
+                            context.Fail();
+                        }
+                        break;
+                    case FavoriteRequirement.Removing:
+                        if (userAdvertise is not null)
+                        {
+                            // is in favorite list
+                            context.Succeed(requirement);
+                        }
+                        else
+                        {
+                            context.Fail();
+                        }
+                        break;
                 }
 
             }

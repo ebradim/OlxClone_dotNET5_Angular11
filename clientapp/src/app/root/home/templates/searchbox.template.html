@@ -15,18 +15,36 @@
   <nz-autocomplete #auto>
     <nz-auto-optgroup *ngFor="let group of optionGroups" [nzLabel]="groupTitle">
       <ng-template #groupTitle>
-        <span
-          ><b>{{ group.title }}</b> from
+        <span>
+          <b>{{ group.category}}</b> from
           <a class="more-link" href="#" target="_blank"> Ebrahim Elsayed</a>
         </span>
       </ng-template>
       <nz-auto-option
-        *ngFor="let option of group.children"
-        [nzLabel]="option.title"
-        [nzValue]="option.title"
+        [nzLabel]="group.children.title"
+        [nzValue]="group.children.title"
       >
-        {{ option.title }}
-        <span class="certain-search-item-count">{{ option.count }}</span>
+        <div
+          style="
+            display: flex;
+            flex-flow: row wrap;
+            justify-content: space-between;
+          "
+        >
+          <div>
+            <p>{{ group.children.title }}</p>
+            <p style="margin-top: -10px; color: gray">
+              {{group.children.hint}}
+            </p>
+          </div>
+
+          <div>
+            <p>
+              <span><b style="color: green">$450</b>&nbsp;from</span>
+              <a class="more-link" href="#" target="_blank"> Ebrahim Elsayed</a>
+            </p>
+          </div>
+        </div>
       </nz-auto-option>
     </nz-auto-optgroup>
   </nz-autocomplete>

@@ -1,23 +1,19 @@
 ﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace Application.RequestsHandler.UserAdvertises
 {
-    public class UserAdDelete
+    public class Delete
     {
         
-        public class DeleteAdd : IRequest<bool>
+        public class Command : IRequest<bool>
         {
             public string Id { get; set; }
         }
-        public class Handler : IRequestHandler<DeleteAdd, bool>
+        public class Handler : IRequestHandler<Command, bool>
         {
             private readonly DataContext dataContext;
 
@@ -25,7 +21,7 @@ namespace Application.RequestsHandler.UserAdvertises
             {
                 this.dataContext = dataContext;
             }
-            public async Task<bool> Handle(DeleteAdd request, CancellationToken cancellationToken)
+            public async Task<bool> Handle(Command request, CancellationToken cancellationToken)
             {
                 var ad = await dataContext.UserAdvertise.FirstOrDefaultAsync(x => x.Advertise.UniqueId == request.Id);
                 if (ad is null)

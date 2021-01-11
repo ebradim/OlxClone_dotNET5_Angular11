@@ -1,5 +1,4 @@
-﻿using Application.Interfaces;
-using Application.Models;
+﻿using Application.Models;
 using Domain;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -11,11 +10,13 @@ using System.Threading.Tasks;
 
 namespace Application.RequestsHandler.UserAdvertises
 {
-    public class UserAdEdit
+    public class Edit
     {
 
-        public class EditAD : IRequest<UserAdvertiseDTO>
+        public class Command : IRequest<UserAdvertiseDTO>
         {
+            // Todo: add validations
+
             public string UniqueId { get; set; }
             public bool IsNegotiate { get; set; }
             public bool IsOnWarranty { get; set; }
@@ -27,7 +28,7 @@ namespace Application.RequestsHandler.UserAdvertises
             public double Price { get; set; }
             public AdvertiseInfoDTO AdvertiseInfo { get; set; }
         }
-        public class Handler : IRequestHandler<EditAD, UserAdvertiseDTO>
+        public class Handler : IRequestHandler<Command, UserAdvertiseDTO>
         {
             private readonly DataContext dataContext;
 
@@ -36,7 +37,7 @@ namespace Application.RequestsHandler.UserAdvertises
                 this.dataContext = dataContext;
             }
 
-            public async Task<UserAdvertiseDTO> Handle(EditAD request, CancellationToken cancellationToken)
+            public async Task<UserAdvertiseDTO> Handle(Command request, CancellationToken cancellationToken)
             {
                 var ad = await dataContext.UserAdvertise
                 .Include(x=>x.Advertise)

@@ -5,20 +5,18 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
 using System.Net;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace Application.RequestsHandler.UserAdvertises
 {
-    public class UserAds
+    public class Create
     {
-        public class NewAdd : IRequest<UserAdvertiseDTO>
+        public class Command : IRequest<UserAdvertiseDTO>
         {
+            // Todo: add validations
             [Required]
             public bool IsNegotiate { get; set; }
             [Required]
@@ -38,7 +36,7 @@ namespace Application.RequestsHandler.UserAdvertises
             public AdvertiseInfoDTO AdvertiseInfo { get; set; }        
         }
 
-        public class Handler : IRequestHandler<NewAdd, UserAdvertiseDTO>
+        public class Handler : IRequestHandler<Command, UserAdvertiseDTO>
         {
             private readonly DataContext dataContext;
             private readonly ICurrentUser currentUser;
@@ -49,7 +47,7 @@ namespace Application.RequestsHandler.UserAdvertises
                 this.currentUser = currentUser;
             }
 
-            public async Task<UserAdvertiseDTO> Handle(NewAdd request, CancellationToken cancellationToken)
+            public async Task<UserAdvertiseDTO> Handle(Command request, CancellationToken cancellationToken)
             {
                 var user = await dataContext.Users.FirstOrDefaultAsync(x => x.Id == currentUser.UserId);
                 if (user is null)

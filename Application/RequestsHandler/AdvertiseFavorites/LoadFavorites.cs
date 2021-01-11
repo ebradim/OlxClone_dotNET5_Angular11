@@ -1,13 +1,10 @@
 ﻿using Application.Interfaces;
 using Application.Models;
-using Domain;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -15,12 +12,12 @@ namespace Application.RequestsHandler.AdvertiseFavorites
 {
     public class LoadFavorites
     {
-        public class LoadAdsUserFavorites : IRequest<List<FavoriteAdvertiseDTO>>
+        public class Query : IRequest<List<FavoriteAdvertiseDTO>>
         {
 
         }
 
-        public class Handler : IRequestHandler<LoadAdsUserFavorites, List<FavoriteAdvertiseDTO>>
+        public class Handler : IRequestHandler<Query, List<FavoriteAdvertiseDTO>>
         {
             private readonly DataContext dataContext;
             private readonly ICurrentUser currentUser;
@@ -30,7 +27,7 @@ namespace Application.RequestsHandler.AdvertiseFavorites
                 this.dataContext = dataContext;
                 this.currentUser = currentUser;
             }
-            public async Task<List<FavoriteAdvertiseDTO>> Handle(LoadAdsUserFavorites request, CancellationToken cancellationToken)
+            public async Task<List<FavoriteAdvertiseDTO>> Handle(Query request, CancellationToken cancellationToken)
             {
 
 

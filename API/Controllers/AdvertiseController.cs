@@ -2,7 +2,6 @@
 using Application.Models;
 using Application.RequestsHandler.AdvertiseFavorites;
 using Application.RequestsHandler.UserAdvertises;
-using Domain;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
@@ -25,17 +24,25 @@ namespace API.Controllers
         [Route("load"), HttpGet,AllowAnonymous, IgnoreAntiforgeryToken]
         public async Task<ActionResult<List<LoadHomeAdvertiseDTO>>> GetHomeAdsAsync()
         {
-            return await mediator.Send(new UserAdLoad.LoadAds());
+            return await mediator.Send(new Load.Query());
         }
+
+        //IEnumerable<GroupedAdvertisesResult>
+        [Route("search/{term}"), HttpGet, AllowAnonymous, IgnoreAntiforgeryToken]
+        public async Task<IEnumerable<GroupedAdvertisesResult>> GetSearchAsync(string term)
+        {
+            return await mediator.Send(new SearchAdvertises.Query { Term=term});
+        }
+
         [Route("add"), HttpPost,Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme), IgnoreAntiforgeryToken]
-        public async Task<ActionResult<UserAdvertiseDTO>> CreateNewAsync(UserAds.NewAdd createAdd)
+        public async Task<ActionResult<UserAdvertiseDTO>> CreateNewAsync(Create.Command createAdd)
         {
             return await mediator.Send(createAdd);
         }
-        [HttpGet("{id}"), Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme), IgnoreAntiforgeryToken]
-        public async Task<ActionResult<UserAdvertiseDetailsDTO>> GetAdAsync(string id)
+        [HttpGet("{id}"), Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme),AllowAnonymous, IgnoreAntiforgeryToken]
+        public async Task<ActionResult<UserAdvertiseDTO>> GetAdAsync(string id)
         {
-            return await mediator.Send(new UserAdsDetails.AdDetails { Id = id});
+            return await mediator.Send(new Details.Query { Id = id});
         }
         
         [HttpDelete("{id}")]
@@ -43,24 +50,22 @@ namespace API.Controllers
         [IgnoreAntiforgeryToken]
         public async Task<ActionResult<bool>> DeleteAdAsync(string id)
         {
-            return await mediator.Send(new UserAdDelete.DeleteAdd { Id = id });
+            return await mediator.Send(new Delete.Command { Id = id });
         }
 
         [HttpPut("{id}"), Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = AppPolicy.IS_ADVERTISE_OWNER), IgnoreAntiforgeryToken]
-        public async Task<ActionResult<UserAdvertiseDTO>> UpdateAdAsync(string id,UserAdEdit.EditAD editAD)
+        public async Task<ActionResult<UserAdvertiseDTO>> UpdateAdAsync(string id,Edit.Command editAD)
         {
             editAD.UniqueId = id;
             return await mediator.Send(editAD);
         }
-
-
 
         [HttpPost("fav/{id}")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme,Policy=AppPolicy.IS_ADVERTISE_IN_FAVORITE)]
         [IgnoreAntiforgeryToken]
         public async Task<ActionResult<bool>> AddToFavorite(string id)
         {
-            return await mediator.Send(new UserAdFavAdd.AdFavAdd { AdvertiseId = id });
+            return await mediator.Send(new Add.Command { AdvertiseId = id });
         }
 
         [HttpDelete("fav/{id}")]
@@ -68,7 +73,7 @@ namespace API.Controllers
         [IgnoreAntiforgeryToken]
         public async Task<ActionResult<bool>> RemoveFromFavorite(string id)
         {
-            return await mediator.Send(new UserAdFavRemove.AdFavRemove { AdvertiseId = id });
+            return await mediator.Send(new Remove.Command { AdvertiseId = id });
         }
 
 
@@ -77,7 +82,7 @@ namespace API.Controllers
         [IgnoreAntiforgeryToken]
         public async Task<ActionResult<List<FavoriteAdvertiseDTO>>> GetFavorite()
         {
-            return await mediator.Send(new LoadFavorites.LoadAdsUserFavorites());
+            return await mediator.Send(new LoadFavorites.Query());
         }
     }
 }

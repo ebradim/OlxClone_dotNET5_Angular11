@@ -1,5 +1,4 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
-
 @Component({
   // tslint:disable-next-line: component-selector
   selector: 'home-searchbox',
@@ -8,7 +7,36 @@ import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 })
 export class SearchBoxComponent implements OnInit {
   inputValue?: string;
-  optionGroups: AutocompleteOptionGroups[] = [];
+  optionGroups: AutocompleteOptionGroups[] = [
+    {
+      category: 'Electronics',
+      children: {
+        title: 'Dell G3 ',
+        hint: 'Gaming laptop',
+      },
+    },
+    {
+      category: 'Mobiles',
+      children: {
+        title: 'IPhone 11 Pro Max',
+        hint: 'AWESOME MOBILE',
+      },
+    },
+    {
+      category: 'Mobiles',
+      children: {
+        title: 'Samsung S6',
+        hint: 'AWESOME MOBILE',
+      },
+    },
+    {
+      category: 'Sports',
+      children: {
+        title: 'Mohamed Salah',
+        hint: 'SPEEEEEEEED',
+      },
+    },
+  ];
 
   constructor() {}
 
@@ -16,28 +44,13 @@ export class SearchBoxComponent implements OnInit {
     console.log(value);
   }
 
-  ngOnInit(): void {
-    setTimeout(() => {
-      this.optionGroups = [
-        {
-          title: 'Electronics',
-          children: [
-            {
-              title: 'IPhone 11 Pro Max',
-              count: 2,
-            },
-            {
-              title: 'Samsung S20',
-              count: 20,
-            },
-          ],
-        },
-      ];
-    }, 1000);
-  }
+  ngOnInit(): void {}
 }
 export interface AutocompleteOptionGroups {
+  category: string;
+  children: AutocompleteChildGroups;
+}
+export interface AutocompleteChildGroups {
   title: string;
-  count?: number;
-  children?: AutocompleteOptionGroups[];
+  hint: string;
 }

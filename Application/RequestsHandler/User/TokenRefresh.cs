@@ -17,11 +17,11 @@ namespace Application.RequestsHandler.User
 {
     public class TokenRefresh
     {
-        public class Refresh : IRequest<AuthUserDTO>
+        public class Query : IRequest<AuthUserDTO>
         {
 
         }
-        public class Handler : IRequestHandler<Refresh, AuthUserDTO>
+        public class Handler : IRequestHandler<Query, AuthUserDTO>
         {
             private readonly DataContext dataContext;
             private readonly IHttpContextAccessor contextAccessor;
@@ -43,7 +43,7 @@ namespace Application.RequestsHandler.User
                 this.cookies = cookies;
             }
 
-            public async Task<AuthUserDTO> Handle(Refresh request, CancellationToken cancellationToken)
+            public async Task<AuthUserDTO> Handle(Query request, CancellationToken cancellationToken)
             {
                 var refreshToken = contextAccessor.HttpContext.Request.Cookies["_rid"];
                 var state_token = contextAccessor.HttpContext.Request.Cookies["_sid"];

@@ -3,14 +3,11 @@ using Application.Models;
 using Domain;
 using FluentValidation;
 using MediatR;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Distributed;
 using Persistence;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading;
@@ -20,7 +17,7 @@ namespace Application.RequestsHandler.User
 {
     public class Register
     {
-        public class AccountRegister : IRequest<AuthUserDTO>
+        public class Command : IRequest<AuthUserDTO>
         {
            
             public string FirstName { get; set; }
@@ -28,7 +25,7 @@ namespace Application.RequestsHandler.User
             public string UserName { get; set; }
             public string Password { get; set; }
         }
-        public class Validator : AbstractValidator<AccountRegister>
+        public class Validator : AbstractValidator<Command>
         {
             public Validator()
             {
@@ -39,7 +36,7 @@ namespace Application.RequestsHandler.User
                 RuleFor(x => x.Password).NotEmpty().WithMessage("Your password is required").MinimumLength(6).WithMessage("Min length is 6");
             }
         }
-        public class Handler : IRequestHandler<AccountRegister, AuthUserDTO>
+        public class Handler : IRequestHandler<Command, AuthUserDTO>
         {
             private readonly DataContext dataContext;
             private readonly UserManager<AppUser> userManager;
@@ -55,7 +52,7 @@ namespace Application.RequestsHandler.User
                 this.refreshTokenGenerator = refreshTokenGenerator;
                 this.cache = cache;
             }
-            public async Task<AuthUserDTO> Handle(AccountRegister request, CancellationToken cancellationToken)
+            public async Task<AuthUserDTO> Handle(Command request, CancellationToken cancellationToken)
             {
                 var isExist = await dataContext.Users.FirstOrDefaultAsync(x => x.UserName == request.UserName) != null;
 

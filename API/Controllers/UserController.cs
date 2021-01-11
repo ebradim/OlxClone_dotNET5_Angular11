@@ -4,10 +4,6 @@ using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace API.Controllers
@@ -26,7 +22,7 @@ namespace API.Controllers
         [HttpPost("register")]
         [AllowAnonymous]
         [IgnoreAntiforgeryToken]
-        public async Task<ActionResult<AuthUserDTO>> Register(Register.AccountRegister register)
+        public async Task<ActionResult<AuthUserDTO>> Register(Register.Command register)
         {
             return await mediator.Send(register);
         }
@@ -34,7 +30,7 @@ namespace API.Controllers
         [HttpPost("login")]
         [AllowAnonymous]
         [IgnoreAntiforgeryToken]
-        public async Task<ActionResult<AuthUserDTO>> Login(Login.AccountLogin login)
+        public async Task<ActionResult<AuthUserDTO>> Login(Login.Command login)
         {
             return await mediator.Send(login);
         }
@@ -51,7 +47,7 @@ namespace API.Controllers
         [IgnoreAntiforgeryToken]
         public async Task<ActionResult<AuthUserDTO>> Refresh()
         {
-            return await mediator.Send(new TokenRefresh.Refresh());
+            return await mediator.Send(new TokenRefresh.Query());
         }
 
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
@@ -59,7 +55,7 @@ namespace API.Controllers
         [IgnoreAntiforgeryToken]
         public async Task<ActionResult<bool>> Logout()
         {
-            return await mediator.Send(new Logout.AccountLogoutRequest());
+            return await mediator.Send(new Logout.Query());
         }
     }
 }
