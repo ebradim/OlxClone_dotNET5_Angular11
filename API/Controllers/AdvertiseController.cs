@@ -84,5 +84,12 @@ namespace API.Controllers
         {
             return await mediator.Send(new LoadFavorites.Query());
         }
+        [HttpPost("like/{id}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = AppPolicy.IS_ADVERTISE_IN_USERLIKES)]
+        [IgnoreAntiforgeryToken]
+        public async Task<ActionResult<bool>> AddToLikes(string id)
+        {
+            return await mediator.Send(new Like.Command { AdvertiseId = id });
+        }
     }
 }

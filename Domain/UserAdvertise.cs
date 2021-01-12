@@ -12,6 +12,7 @@
         public bool IsOnWarranty { get; set; }
         public Status Status { get; set; }
         public PaymentOption PaymentOption { get; set; }
+
     }
     public enum Status { Pending = 0, Sold = 1 }
     public enum PaymentOption { Cash = 0, Exchange = 1 }

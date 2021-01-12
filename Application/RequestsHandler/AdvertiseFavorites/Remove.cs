@@ -35,13 +35,13 @@ namespace Application.RequestsHandler.AdvertiseFavorites
 
 
 
-                var userAdvertise = await dataContext.UserAdvertiseFavorite
+                var userAdvertise = await dataContext.UserFavorites
                     .FirstOrDefaultAsync(x => x.AppUserId == currentUser.UserId && x.Advertise.UniqueId == request.AdvertiseId);
                 if (userAdvertise is null)
                     throw new HttpContextException(System.Net.HttpStatusCode.NotFound, new { UserAdvertise = "UserAdvertise is not exist your in favorite list" });
 
 
-                dataContext.UserAdvertiseFavorite.Remove(userAdvertise);
+                dataContext.UserFavorites.Remove(userAdvertise);
                 return await dataContext.SaveChangesAsync() > 0;
 
 

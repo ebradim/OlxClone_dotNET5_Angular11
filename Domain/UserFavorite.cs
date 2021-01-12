@@ -1,6 +1,6 @@
 ﻿namespace Domain
 {
-    public class UserAdvertiseFavorite
+    public class UserFavorite
     {
         public int AdvertiseId { get; set; }
         public Advertise Advertise { get; set; }

@@ -84,6 +84,10 @@ namespace API
                     options.AddPolicy(AppPolicy.IS_ADVERTISE_NOT_IN_FAVORITE, policy =>
                 {
                     policy.Requirements.Add(new IsAdvertiseInFavoritesRequirement(FavoriteRequirement.Removing));
+                });      
+                options.AddPolicy(AppPolicy.IS_ADVERTISE_IN_USERLIKES, policy =>
+                {
+                    policy.Requirements.Add(new IAdvertiseInUserLikesRequirement());
                 });
             });
             services.AddStackExchangeRedisCache(options =>
@@ -93,6 +97,7 @@ namespace API
             });
             services.AddTransient<IAuthorizationHandler, AdvertiseOwnerHandler>();
             services.AddTransient<IAuthorizationHandler, IsAdvertiseInFavoritesHandler>();
+            services.AddTransient<IAuthorizationHandler, IAdvertiseInUserLikesHandler>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

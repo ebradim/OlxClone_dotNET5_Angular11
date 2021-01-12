@@ -16,7 +16,8 @@ namespace Persistence
         public DbSet<Advertise> Advertise { get; set; }
         public DbSet<AdvertiseInfo> AdvertiseInfo { get; set; }
         public DbSet<UserAdvertise> UserAdvertise { get; set; }
-        public DbSet<UserAdvertiseFavorite> UserAdvertiseFavorite { get; set; }
+        public DbSet<UserFavorite> UserFavorites { get; set; }
+        public DbSet<UserLike> UserLikes { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -65,22 +66,35 @@ namespace Persistence
                   .HasForeignKey(x => x.AppUserId);
 
             });
+            builder.Entity<UserFavorite>(opt =>
+            {
 
-            builder.Entity<UserAdvertiseFavorite>(opt =>
+                opt.HasKey(x => new { x.AdvertiseId, x.AppUserId });
+
+                opt.HasOne(x => x.Advertise)
+                    .WithMany(x => x.UserFavorites)
+                    .HasForeignKey(x => x.AdvertiseId);
+
+                opt.HasOne(x => x.AppUser)
+                  .WithMany(x => x.UserFavorites)
+                  .HasForeignKey(x => x.AppUserId);
+
+            });
+            builder.Entity<UserLike>(opt =>
             {
                 opt.HasKey(x => new { x.AdvertiseId, x.AppUserId });
 
                 opt.HasOne(x => x.Advertise)
-                    .WithMany(x => x.UserAdvertiseFavorites)
+                    .WithMany(x => x.UserLikes)
                     .HasForeignKey(x => x.AdvertiseId);
 
                 opt.HasOne(x => x.AppUser)
-                  .WithMany(x => x.UserAdvertiseFavorites)
+                  .WithMany(x => x.UserLikes)
                   .HasForeignKey(x => x.AppUserId);
                 
             });
 
-
+     
 
             builder.Entity<Advertise>(opt =>
             {

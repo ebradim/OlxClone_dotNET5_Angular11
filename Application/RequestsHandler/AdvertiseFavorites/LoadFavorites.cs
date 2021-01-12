@@ -32,7 +32,7 @@ namespace Application.RequestsHandler.AdvertiseFavorites
 
 
                 var userAdvertiseFavs = await dataContext
-                    .UserAdvertiseFavorite
+                    .UserFavorites
                     .Where(x => x.AppUserId == currentUser.UserId)
                     .Select(x => new FavoriteAdvertiseDTO
                     {

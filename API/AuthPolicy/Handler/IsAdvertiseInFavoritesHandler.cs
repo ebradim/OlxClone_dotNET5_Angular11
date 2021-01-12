@@ -26,7 +26,7 @@ namespace API.AuthPolicy.Handler
                 var userId = contextAccessor.HttpContext.User?.Claims?.FirstOrDefault(x => x.Type == "_cuser")?.Value;
                 var advertiseId = contextAccessor.HttpContext.GetRouteValue("id").ToString();
 
-                var userAdvertise = await dataContext.UserAdvertiseFavorite.Where(x => x.Advertise.UniqueId == advertiseId && x.AppUserId == userId)
+                var userAdvertise = await dataContext.UserFavorites.Where(x => x.Advertise.UniqueId == advertiseId && x.AppUserId == userId)
                     .AsNoTracking().FirstOrDefaultAsync();
 
                 switch (requirement.FavoriteRequirement)

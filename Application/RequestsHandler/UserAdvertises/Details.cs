@@ -36,12 +36,19 @@ namespace Application.RequestsHandler.UserAdvertises
 
                 if (currentUser.UserId is not null || currentUser.UserId.Length > 1)
                 {
-                    var userFav = await dataContext.UserAdvertiseFavorite.AsNoTracking()
+                    var userFav = await dataContext.UserFavorites.AsNoTracking()
                             .FirstOrDefaultAsync(x => x.Advertise.UniqueId == ad.Root.AdvertiseDTO.UniqueId
                                                                             && x.AppUserId == currentUser.UserId);
                     ad.Root.IsFavorite = userFav is not null ? true : false;
 
+                    var userLike = await dataContext.UserLikes.AsNoTracking()
+                                 .FirstOrDefaultAsync(x => x.Advertise.UniqueId == ad.Root.AdvertiseDTO.UniqueId
+                                                                                 && x.AppUserId == currentUser.UserId);
+                    ad.Root.IsLiked = userLike is not null ? true : false;
+
                 }
+                var likesCount = await dataContext.UserLikes.Where(x => x.Advertise.UniqueId == request.Id).AsNoTracking().CountAsync();
+                ad.Root.Likes = likesCount;
 
                 return ad;
             }
