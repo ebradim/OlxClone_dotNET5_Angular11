@@ -23,11 +23,29 @@ namespace Infrastructure.Tokens
             this.userManager = userManager;
             key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["secret_key"]));
         }
+
+        public ClaimsPrincipal DecodeToken(string token)
+        {
+            var tokenHandler = new JwtSecurityTokenHandler()
+                .ValidateToken(token, new TokenValidationParameters
+                {
+                    IssuerSigningKey = key,
+                    SaveSigninToken = true,
+                    ValidateIssuer = false,
+                    ValidateAudience = false,
+                    ValidateLifetime = true,
+
+                    ClockSkew = TimeSpan.Zero
+                }, out var securityToken);
+            
+            return tokenHandler;
+        }
+
         public async Task<string> GenerateJwtAsync(AppUser user)
         {
             var claim = new List<Claim>
             {
-                new Claim("_cuser",user.Id)
+                new Claim("_cuser",user.Id),
             };
             var userRoles = await userManager.GetRolesAsync(user);
             foreach (var role in userRoles)
@@ -43,6 +61,7 @@ namespace Infrastructure.Tokens
                 SigningCredentials = credentials,
                 Subject = new ClaimsIdentity(claim),
                 Expires = DateTime.UtcNow.AddMinutes(30),
+                
 
             };
             var tokenHanlder = new JwtSecurityTokenHandler();

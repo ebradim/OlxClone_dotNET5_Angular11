@@ -39,7 +39,7 @@ namespace API.Controllers
         {
             return await mediator.Send(createAdd);
         }
-        [HttpGet("{id}"), Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme), IgnoreAntiforgeryToken]
+        [HttpGet("{id}"), AllowAnonymous, IgnoreAntiforgeryToken]
         public async Task<ActionResult<UserAdvertiseDTO>> GetAdAsync(string id)
         {
             return await mediator.Send(new Details.Query { Id = id});

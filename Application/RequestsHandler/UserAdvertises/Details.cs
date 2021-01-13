@@ -1,6 +1,7 @@
 ﻿using Application.Interfaces;
 using Application.Models;
 using MediatR;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
 using System.Linq;
@@ -18,12 +19,14 @@ namespace Application.RequestsHandler.UserAdvertises
         public class Handler : IRequestHandler<Query, UserAdvertiseDTO>
         {
             private readonly DataContext dataContext;
-            private readonly ICurrentUser currentUser;
+            private readonly ITokenGenerator tokenGenerator;
+            private readonly IHttpContextAccessor contextAccessor;
 
-            public Handler(DataContext dataContext,ICurrentUser currentUser)
+            public Handler(DataContext dataContext,ITokenGenerator tokenGenerator,IHttpContextAccessor contextAccessor)
             {
                 this.dataContext = dataContext;
-                this.currentUser = currentUser;
+                this.tokenGenerator = tokenGenerator;
+                this.contextAccessor = contextAccessor;
             }
             public async Task<UserAdvertiseDTO> Handle(Query request, CancellationToken cancellationToken)
             {
@@ -32,21 +35,24 @@ namespace Application.RequestsHandler.UserAdvertises
 
                 if (ad is null)
                     throw new HttpContextException(System.Net.HttpStatusCode.NotFound, new { Advertise = "Advertise is not found" });
+                var token = contextAccessor.HttpContext.Request.Cookies["_aid"];
+                if (token is null)
+                    return ad;
 
+                var userId = tokenGenerator.DecodeToken(token).Claims.FirstOrDefault(x => x.Type == "_cuser").Value;
 
-                if (currentUser.UserId is not null || currentUser.UserId.Length > 1)
-                {
-                    var userFav = await dataContext.UserFavorites.AsNoTracking()
-                            .FirstOrDefaultAsync(x => x.Advertise.UniqueId == ad.Root.AdvertiseDTO.UniqueId
-                                                                            && x.AppUserId == currentUser.UserId);
-                    ad.Root.IsFavorite = userFav is not null ? true : false;
+              
+                var userFav = await dataContext.UserFavorites.AsNoTracking()
+                        .FirstOrDefaultAsync(x => x.Advertise.UniqueId == ad.Root.AdvertiseDTO.UniqueId
+                                                                        && x.AppUserId == userId);
+                ad.Root.IsFavorite = userFav is not null ? true : false;
 
-                    var userLike = await dataContext.UserLikes.AsNoTracking()
-                                 .FirstOrDefaultAsync(x => x.Advertise.UniqueId == ad.Root.AdvertiseDTO.UniqueId
-                                                                                 && x.AppUserId == currentUser.UserId);
-                    ad.Root.IsLiked = userLike is not null ? true : false;
+                var userLike = await dataContext.UserLikes.AsNoTracking()
+                             .FirstOrDefaultAsync(x => x.Advertise.UniqueId == ad.Root.AdvertiseDTO.UniqueId
+                                                                             && x.AppUserId == userId);
+                ad.Root.IsLiked = userLike is not null ? true : false;
 
-                }
+                
                 var likesCount = await dataContext.UserLikes.Where(x => x.Advertise.UniqueId == request.Id).AsNoTracking().CountAsync();
                 ad.Root.Likes = likesCount;
 

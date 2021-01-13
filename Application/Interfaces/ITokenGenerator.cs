@@ -1,4 +1,5 @@
 using Domain;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace Application.Interfaces
@@ -11,5 +12,9 @@ namespace Application.Interfaces
 
 
         public Task<(string, string, string)> GenerateRequired(AppUser user);
+
+
+        public ClaimsPrincipal DecodeToken(string token);
+
     }
 }
