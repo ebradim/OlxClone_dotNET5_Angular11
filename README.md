@@ -22,7 +22,10 @@
 
 <p align="center"> Building OlxClone with more features with ASP.NET Core 5 API and Angular 11 using NgRx  
     <br> 
+
 </p>
+    ![ezgif com-gif-maker](https://user-images.githubusercontent.com/50548116/104408814-92f10f80-556d-11eb-8f55-308ff14fe8d3.gif)
+
 
 ## 📝 Overview
 <p align="center">
