@@ -18,6 +18,7 @@ export class AdvertiseService {
     root: '/advertise/',
     fav: '/advertise/fav/',
     search: '/advertise/search/',
+    like: '/advertise/like/',
   };
   lastTimeUpdate = 0;
   constructor(private client: HttpClient) {}
@@ -82,5 +83,16 @@ export class AdvertiseService {
     return this.client.get<IGroupedAdvertise[]>(endpoint, {
       withCredentials: true,
     });
+  }
+
+  public likeAdvertise(uniqueId: string): Observable<boolean> {
+    const endpoint = environment.url + this.routes.like + uniqueId;
+    return this.client.post<boolean>(
+      endpoint,
+      {},
+      {
+        withCredentials: true,
+      }
+    );
   }
 }

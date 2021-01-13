@@ -17,7 +17,7 @@ import { IGroupedAdvertise } from '../models/SearchAdvertise';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SearchBoxComponent implements OnInit {
-  @Output() search = new EventEmitter<string>();
+  @Output() search = new EventEmitter<KeyboardEvent>();
   searchResults$: Observable<IGroupedAdvertise[]>;
 
   constructor(private store: Store<RootState>) {

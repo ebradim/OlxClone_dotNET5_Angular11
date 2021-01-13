@@ -46,6 +46,7 @@ export const reducer = createReducer(
     fromAdvertiseAPI.deleteAdvertiseError,
     fromAdvertiseAPI.removeAdvertiseFromFavError,
     fromAdvertiseAPI.editAdvertiseError,
+    fromAdvertiseAPI.loadAdvertiseFromAPIError,
     (state, { error }) => {
       return {
         ...state,

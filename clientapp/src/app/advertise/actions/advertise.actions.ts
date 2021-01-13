@@ -25,3 +25,7 @@ export const removeFromFavorite = createAction(
   '[Advertise/API] Remove Advertise from favorite',
   props<{ uniqueId: string }>()
 );
+export const likeAdvertise = createAction(
+  '[Advertise/API] Like Advertise',
+  props<{ uniqueId: string }>()
+);

@@ -1,4 +1,9 @@
-import { Component, Input } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  Input,
+} from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { fromAdvertise } from '../actions';
@@ -15,11 +20,16 @@ import { State } from '../reducers/advertise.reducer';
   selector: 'advertie-edit',
   templateUrl: '../templates/advertise-edit.template.html',
   styleUrls: ['../styles/advertise-edit.style.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AdvertiseEditComponent {
   @Input() selectedAdvertise: '' | IResponseAdvertise | null | undefined;
   editForm: FormGroup | undefined;
-  constructor(private fb: FormBuilder, private store: Store<AdvertiseState>) {
+  constructor(
+    private fb: FormBuilder,
+    private store: Store<AdvertiseState>,
+    private changeDetector: ChangeDetectorRef
+  ) {
     setTimeout(() => {
       const toSelectedAdvertise = this.selectedAdvertise as IResponseAdvertise;
       this.editForm = this.fb.group({
@@ -57,6 +67,7 @@ export class AdvertiseEditComponent {
           Validators.required,
         ],
       });
+      this.changeDetector.markForCheck();
     }, 1);
   }
 

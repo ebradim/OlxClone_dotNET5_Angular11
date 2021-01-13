@@ -4,7 +4,7 @@
       nzPrefixIcon="search"
       placeholder="What are you looking for?"
       nz-input
-      (keyup)="search.emit($event.target.value)"
+      (keyup)="search.emit($event)"
       [nzAutocomplete]="auto"
     />
   </nz-input-group>
@@ -40,7 +40,7 @@
             <div>
               <p>
                 <span
-                  ><b style="color: green">{{children.price}}</b
+                  ><b style="color: green">${{children.price}}</b
                   >&nbsp;from</span
                 >
                 <a class="more-link" href="#" target="_blank">

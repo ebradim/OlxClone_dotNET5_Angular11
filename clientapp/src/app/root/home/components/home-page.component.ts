@@ -41,7 +41,8 @@ export class HomePageComponent {
     this.isHomeError$ = this.store.pipe(select(isHomeAdsError));
   }
 
-  search(term: string): void {
+  search(event: KeyboardEvent): void {
+    const term = (event.target as HTMLInputElement).value;
     this.store.dispatch(fromHomeActions.searchForAdvertises({ term }));
   }
 }

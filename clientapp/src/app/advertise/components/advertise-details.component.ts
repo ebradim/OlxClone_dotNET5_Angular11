@@ -1,4 +1,10 @@
-import { Component, OnDestroy, TemplateRef } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  OnDestroy,
+  TemplateRef,
+} from '@angular/core';
 import { select, Store } from '@ngrx/store';
 import { NzModalRef, NzModalService } from 'ng-zorro-antd/modal';
 import { Observable } from 'rxjs';
@@ -13,6 +19,7 @@ import { State } from '../reducers/advertise.reducer';
   selector: 'advertise-details',
   templateUrl: '../templates/advertise-details.template.html',
   styleUrls: ['../styles/advertise-details.style.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AdvertiseDetailsComponent implements OnDestroy {
   currentUser$: Observable<IUser | null>;
@@ -51,5 +58,9 @@ export class AdvertiseDetailsComponent implements OnDestroy {
   }
   deleteAdvertise(uniqueId: string): void {
     this.store.dispatch(fromAdvertise.deleteAdvertise({ uniqueId }));
+  }
+
+  likeAdvertise(uniqueId: string): void {
+    this.store.dispatch(fromAdvertise.likeAdvertise({ uniqueId }));
   }
 }

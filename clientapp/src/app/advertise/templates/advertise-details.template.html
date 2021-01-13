@@ -38,39 +38,46 @@
 
     <!--extra-->
     <nz-page-header-extra>
-      <button nz-button class="likebutton" nzSize="large" nzShape="round">
-        <i nz-icon nzType="like" nzTheme="outline"></i>
-        Like
-      </button>
-      <button nz-button class="offerbutton" nzSize="large" nzShape="round">
-        <i nz-icon nzType="send"></i>Send offer
-      </button>
-      <ng-container
-        *ngIf="advertise.userAdvertise.isFavorite else addFavoriteTpl"
-      >
-        <button
-          nz-button
-          class="staredbutton"
-          nzSize="large"
-          nzShape="round"
-          (click)="removeFromFavorite(advertise.userAdvertise.advertise.uniqueId)"
-        >
-          <i nz-icon nzType="check"></i>Added to favorites
+      <ng-container *ngIf="currentUser$|async as user; else guestTpl">
+        <ng-container *ngIf="!advertise.userAdvertise.isLiked">
+          <button
+            nz-button
+            class="likebutton"
+            nzSize="large"
+            nzShape="round"
+            (click)="likeAdvertise(advertise.userAdvertise.advertise.uniqueId)"
+          >
+            <i nz-icon nzType="like" nzTheme="outline"></i>
+            Like
+          </button>
+        </ng-container>
+        <button nz-button class="offerbutton" nzSize="large" nzShape="round">
+          <i nz-icon nzType="send"></i>Send offer
         </button>
-      </ng-container>
-      <ng-template #addFavoriteTpl>
-        <button
-          nz-button
-          class="starbutton"
-          nzSize="large"
-          nzShape="round"
-          (click)="addToFavorite(advertise.userAdvertise.advertise.uniqueId)"
+        <ng-container
+          *ngIf="advertise.userAdvertise.isFavorite else addFavoriteTpl"
         >
-          <i nz-icon nzType="star"></i>Add to favorites
-        </button>
-      </ng-template>
-
-      <ng-container *ngIf="currentUser$|async as user">
+          <button
+            nz-button
+            class="staredbutton"
+            nzSize="large"
+            nzShape="round"
+            (click)="removeFromFavorite(advertise.userAdvertise.advertise.uniqueId)"
+          >
+            <i nz-icon nzType="check"></i>Added to favorites
+          </button>
+        </ng-container>
+        <ng-template #addFavoriteTpl>
+          <button
+            nz-button
+            class="starbutton"
+            nzSize="large"
+            nzShape="round"
+            (click)="addToFavorite(advertise.userAdvertise.advertise.uniqueId)"
+          >
+            <i nz-icon nzType="star"></i>Add to favorites
+          </button>
+        </ng-template>
         <ng-container
           *ngIf="user.userName === advertise.userAdvertise.user.userName"
         >
@@ -94,6 +101,36 @@
           </button>
         </ng-container>
       </ng-container>
+      <ng-template #guestTpl>
+        <button
+          nz-button
+          class="likebutton"
+          nzSize="large"
+          nzShape="round"
+          [routerLink]="['/auth/login']"
+        >
+          <i nz-icon nzType="like" nzTheme="outline"></i>
+          Like
+        </button>
+        <button
+          nz-button
+          class="offerbutton"
+          nzSize="large"
+          nzShape="round"
+          [routerLink]="['/auth/login']"
+        >
+          <i nz-icon nzType="send"></i>Send offer
+        </button>
+        <button
+          nz-button
+          class="starbutton"
+          nzSize="large"
+          nzShape="round"
+          [routerLink]="['/auth/login']"
+        >
+          <i nz-icon nzType="star"></i>Add to favorites
+        </button>
+      </ng-template>
     </nz-page-header-extra>
 
     <!--content-->
@@ -107,8 +144,19 @@
               />
             </svg>
           </i>
-          &nbsp; 500 liked this</label
-        >
+          &nbsp;
+          <ng-container *ngIf="advertise.userAdvertise.likes>0 else nolikesTpl">
+            <ng-container
+              *ngIf="advertise.userAdvertise.isLiked; else publikesTpl"
+            >
+              You liked this ,Total: {{advertise.userAdvertise.likes }}
+            </ng-container>
+            <ng-template #publikesTpl>
+              {{advertise.userAdvertise.likes}}
+            </ng-template>
+          </ng-container>
+          <ng-template #nolikesTpl> Be the first one to like this </ng-template>
+        </label>
       </div>
     </nz-page-header-content>
     <nz-page-header-footer>

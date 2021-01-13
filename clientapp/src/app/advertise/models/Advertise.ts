@@ -35,6 +35,8 @@ export interface IRoot {
   paymentOption: number;
   status: number;
   isFavorite: boolean;
+  isLiked: boolean;
+  likes: number;
   advertise: IAdvertise;
   user: User;
 }

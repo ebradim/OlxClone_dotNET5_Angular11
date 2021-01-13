@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { RootState } from 'src/app/root/reducers';
@@ -11,6 +11,7 @@ import { AdvertiseState } from '../reducers';
   selector: 'add-advertise',
   templateUrl: '../templates/add-advertise.template.html',
   styleUrls: ['../styles/add-advertise.style.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AddAdvertiseComponent {
   createAdForm: FormGroup;

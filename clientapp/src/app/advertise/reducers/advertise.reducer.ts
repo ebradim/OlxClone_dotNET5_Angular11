@@ -84,6 +84,27 @@ export const reducer = createReducer(
       },
       state
     );
+  }),
+  on(fromAdvertiseAPI.likeAdvertiseSuccess, (state) => {
+    return adapter.updateOne(
+      {
+        id: state.selectedAdvertiseId as string,
+        changes: {
+          ...(state.entities[
+            state.selectedAdvertiseId as string
+          ] as IResponseAdvertise),
+          userAdvertise: {
+            ...(state.entities[state.selectedAdvertiseId as string]
+              ?.userAdvertise as IRoot),
+            isLiked: true,
+            likes:
+              (state.entities[state.selectedAdvertiseId as string]
+                ?.userAdvertise as IRoot).likes + 1,
+          },
+        },
+      },
+      state
+    );
   })
 
   // on error leave them in state

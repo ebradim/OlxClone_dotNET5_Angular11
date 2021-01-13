@@ -64,7 +64,10 @@ export class AuthEffects {
           if (
             this.activatedRoute.snapshot.queryParams.redirect === 'create-ad'
           ) {
-            this.router.navigate(['../advertise/create']);
+            this.router.navigate(['/advertise/create']);
+          } else if (this.activatedRoute.snapshot.queryParams.redirectView) {
+            const id = this.activatedRoute.snapshot.queryParams.redirectView;
+            this.router.navigate(['/advertise', id]);
           } else {
             this.router.navigate(['/']);
           }

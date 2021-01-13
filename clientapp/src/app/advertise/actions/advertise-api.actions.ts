@@ -1,3 +1,4 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { createAction, props } from '@ngrx/store';
 import { IResponseAdvertise } from '../models/Advertise';
 
@@ -12,6 +13,10 @@ export const addAdvertiseError = createAction(
 export const loadAdvertiseFromAPISuccess = createAction(
   '[Advertise/API] Load Advertise API Success',
   props<{ advertise: IResponseAdvertise }>()
+);
+export const loadAdvertiseFromAPIError = createAction(
+  '[Advertise/API] Load Advertise API Error',
+  props<{ error: HttpErrorResponse }>()
 );
 export const deleteAdvertiseSuccess = createAction(
   '[Advertise/API] Delete Advertise Success',
@@ -44,5 +49,13 @@ export const removeAdvertiseFromFavSuccess = createAction(
 );
 export const removeAdvertiseFromFavError = createAction(
   '[Advertise/API] Remove Advertise From Fav Error',
+  props<{ error: any }>()
+);
+export const likeAdvertiseSuccess = createAction(
+  '[Advertise/API] Like Advertise Success',
+  props<{ result: boolean }>()
+);
+export const likeAdvertiseError = createAction(
+  '[Advertise/API] Like Advertise Error',
   props<{ error: any }>()
 );

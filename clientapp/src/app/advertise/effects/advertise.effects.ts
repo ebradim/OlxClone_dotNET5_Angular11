@@ -114,7 +114,21 @@ export class AdvertiseEffects {
       })
     )
   );
-
+  likeAdvertise$ = createEffect(() =>
+    this.action$.pipe(
+      ofType(fromAdvertise.likeAdvertise),
+      map((action) => action),
+      exhaustMap(({ uniqueId }) => {
+        return this.advertiseService.likeAdvertise(uniqueId).pipe(
+          throttleTime(5000),
+          map((result) => fromAdvertiseAPI.likeAdvertiseSuccess({ result })),
+          catchError((error) =>
+            of(fromAdvertiseAPI.likeAdvertiseError({ error }))
+          )
+        );
+      })
+    )
+  );
   afterPublishingAd$ = createEffect(
     () =>
       this.action$.pipe(

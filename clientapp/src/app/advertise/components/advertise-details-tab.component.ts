@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { EventManager } from '@angular/platform-browser';
 import { NzTabPosition } from 'ng-zorro-antd/tabs';
 import { selectAdvertise } from '../actions/advertise.actions';
@@ -9,6 +9,7 @@ import { IResponseAdvertise } from '../models/Advertise';
   selector: 'advertise-details-tab',
   templateUrl: '../templates/advertise-details-tab.template.html',
   styleUrls: ['../styles/advertise-details-tab.style.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AdvertiseDetailsTabComponent {
   tabposition: NzTabPosition = 'left';

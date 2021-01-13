@@ -63,7 +63,12 @@ export class AdvertiseExistGuard implements CanActivate {
             }
           );
         }
-        this.router.navigate(['./notfound']);
+        if (error.status === 401) {
+          this.router.navigate(['/auth/login'], {
+            queryParams: { redirectView: id },
+          });
+        }
+
         return of(false);
       })
     );
