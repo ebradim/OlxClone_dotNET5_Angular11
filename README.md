@@ -19,10 +19,13 @@
 </div>
 
 ---
+![ezgif com-gif-maker](https://user-images.githubusercontent.com/50548116/104409027-11e64800-556e-11eb-8947-c18d1bc87dcb.gif)
 
 <p align="center"> Building OlxClone with more features with ASP.NET Core 5 API and Angular 11 using NgRx  
     <br> 
+
 </p>
+
 
 ## 📝 Overview
 <p align="center">
