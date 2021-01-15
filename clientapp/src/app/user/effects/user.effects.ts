@@ -6,6 +6,7 @@ import {
   exhaustMap,
   map,
   switchMap,
+  tap,
   throttleTime,
 } from 'rxjs/operators';
 import { fromFavoriteAdvertisesActions, fromUserAPIActions } from '../actions';

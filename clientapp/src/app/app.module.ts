@@ -9,7 +9,7 @@ import { StoreRouterConnectingModule } from '@ngrx/router-store';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NZ_I18N } from 'ng-zorro-antd/i18n';
 import { en_US } from 'ng-zorro-antd/i18n';
-import { registerLocaleData } from '@angular/common';
+import { CommonModule, registerLocaleData } from '@angular/common';
 import en from '@angular/common/locales/en';
 import { AppRouting } from './app.routing';
 import { NzMenuModule } from 'ng-zorro-antd/menu';
@@ -33,6 +33,8 @@ import { ErrorComponentsModule } from './errors/errors.module';
 import { HomeEffects } from './root/home/effects/home.effects';
 import { NzNotificationModule } from 'ng-zorro-antd/notification';
 import { FormsModule } from '@angular/forms';
+import { NzBadgeModule } from 'ng-zorro-antd/badge';
+import { NotificationItemComponent } from './root/components/notification-item.component';
 
 const icons: IconDefinition[] = [
   SearchOutline,
@@ -46,8 +48,9 @@ const icons: IconDefinition[] = [
 registerLocaleData(en);
 
 @NgModule({
-  declarations: [AppComponent, NavbarComponent],
+  declarations: [AppComponent, NavbarComponent, NotificationItemComponent],
   imports: [
+    CommonModule,
     BrowserModule,
     HttpClientModule,
     ErrorComponentsModule,
@@ -61,6 +64,7 @@ registerLocaleData(en);
     NzButtonModule,
     NzAvatarModule,
     NzDropDownModule,
+    NzBadgeModule,
     NzIconModule.forChild(icons),
 
     BrowserAnimationsModule,

@@ -7,3 +7,6 @@ export const searchForAdvertises = createAction(
   '[Advertise/API/Home] Search For Advertises',
   props<{ term: string }>()
 );
+export const establishWebsocket = createAction(
+  '[Hubs/Offers/Establish] Establish HUB'
+);

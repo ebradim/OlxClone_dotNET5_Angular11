@@ -21,6 +21,11 @@ namespace Domain
         public ICollection<UserFavorite> UserFavorites { get; set; }
         public ICollection<UserLike> UserLikes { get; set; }
 
+        public ICollection<UserOffer> SentOffers { get; set; }
+        public ICollection<UserOffer> ReceivedOffers { get; set; }
+
+   
+
 
     }
 }

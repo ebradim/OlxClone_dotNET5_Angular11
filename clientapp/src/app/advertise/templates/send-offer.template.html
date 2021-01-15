@@ -1,0 +1,39 @@
+<div class="offer-form-container">
+  <form nz-form [formGroup]="offerForm" class="offer-form">
+    <nz-form-control [nzSpan]="12" nzHasFeedback [nzErrorTip]="titleErrorTpl">
+      <input nz-input formControlName="title" placeholder="Title" type="text" />
+      <ng-template #titleErrorTpl let-control>
+        <ng-container *ngIf="control.hasError('required')">
+          Title is required<br />
+        </ng-container>
+        <ng-container *ngIf="control.hasError('pattern')">
+          <strong>Invalid input</strong> <br />
+          <i>Minimum length is 3 and Maximum length is 10</i>
+        </ng-container>
+      </ng-template>
+    </nz-form-control>
+    <br />
+    <nz-form-control [nzSpan]="12" nzHasFeedback [nzErrorTip]="msgErrorTpl">
+      <textarea
+        [nzAutosize]="{ minRows: 6, maxRows: 10 }"
+        nz-input
+        formControlName="message"
+        placeholder="Write your message..."
+        type="text"
+      ></textarea>
+
+      <ng-template #msgErrorTpl let-control>
+        <ng-container *ngIf="control.hasError('required')">
+          Message is required!<br />
+        </ng-container>
+        <ng-container *ngIf="control.hasError('pattern')">
+          <strong>Invalid input</strong> <br />
+          <i
+            >Message should not be less than 5 characters and Maximum length is
+            200</i
+          >
+        </ng-container>
+      </ng-template>
+    </nz-form-control>
+  </form>
+</div>

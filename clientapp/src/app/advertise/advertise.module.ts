@@ -31,6 +31,7 @@ import { AdvertiseEditComponent } from './components/advertise-edit.component';
 import { StoreModule } from '@ngrx/store';
 import { reducers } from './reducers';
 import { NzMessageModule } from 'ng-zorro-antd/message';
+import { SendOfferComponent } from './components/send-offer.component';
 
 const icons: IconDefinition[] = [
   InfoCircleOutline,
@@ -44,6 +45,7 @@ const icons: IconDefinition[] = [
     AdvertiseDetailsComponent,
     AdvertiseDetailsTabComponent,
     AdvertiseEditComponent,
+    SendOfferComponent,
   ],
   imports: [
     CommonModule,

@@ -24,6 +24,7 @@ namespace Application.RequestsHandler.User
             public string LastName { get; set; }
             public string UserName { get; set; }
             public string Password { get; set; }
+            public string Email { get; set; }
         }
         public class Validator : AbstractValidator<Command>
         {
@@ -34,6 +35,7 @@ namespace Application.RequestsHandler.User
                 RuleFor(x => x.UserName).NotEmpty().WithMessage("Your UserName is required").MinimumLength(5).WithMessage("Min length is 5").MaximumLength(18).WithMessage("Max length is 18").Matches("^[a-z]([a-zA-z0-9_]){5,18}$").WithMessage("Must start with lower case and letter, numbers and underscore are allowed with minimum length 5 and maxlenght of 18");
 
                 RuleFor(x => x.Password).NotEmpty().WithMessage("Your password is required").MinimumLength(6).WithMessage("Min length is 6");
+                RuleFor(x => x.Email).EmailAddress();
             }
         }
         public class Handler : IRequestHandler<Command, AuthUserDTO>
@@ -63,7 +65,9 @@ namespace Application.RequestsHandler.User
                 {
                     FirstName = request.FirstName,
                     LastName = request.LastName,
-                    UserName = request.UserName
+                    UserName = request.UserName,
+                    Email = request.Email
+
                 };
                 var registerResult = await userManager.CreateAsync(user, request.Password);
                 var roleResult = await userManager.AddToRoleAsync(user, "Normal");

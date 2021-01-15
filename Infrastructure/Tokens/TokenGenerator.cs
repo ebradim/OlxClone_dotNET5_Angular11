@@ -46,6 +46,7 @@ namespace Infrastructure.Tokens
             var claim = new List<Claim>
             {
                 new Claim("_cuser",user.Id),
+                new Claim("_unid",user.UserName),
             };
             var userRoles = await userManager.GetRolesAsync(user);
             foreach (var role in userRoles)

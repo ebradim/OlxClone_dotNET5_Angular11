@@ -3,6 +3,7 @@ import * as fromAuth from './user-api.reducer';
 import * as fromAdvertiseHome from '../home/reducers/advertises-home.reducer';
 import * as fromHomeAPI from '../home/reducers/advertises-home-api.reducer';
 import * as fromSearch from '../home/reducers/advertise-search.reducer';
+import * as fromOffers from '../home/reducers/hubs-offers.reducer';
 import {
   createFeatureSelector,
   ActionReducer,
@@ -17,6 +18,7 @@ export interface RootState {
   homeAdvertisesAPI: fromHomeAPI.State;
   homeAdvertises: fromAdvertiseHome.State;
   search: fromSearch.State;
+  offersHub: fromOffers.State;
 }
 
 export const featureSelector = createFeatureSelector<RootState>('root');
@@ -33,6 +35,10 @@ export const homeState = createSelector(
   (x) => x.homeAdvertisesAPI
 );
 export const searchState = createSelector(featureSelector, (x) => x.search);
+export const offersHubState = createSelector(
+  featureSelector,
+  (x) => x.offersHub
+);
 export const {
   selectCurrentRoute, // select the current route
   selectFragment, // select the current route fragment
@@ -62,13 +68,21 @@ export const selectHomeAdvertises = createSelector(
   advertiseHomeState,
   fromAdvertiseHome.getHomeAds
 );
-
+export const selectOffersHubEntities = createSelector(
+  offersHubState,
+  fromOffers.getOfferEntities
+);
+export const selectOffersHubEntitiesCount = createSelector(
+  offersHubState,
+  fromOffers.getOfferEntitiesCount
+);
 export const reducers: ActionReducerMap<RootState> = {
   router: fromRouter.routerReducer,
   auth: fromAuth.reducer,
   homeAdvertisesAPI: fromHomeAPI.reducer,
   homeAdvertises: fromAdvertiseHome.reducer,
   search: fromSearch.reducer,
+  offersHub: fromOffers.reducer,
 };
 export function debug(reducer: ActionReducer<any>): ActionReducer<any> {
   return (state, action) => {

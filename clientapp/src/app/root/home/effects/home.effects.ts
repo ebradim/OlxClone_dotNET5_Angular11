@@ -17,7 +17,7 @@ import { fromAdvertise } from 'src/app/advertise/actions';
 import { AdvertiseService } from 'src/app/advertise/services/advertise.service';
 import { fromAPIActions, fromHomeActions } from '../../actions';
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class HomeEffects {
   constructor(
     private notification: NzNotificationService,
@@ -63,7 +63,21 @@ export class HomeEffects {
       })
     )
   );
+  receivingOffer = createEffect(
+    () =>
+      this.action$.pipe(
+        ofType(fromAPIActions.onReceivedOfferSuccess),
 
+        map((action) => action),
+        tap((action) => {
+          const offer = action.data;
+          const title = 'New offer from ' + offer.senderName;
+          const body = offer.message;
+          this.notification.info(title, body);
+        })
+      ),
+    { dispatch: false }
+  );
   errorCatch$ = createEffect(
     () =>
       this.action$.pipe(

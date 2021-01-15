@@ -49,6 +49,7 @@ export class AuthRegisterComponent {
         '',
         [Validators.pattern('^[A-Z]([a-z]){2,10}$'), Validators.required],
       ],
+      email: ['', [Validators.email, Validators.required]],
       password: ['', [Validators.required, Validators.minLength(6)]],
       confirm: ['', [this.validateConfirmPassword, Validators.minLength(6)]],
       checked: [false, Validators.requiredTrue],

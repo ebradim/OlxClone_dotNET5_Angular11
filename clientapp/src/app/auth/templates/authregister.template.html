@@ -80,6 +80,19 @@
     </nz-form-item>
 
     <nz-form-item>
+      <nz-form-label [nzSpan]="7" nzRequired>Email</nz-form-label>
+      <nz-form-control [nzSpan]="12" nzHasFeedback [nzErrorTip]="userErrorTpl">
+        <input nz-input formControlName="email" placeholder="Email" />
+
+        <ng-template #userErrorTpl let-control>
+          <ng-container *ngIf="control.hasError('email')">
+            Please enter a valid email!
+          </ng-container>
+        </ng-template>
+      </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item>
       <nz-form-label [nzSpan]="7" nzRequired>Password</nz-form-label>
       <nz-form-control
         [nzSpan]="12"

@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
+import { Store } from '@ngrx/store';
 import { NzNotificationService } from 'ng-zorro-antd/notification';
 import { interval, Observable, of, timer } from 'rxjs';
 import {
@@ -15,7 +16,8 @@ import {
   takeUntil,
   tap,
 } from 'rxjs/operators';
-import { fromAPIActions, fromTokenActions } from '../actions';
+import { fromAPIActions, fromHomeActions, fromTokenActions } from '../actions';
+import { RootState } from '../reducers';
 import { TokenService } from '../service/token.service';
 
 @Injectable()
@@ -61,6 +63,8 @@ export class TokenEffects {
 
     { dispatch: false }
   );
+
+  //          tap(() => this.store.dispatch(fromHomeActions.establishWebsocket())),
 
   onErrorAutoLogin = createEffect(
     () => () =>

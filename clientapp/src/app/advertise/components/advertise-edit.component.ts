@@ -72,28 +72,33 @@ export class AdvertiseEditComponent {
   }
 
   submit(): void {
-    const toSelectedAdvertise = this.selectedAdvertise as IResponseAdvertise;
+    if (this.editForm?.touched) {
+      const toSelectedAdvertise = this.selectedAdvertise as IResponseAdvertise;
 
-    const advertise: IEditAdvertise = {
-      isNegotiate: toSelectedAdvertise.userAdvertise.isNegotiate as boolean,
-      isOnWarranty: toSelectedAdvertise.userAdvertise.isOnWarranty as boolean,
-      category: this.editForm?.get('category')?.value,
-      paymentOption: parseInt(this.editForm?.get('paymentOption')?.value, 0),
-      status: parseInt(this.editForm?.get('status')?.value, 0),
-      district: toSelectedAdvertise.userAdvertise.advertise.district as string,
-      city: toSelectedAdvertise.userAdvertise.advertise.city as string,
-      price: parseInt(this.editForm?.get('price')?.value, 0),
+      const advertise: IEditAdvertise = {
+        isNegotiate: toSelectedAdvertise.userAdvertise.isNegotiate as boolean,
+        isOnWarranty: toSelectedAdvertise.userAdvertise.isOnWarranty as boolean,
+        category: this.editForm?.get('category')?.value,
+        paymentOption: parseInt(this.editForm?.get('paymentOption')?.value, 0),
+        status: parseInt(this.editForm?.get('status')?.value, 0),
+        district: toSelectedAdvertise.userAdvertise.advertise
+          .district as string,
+        city: toSelectedAdvertise.userAdvertise.advertise.city as string,
+        price: parseInt(this.editForm?.get('price')?.value, 0),
 
-      advertiseInfo: {
-        color: this.editForm?.get('color')?.value,
-        hint: this.editForm?.get('hint')?.value,
-        description: this.editForm?.get('description')?.value,
-        quantity: this.editForm?.get('quantity')?.value,
-      },
-    };
-    const uniqueId = toSelectedAdvertise.userAdvertise.advertise
-      .uniqueId as string;
+        advertiseInfo: {
+          color: this.editForm?.get('color')?.value,
+          hint: this.editForm?.get('hint')?.value,
+          description: this.editForm?.get('description')?.value,
+          quantity: this.editForm?.get('quantity')?.value,
+        },
+      };
+      const uniqueId = toSelectedAdvertise.userAdvertise.advertise
+        .uniqueId as string;
 
-    this.store.dispatch(fromAdvertise.editAdvertise({ uniqueId, advertise }));
+      this.store.dispatch(fromAdvertise.editAdvertise({ uniqueId, advertise }));
+    } else {
+      console.log('didnt send update');
+    }
   }
 }

@@ -80,7 +80,10 @@ export class AuthEffects {
     () =>
       this.action$.pipe(
         ofType(fromAPIActions.logoutSuccess),
-        tap(() => this.router.navigate(['/auth/login']))
+        tap(() => {
+          this.router.navigate(['/auth/login']);
+          window.location.reload();
+        })
       ),
     { dispatch: false }
   );

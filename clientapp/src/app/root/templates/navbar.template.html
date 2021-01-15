@@ -87,76 +87,119 @@
       </ul>
     </li>
   </div>
-
-  <div *ngIf="user$ |async as logged;else nouser">
-    <div
-      class="user-info"
-      nz-dropdown
-      nzTrigger="click"
-      [nzDropdownMenu]="menu"
-    >
+  <ng-container *ngIf="user$ |async as logged;else nouser">
+    <div>
       <div
-        nz-button
-        nzType="dashed"
-        class="btn-profile"
-        [routerLink]="['/auth/login']"
+        class="user-info"
+        nz-dropdown
+        nzTrigger="click"
+        [nzDropdownMenu]="menu"
       >
-        <nz-avatar
-          class="user-info-image"
-          nzIcon="user"
-          nzSrc="//zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
-        ></nz-avatar>
-        {{logged.firstName}} {{logged.lastName}}
-      </div>
-    </div>
-    <nz-dropdown-menu #menu="nzDropdownMenu">
-      <ul nz-menu class="profile-dropdown">
-        <li
-          nz-menu-item
-          style="margin: 10px; padding: 10px; font-weight: bold"
-          [routerLink]="['/advertise/create']"
+        <div
+          nz-button
+          nzType="dashed"
+          class="btn-profile"
+          [routerLink]="['/auth/login']"
         >
-          <i nz-icon nzType="appstore-add" nzTheme="outline"></i>Create new
-          Advertise
-        </li>
-        <li nz-menu-divider></li>
+          <nz-avatar
+            class="user-info-image"
+            nzIcon="user"
+            nzSrc="//zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
+          ></nz-avatar>
+          {{logged.firstName}} {{logged.lastName}}
+        </div>
+      </div>
+      <nz-dropdown-menu #menu="nzDropdownMenu">
+        <ul nz-menu class="profile-dropdown">
+          <li
+            nz-menu-item
+            style="margin: 10px; padding: 10px; font-weight: bold"
+            [routerLink]="['/advertise/create']"
+          >
+            <i nz-icon nzType="appstore-add" nzTheme="outline"></i>Create new
+            Advertise
+          </li>
+          <li nz-menu-divider></li>
 
-        <li nz-menu-group nzTitle="Account">
-          <ul>
-            <li nz-menu-item style="font-weight: 700">
-              <i nz-icon nzType="user" nzTheme="outline"></i>Profile
-            </li>
-            <li
-              nz-menu-item
-              style="font-weight: 700"
-              [routerLink]="['/user/favorites']"
-            >
-              <i nz-icon nzType="star" nzTheme="outline"></i>Favorites
-            </li>
+          <li nz-menu-group nzTitle="Account">
+            <ul>
+              <li nz-menu-item style="font-weight: 700">
+                <i nz-icon nzType="user" nzTheme="outline"></i>Profile
+              </li>
+              <li
+                nz-menu-item
+                style="font-weight: 700"
+                [routerLink]="['/user/favorites']"
+              >
+                <i nz-icon nzType="star" nzTheme="outline"></i>Favorites
+              </li>
 
-            <li nz-menu-divider></li>
+              <li nz-menu-divider></li>
 
-            <button
-              nz-button
-              nzType="primary"
-              [nzSize]="'small'"
-              (click)="logOut()"
-              style="
-                width: 100%;
-                height: 30px;
-                padding-right: 15px;
-                margin: 10px 0 10px 0;
-              "
-            >
-              <i nz-icon nzType="logout" nzTheme="outline"></i>
-              Logout
-            </button>
+              <button
+                nz-button
+                nzType="primary"
+                [nzSize]="'small'"
+                (click)="logOut()"
+                style="
+                  width: 100%;
+                  height: 30px;
+                  padding-right: 15px;
+                  margin: 10px 0 10px 0;
+                "
+              >
+                <i nz-icon nzType="logout" nzTheme="outline"></i>
+                Logout
+              </button>
+            </ul>
+          </li>
+        </ul>
+      </nz-dropdown-menu>
+    </div>
+    <a
+      nz-dropdown
+      style="margin: 10px 0px 0px 5px"
+      nzTrigger="click"
+      [nzDropdownMenu]="notifications"
+    >
+      <nz-badge
+        [nzCount]=" notificationCount$| async"
+        [nzStyle]="{ backgroundColor: '#52c41a' }"
+      >
+        <a class="head-example">
+          <i
+            nz-icon
+            style="font-size: 22px"
+            nzType="bell"
+            nzSize="large"
+            nzTheme="outline"
+          ></i
+        ></a>
+      </nz-badge>
+    </a>
+    <nz-dropdown-menu #notifications="nzDropdownMenu">
+      <ng-container *ngIf="notification$|async as noti;else nolive">
+        <ng-container *ngIf="noti.length>0; else emptynoti">
+          <ul nz-menu class="notification-drop">
+            <notification-item
+              *ngFor="let item of noti"
+              [NavItem]="item"
+            ></notification-item>
           </ul>
-        </li>
-      </ul>
+        </ng-container>
+      </ng-container>
+      <ng-template #emptynoti>
+        <ul nz-menu>
+          <p style="margin: 2%">There are no currently live notifications</p>
+        </ul>
+      </ng-template>
+      <ng-template #nolive>
+        <ul nz-menu>
+          There are no currently live notifications
+        </ul>
+      </ng-template>
     </nz-dropdown-menu>
-  </div>
-
+  </ng-container>
   <ng-template #nouser>
     <div class="btns-auth-container">
       <button

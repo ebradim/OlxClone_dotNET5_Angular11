@@ -4,6 +4,7 @@ import {
   IResponseHomeAdvertise,
 } from 'src/app/advertise/models/Advertise';
 import { IUser } from '../../auth/models/API';
+import { IReceivedOffer } from '../home/models/OffersHubs';
 import { IGroupedAdvertise } from '../home/models/SearchAdvertise';
 
 export const loginSuccess = createAction(
@@ -45,4 +46,11 @@ export const loadHomeAdvertisesError = createAction(
 export const searchForAdvertisesSuccess = createAction(
   '[Advertise/API/Home] Search For Advertise Success',
   props<{ result: IGroupedAdvertise[] }>()
+);
+export const establishWebsocketSuccess = createAction(
+  '[Hubs/Offers/Establish] Establish HUB Success'
+);
+export const onReceivedOfferSuccess = createAction(
+  '[Hubs/Offers/Establish] Received Offer Success',
+  props<{ data: IReceivedOffer }>()
 );

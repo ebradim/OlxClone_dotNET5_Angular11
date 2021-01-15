@@ -51,9 +51,20 @@
             Like
           </button>
         </ng-container>
-        <button nz-button class="offerbutton" nzSize="large" nzShape="round">
-          <i nz-icon nzType="send"></i>Send offer
-        </button>
+        <ng-container
+          *ngIf="user.userName !== advertise.userAdvertise.user.userName"
+        >
+          <button
+            nz-button
+            class="offerbutton"
+            nzSize="large"
+            nzShape="round"
+            (click)="openOfferModel(advertise.userAdvertise.user.userName,offerTitleTpl)"
+          >
+            <i nz-icon nzType="send"></i>Send Offer
+          </button>
+        </ng-container>
+
         <ng-container
           *ngIf="advertise.userAdvertise.isFavorite else addFavoriteTpl"
         >
@@ -181,6 +192,20 @@
   </ng-template>
   <ng-template #modalFooter let-footerRef="modalRef">
     <button nz-button (click)="modalRef?.destroy()">Close</button>
+  </ng-template>
+  <ng-template #offerTitleTpl let-AdRef="advertise">
+    <div style="display: flex; flex-flow: column wrap">
+      <h2 style="font-family: Quicksand">Send Private Message</h2>
+      <p nonce style="color: gray; font-family: Assistant">
+        <span style="color: black">To&nbsp;</span>
+        <span style="font-family: Roboto"
+          >@{{advertise.userAdvertise.user.userName}}</span
+        >
+      </p>
+    </div>
+    <b style="font-family: Quicksand"
+      >Please be more specific about the item you are offering</b
+    >
   </ng-template>
 </div>
 

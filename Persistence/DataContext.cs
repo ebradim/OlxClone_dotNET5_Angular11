@@ -18,6 +18,7 @@ namespace Persistence
         public DbSet<UserAdvertise> UserAdvertise { get; set; }
         public DbSet<UserFavorite> UserFavorites { get; set; }
         public DbSet<UserLike> UserLikes { get; set; }
+        public DbSet<UserOffer> UserOffers { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -94,7 +95,7 @@ namespace Persistence
                 
             });
 
-     
+      
 
             builder.Entity<Advertise>(opt =>
             {
@@ -107,6 +108,8 @@ namespace Persistence
 
             });
 
+
+    
             builder.Entity<AdvertiseInfo>(opt =>
             {
                 opt.HasIndex(x => new { x.Id,x.AdvertiseId});
@@ -114,6 +117,23 @@ namespace Persistence
 
             });
 
+
+            builder.Entity<UserOffer>(opt =>
+            {
+                opt.HasKey(x => x.Id);
+
+                opt.HasOne(x => x.Sender)
+                    .WithMany(x => x.SentOffers)
+                    .HasForeignKey(x => x.SenderId);
+
+                opt.HasOne(x => x.Receiver)
+                    .WithMany(x => x.ReceivedOffers)
+                    .HasForeignKey(x => x.ReceiverId);
+
+                opt.HasIndex(x => new { x.SenderId, x.ReceiverId });
+            });
+        
+          
         }
 
     }

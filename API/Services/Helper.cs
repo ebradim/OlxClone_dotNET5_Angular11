@@ -1,5 +1,8 @@
+using API.AuthPolicy;
+using API.AuthPolicy.Requirements;
 using Domain;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -47,7 +50,11 @@ namespace API.Services
         {
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["secret_key"]));
 
-            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(opt =>
+            services.AddAuthentication(options=> 
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            }).AddJwtBearer(opt =>
             {
                 opt.TokenValidationParameters = new TokenValidationParameters
                 {
@@ -82,5 +89,25 @@ namespace API.Services
             });
         }
 
+
+        public static void AddCustomPolicies(AuthorizationOptions options)
+        {
+            options.AddPolicy(AppPolicy.IS_ADVERTISE_OWNER, policy =>
+            {
+                policy.Requirements.Add(new AdvertiseOwnerRequirement());
+            });
+            options.AddPolicy(AppPolicy.IS_ADVERTISE_IN_FAVORITE, policy =>
+            {
+                policy.Requirements.Add(new IsAdvertiseInFavoritesRequirement(FavoriteRequirement.Adding));
+            });
+            options.AddPolicy(AppPolicy.IS_ADVERTISE_NOT_IN_FAVORITE, policy =>
+            {
+                policy.Requirements.Add(new IsAdvertiseInFavoritesRequirement(FavoriteRequirement.Removing));
+            });
+            options.AddPolicy(AppPolicy.IS_ADVERTISE_IN_USERLIKES, policy =>
+            {
+                policy.Requirements.Add(new IAdvertiseInUserLikesRequirement());
+            });
+        }
     }
 }

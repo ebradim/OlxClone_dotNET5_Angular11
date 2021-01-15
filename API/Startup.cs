@@ -1,6 +1,7 @@
 using API.AuthPolicy;
 using API.AuthPolicy.Handler;
 using API.AuthPolicy.Requirements;
+using API.Hubs;
 using API.Middlewares;
 
 using API.Services;
@@ -16,6 +17,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Authorization;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -30,6 +32,7 @@ namespace API
             Configuration = configuration;
         }
 
+   
         public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
@@ -49,23 +52,19 @@ namespace API
             {
                 options.HeaderName = "X-Token";
                 options.SuppressXFrameOptionsHeader = false;
-
             });
+
             services.AddControllers().AddNewtonsoftJson(options=>
             {
                 options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
             });
-            services.AddScoped<ICurrentUser, CurrentUser>();
-            services.AddScoped<ITokenGenerator, TokenGenerator>();
-            services.AddScoped<IAuthCookies, AuthCookies>();
-            services.AddScoped<IRefreshTokenGenerator, RefreshTokenGenerator>();
+
             services.AddMvc(options=>{
                 options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
                 var authorizedPolicy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
                 options.Filters.Add(new AuthorizeFilter(authorizedPolicy));
             })
                     .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<Register>());
-            services.AddHttpContextAccessor();
             services.AddCors(options=>{
                 options.AddPolicy("OlxPolicy",policy=>{
                     policy.AllowAnyHeader().AllowAnyMethod().WithOrigins("http://localhost:4200").AllowCredentials();
@@ -73,31 +72,25 @@ namespace API
             });
             services.AddAuthorization(options =>
             {
-                options.AddPolicy(AppPolicy.IS_ADVERTISE_OWNER, policy =>
-                {
-                    policy.Requirements.Add(new AdvertiseOwnerRequirement());
-                });
-                options.AddPolicy(AppPolicy.IS_ADVERTISE_IN_FAVORITE, policy =>
-                {
-                    policy.Requirements.Add(new IsAdvertiseInFavoritesRequirement(FavoriteRequirement.Adding));
-                });
-                    options.AddPolicy(AppPolicy.IS_ADVERTISE_NOT_IN_FAVORITE, policy =>
-                {
-                    policy.Requirements.Add(new IsAdvertiseInFavoritesRequirement(FavoriteRequirement.Removing));
-                });      
-                options.AddPolicy(AppPolicy.IS_ADVERTISE_IN_USERLIKES, policy =>
-                {
-                    policy.Requirements.Add(new IAdvertiseInUserLikesRequirement());
-                });
+                Helper.AddCustomPolicies(options);
             });
             services.AddStackExchangeRedisCache(options =>
             {
                 options.Configuration = Configuration.GetConnectionString("redis");
                 options.InstanceName = "OlxClone-";
             });
+
+            services.AddHttpContextAccessor();
+            services.AddSignalR();
+            services.AddScoped<ICurrentUser, CurrentUser>();
+            services.AddScoped<ITokenGenerator, TokenGenerator>();
+            services.AddScoped<IAuthCookies, AuthCookies>();
+            services.AddScoped<IRefreshTokenGenerator, RefreshTokenGenerator>();
             services.AddTransient<IAuthorizationHandler, AdvertiseOwnerHandler>();
             services.AddTransient<IAuthorizationHandler, IsAdvertiseInFavoritesHandler>();
             services.AddTransient<IAuthorizationHandler, IAdvertiseInUserLikesHandler>();
+
+            services.AddSingleton<IUserIdProvider, UserNameBasedId>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -121,6 +114,7 @@ namespace API
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+                endpoints.MapHub<OfferHub>("/offerhub");
             });
         }
     }

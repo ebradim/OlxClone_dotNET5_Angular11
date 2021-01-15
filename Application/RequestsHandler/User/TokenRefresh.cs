@@ -28,7 +28,6 @@ namespace Application.RequestsHandler.User
             private readonly ITokenGenerator jwtGenerator;
             private readonly ICurrentUser currentUser;
             private readonly ITokenGenerator tokenGenerator;
-            private readonly IRefreshTokenGenerator refreshTokenGenerator;
             private readonly IDistributedCache cache;
             private readonly IAuthCookies cookies;
 

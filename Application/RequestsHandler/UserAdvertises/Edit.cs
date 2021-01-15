@@ -1,4 +1,5 @@
-﻿using Application.Models;
+﻿using Application.Interfaces;
+using Application.Models;
 using Domain;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -31,10 +32,12 @@ namespace Application.RequestsHandler.UserAdvertises
         public class Handler : IRequestHandler<Command, UserAdvertiseDTO>
         {
             private readonly DataContext dataContext;
+            private readonly ICurrentUser current;
 
-            public Handler(DataContext dataContext)
+            public Handler(DataContext dataContext,ICurrentUser current)
             {
                 this.dataContext = dataContext;
+                this.current = current;
             }
 
             public async Task<UserAdvertiseDTO> Handle(Command request, CancellationToken cancellationToken)
@@ -46,7 +49,9 @@ namespace Application.RequestsHandler.UserAdvertises
                 .FirstOrDefaultAsync(x => x.Advertise.UniqueId == request.UniqueId);
                 if (ad is null)
                     throw new HttpContextException(System.Net.HttpStatusCode.NotFound, new { Advertise = "Advertise is not found" });
-               
+                if(ad.AppUserId != current.UserId)
+                    throw new HttpContextException(System.Net.HttpStatusCode.NotFound, new { User = "User is not the owner" });
+
                 var user = await dataContext.Users
                 .Select(x=>new {x.Id, x.FirstName, x.LastName,x.UserName})
                 .AsNoTracking().FirstOrDefaultAsync(x=>x.Id ==ad.AppUserId);
