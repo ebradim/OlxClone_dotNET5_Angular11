@@ -19,7 +19,7 @@
 </div>
 
 ---
-![ezgif com-gif-maker](https://user-images.githubusercontent.com/50548116/104409027-11e64800-556e-11eb-8947-c18d1bc87dcb.gif)
+![ezgif com-gif-maker](https://user-images.githubusercontent.com/50548116/104788452-d7152780-579a-11eb-8df5-5b2dde0e29b8.gif)
 
 <p align="center"> Building OlxClone with more features with ASP.NET Core 5 API and Angular 11 using NgRx  
     <br> 
@@ -28,12 +28,7 @@
 
 
 ## 📝 Overview
-<p align="center">
 
- <img  src="https://user-images.githubusercontent.com/50548116/103432223-4e1bbf00-4be4-11eb-9d4a-3bdbaf948b22.png" alt="Project logo"></a>
-  <img  src="https://user-images.githubusercontent.com/50548116/103589963-541be380-4ef5-11eb-9643-f89b1e79929d.png" alt="Project logo"></a>
-
-</p>
 
 This project is still in progress.
 <br/>
