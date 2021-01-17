@@ -1,10 +1,6 @@
 import { Component } from '@angular/core';
 import { Store } from '@ngrx/store';
-import {
-  fromAPIActions,
-  fromHomeActions,
-  fromTokenActions,
-} from './root/actions';
+import { fromTokenActions } from './root/actions';
 import { RootState } from './root/reducers';
 import * as signalR from '@microsoft/signalr';
 import { SignalRService } from './root/service/signalr.service';

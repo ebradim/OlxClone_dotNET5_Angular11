@@ -1,14 +1,14 @@
 <li
   nz-menu-item
   style="margin: 10px; padding: 10px; font-weight: bold"
-  [routerLink]="['/advertise',NavItem.advertiseId]"
+  [routerLink]="['/advertise',NavItem?.advertiseId]"
 >
   <div class="notification-item">
     <h3 style="font-family: Roboto">
       <span style="color: #0e11c0">{{NavItem?.senderName}}</span> sent you an
       offer!
     </h3>
-    <b>{{NavItem.title}}</b>
+    <b>{{NavItem?.title}}</b>
     <p style="font-family: Quicksand">{{NavItem?.message}}</p>
   </div>
 </li>

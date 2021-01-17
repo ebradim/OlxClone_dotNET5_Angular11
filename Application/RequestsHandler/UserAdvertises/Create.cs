@@ -2,9 +2,11 @@
 using Application.Models;
 using Domain;
 using MediatR;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Net;
 using System.Threading;
@@ -18,6 +20,7 @@ namespace Application.RequestsHandler.UserAdvertises
         public class Command : IRequest<UserAdvertiseDTO>
         {
             // Todo: add validations
+            public ICollection<IFormFile> Photos { get; set; }
             [Required]
             public bool IsNegotiate { get; set; }
             [Required]
@@ -41,11 +44,13 @@ namespace Application.RequestsHandler.UserAdvertises
         {
             private readonly DataContext dataContext;
             private readonly ICurrentUser currentUser;
+            private readonly ICloudinaryService cloudinary;
 
-            public Handler(DataContext dataContext, ICurrentUser currentUser)
+            public Handler(DataContext dataContext, ICurrentUser currentUser,ICloudinaryService cloudinary)
             {
                 this.dataContext = dataContext;
                 this.currentUser = currentUser;
+                this.cloudinary = cloudinary;
             }
 
             public async Task<UserAdvertiseDTO> Handle(Command request, CancellationToken cancellationToken)
@@ -73,15 +78,32 @@ namespace Application.RequestsHandler.UserAdvertises
                              
                 };
                 advertise.UniqueId = AdvertiseUniqueId.NewId(advertise.Title);
+                var photos = new List<Photo>();
+                if (request.Photos.Count > 0)
+                {
+                 
+                    foreach (var photo in request.Photos)
+                    {
+                        var result = await cloudinary.UploadPhoto(photo);
+
+                        photos.Add(new Photo
+                        {
+                            Id = result.Id,
+                            Url = result.Url
+                        });
+                    }
+                }
                 var userAdvertise = new UserAdvertise
                 {
-                    Category=request.Category,
+                    Category = request.Category,
                     Status = Status.Pending,
                     IsNegotiate = request.IsNegotiate,
                     IsOnWarranty = request.IsOnWarranty,
                     PaymentOption = request.PaymentOption,
                     Advertise = advertise,
-                    AppUser = user
+                    AppUser = user,
+                    AdvertisePhotos = photos
+                    
                 };
 
                 await dataContext.UserAdvertise.AddAsync(userAdvertise);

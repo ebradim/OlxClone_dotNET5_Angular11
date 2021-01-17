@@ -1,6 +1,8 @@
 ﻿using Domain;
 using Newtonsoft.Json;
 using System;
+using System.Collections;
+using System.Collections.Generic;
 
 namespace Application.Models
 {
@@ -24,6 +26,7 @@ namespace Application.Models
                 PaymentOption = userAdvertise.PaymentOption,
                 Status = userAdvertise.Status,
                 Category= userAdvertise.Category,
+                Photos = userAdvertise.AdvertisePhotos,
                 AdvertiseDTO = new AdvertiseDTO
                 { 
                     Id = userAdvertise.Advertise.Id,
@@ -39,6 +42,7 @@ namespace Application.Models
                         Hint = userAdvertise.Advertise.AdvertiseInfo.Hint,
                         Color = userAdvertise.Advertise.AdvertiseInfo.Color,
                         Description = userAdvertise.Advertise.AdvertiseInfo.Description
+
                     }
                 },
                 User = new AdvertiseUser{
@@ -86,6 +90,7 @@ namespace Application.Models
         public AdvertiseDTO AdvertiseDTO { get; set; }
          [JsonProperty("user")]
         public AdvertiseUser User { get; set; }
+        public ICollection<Photo> Photos { get; set; }
 
     }
       public class AdvertiseUser

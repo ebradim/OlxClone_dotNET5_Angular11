@@ -9,6 +9,7 @@ using Application.CQRS;
 using Application.Interfaces;
 using Application.RequestsHandler.User;
 using FluentValidation.AspNetCore;
+using Infrastructure.Photos;
 using Infrastructure.Tokens;
 using Infrastructure.User;
 using MediatR;
@@ -86,10 +87,11 @@ namespace API
             services.AddScoped<ITokenGenerator, TokenGenerator>();
             services.AddScoped<IAuthCookies, AuthCookies>();
             services.AddScoped<IRefreshTokenGenerator, RefreshTokenGenerator>();
+            services.AddScoped<ICloudinaryService, CloudinaryService>();
             services.AddTransient<IAuthorizationHandler, AdvertiseOwnerHandler>();
             services.AddTransient<IAuthorizationHandler, IsAdvertiseInFavoritesHandler>();
             services.AddTransient<IAuthorizationHandler, IAdvertiseInUserLikesHandler>();
-
+            services.Configure<CloudinarySettings>(Configuration.GetSection("Cloudinary"));
             services.AddSingleton<IUserIdProvider, UserNameBasedId>();
         }
 

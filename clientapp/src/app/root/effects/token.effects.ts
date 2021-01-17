@@ -18,6 +18,7 @@ import {
 } from 'rxjs/operators';
 import { fromAPIActions, fromHomeActions, fromTokenActions } from '../actions';
 import { RootState } from '../reducers';
+import { SignalRService } from '../service/signalr.service';
 import { TokenService } from '../service/token.service';
 
 @Injectable()
@@ -26,7 +27,8 @@ export class TokenEffects {
     private authService: TokenService,
     private action$: Actions,
     private route: Router,
-    private notification: NzNotificationService
+    private notification: NzNotificationService,
+    private signalr: SignalRService
   ) {}
 
   refreshToken$ = createEffect(() =>

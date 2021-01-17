@@ -1,4 +1,7 @@
-﻿namespace Domain
+﻿using System.Collections;
+using System.Collections.Generic;
+
+namespace Domain
 {
     public class UserAdvertise
     {
@@ -12,6 +15,7 @@
         public bool IsOnWarranty { get; set; }
         public Status Status { get; set; }
         public PaymentOption PaymentOption { get; set; }
+        public ICollection<Photo> AdvertisePhotos { get; set; }
 
     }
     public enum Status { Pending = 0, Sold = 1 }

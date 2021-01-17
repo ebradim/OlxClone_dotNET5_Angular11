@@ -35,7 +35,7 @@ namespace API.Controllers
         }
 
         [Route("add"), HttpPost,Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme), IgnoreAntiforgeryToken]
-        public async Task<ActionResult<UserAdvertiseDTO>> CreateNewAsync(Create.Command createAdd)
+        public async Task<ActionResult<UserAdvertiseDTO>> CreateNewAsync([FromForm]Create.Command createAdd)
         {
             return await mediator.Send(createAdd);
         }

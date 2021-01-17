@@ -8,5 +8,5 @@ import { IReceivedOffer } from '../home/models/OffersHubs';
   styleUrls: ['../styles/notification-item.styles.scss'],
 })
 export class NotificationItemComponent {
-  @Input() NavItem: IReceivedOffer | undefined;
+  @Input() NavItem!: IReceivedOffer;
 }

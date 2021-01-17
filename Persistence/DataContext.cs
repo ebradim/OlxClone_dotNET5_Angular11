@@ -19,6 +19,7 @@ namespace Persistence
         public DbSet<UserFavorite> UserFavorites { get; set; }
         public DbSet<UserLike> UserLikes { get; set; }
         public DbSet<UserOffer> UserOffers { get; set; }
+        public DbSet<Photo> Photos { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
