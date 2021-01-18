@@ -64,7 +64,21 @@
         </nz-descriptions-item>
       </nz-descriptions>
     </nz-tab>
-    <nz-tab nzTitle="Photos"> </nz-tab>
+    <nz-tab nzTitle="Photos">
+      <ng-container *ngIf="SelectedAdvertise.userAdvertise.photos.length >0">
+        <ng-container
+          *ngFor="let image of SelectedAdvertise.userAdvertise.photos"
+        >
+          <div style="height: fit-content">
+            <img
+              style="width: 50%; height: 100%; margin: 2%"
+              [src]="image.url"
+              [id]="image.id"
+            />
+          </div>
+        </ng-container>
+      </ng-container>
+    </nz-tab>
   </nz-tabset>
 </div>
 <ng-template #loading>

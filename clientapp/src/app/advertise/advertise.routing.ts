@@ -11,7 +11,7 @@ const routes: Routes = [
     path: 'create',
     component: AddAdvertiseComponent,
     canDeactivate: [UnSavedChangesGuard],
-    canActivate: [CreateAdvertiseGuard],
+    // canActivate: [CreateAdvertiseGuard],
   },
   {
     path: ':id',

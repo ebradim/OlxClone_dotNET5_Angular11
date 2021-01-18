@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { IGroupedAdvertise } from 'src/app/root/home/models/SearchAdvertise';
 import { environment } from 'src/environments/environment';
+import { DeletingImages } from '../components/advertise-edit.component';
 import {
   IAddAdvertise,
   IEditAdvertise,
@@ -30,8 +31,30 @@ export class AdvertiseService {
   }
 
   public addAdvetise(advertise: IAddAdvertise): Observable<IResponseAdvertise> {
+    const formData = new FormData();
+    advertise.photos.forEach((file: any) => {
+      formData.append('Photos', file);
+    });
+    formData.append('IsNegotiate', `${advertise.isNegotiate}`);
+    formData.append('IsOnWarranty', `${advertise.isOnWarranty}`);
+    formData.append('PaymentOption', `${advertise.paymentOption}`);
+    formData.append('Title', advertise.title);
+    formData.append('Category', advertise.category);
+    formData.append('District', advertise.district);
+    formData.append('City', advertise.city);
+    formData.append('Price', `${advertise.price}`);
+    formData.append('AdvertiseInfo[Color]', advertise.advertiseInfo.color);
+    formData.append('AdvertiseInfo[Hint]', advertise.advertiseInfo.hint);
+    formData.append(
+      'AdvertiseInfo[Quantity]',
+      `${advertise.advertiseInfo.quantity}`
+    );
+    formData.append(
+      'AdvertiseInfo[Description]',
+      advertise.advertiseInfo.description
+    );
     const endpoint = environment.url + this.routes.addAdvertise;
-    return this.client.post<IResponseAdvertise>(endpoint, advertise, {
+    return this.client.post<IResponseAdvertise>(endpoint, formData, {
       withCredentials: true,
     });
   }
@@ -54,8 +77,33 @@ export class AdvertiseService {
     uniqueId: string,
     advertise: IEditAdvertise
   ): Observable<IResponseAdvertise> {
+    const formData = new FormData();
+    advertise.photos.forEach((file: any) => {
+      formData.append('Photos', file);
+    });
+    advertise.imagesToBeDelete.forEach((file: DeletingImages) => {
+      formData.append('DeletingImages', file.id);
+    });
+    formData.append('IsNegotiate', `${advertise.isNegotiate}`);
+    formData.append('IsOnWarranty', `${advertise.isOnWarranty}`);
+    formData.append('PaymentOption', `${advertise.paymentOption}`);
+    formData.append('Status', `${advertise.status}`);
+    formData.append('Category', advertise.category);
+    formData.append('District', advertise.district);
+    formData.append('City', advertise.city);
+    formData.append('Price', `${advertise.price}`);
+    formData.append('AdvertiseInfo[Color]', advertise.advertiseInfo.color);
+    formData.append('AdvertiseInfo[Hint]', advertise.advertiseInfo.hint);
+    formData.append(
+      'AdvertiseInfo[Quantity]',
+      `${advertise.advertiseInfo.quantity}`
+    );
+    formData.append(
+      'AdvertiseInfo[Description]',
+      advertise.advertiseInfo.description
+    );
     const endpoint = environment.url + this.routes.root + uniqueId;
-    return this.client.put<IResponseAdvertise>(endpoint, advertise, {
+    return this.client.put<IResponseAdvertise>(endpoint, formData, {
       withCredentials: true,
     });
   }

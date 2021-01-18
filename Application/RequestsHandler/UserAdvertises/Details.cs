@@ -74,7 +74,7 @@ namespace Application.RequestsHandler.UserAdvertises
                                             IsOnWarranty = x.IsOnWarranty,
                                             PaymentOption = x.PaymentOption,
                                             Category = x.Category,
-
+                                            Photos =x.AdvertisePhotos,
                                             AdvertiseDTO = new AdvertiseDTO
                                             {
 

@@ -18,6 +18,7 @@ import { NzTabsModule } from 'ng-zorro-antd/tabs';
 import { IconDefinition } from '@ant-design/icons-angular';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzDescriptionsModule } from 'ng-zorro-antd/descriptions';
+import { NzStepsModule } from 'ng-zorro-antd/steps';
 
 import {
   InfoCircleOutline,
@@ -32,6 +33,7 @@ import { StoreModule } from '@ngrx/store';
 import { reducers } from './reducers';
 import { NzMessageModule } from 'ng-zorro-antd/message';
 import { SendOfferComponent } from './components/send-offer.component';
+import { NzUploadModule } from 'ng-zorro-antd/upload';
 
 const icons: IconDefinition[] = [
   InfoCircleOutline,
@@ -49,12 +51,14 @@ const icons: IconDefinition[] = [
   ],
   imports: [
     CommonModule,
+    NzUploadModule,
     AdvertiseRouting,
     NzFormModule,
     NzInputModule,
     NzDescriptionsModule,
     NzButtonModule,
     NzAvatarModule,
+    NzStepsModule,
     StoreModule.forFeature('advertise', reducers),
     EffectsModule.forFeature([AdvertiseEffects]),
     NzCheckboxModule,

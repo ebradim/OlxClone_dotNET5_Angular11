@@ -1,114 +1,217 @@
-<div class="form-container">
-  <form
-    [formGroup]="createAdForm"
-    nz-form
-    class="from-section"
-    (ngSubmit)="onSubmit()"
-  >
-    <div class="details-section">
-      <label> Details about the item</label>
+<div class="big-container">
+  <nz-steps [nzCurrent]="current" [nzDirection]="stepsDirection">
+    <nz-step
+      nzTitle="General"
+      nzDescription="Public required information"
+    ></nz-step>
+    <nz-step
+      nzTitle="Descriptions"
+      nzDescription="More detailed infortmation about the item"
+    ></nz-step>
 
-      <div class="details-inputs">
-        <input
-          id="title"
-          type="text"
-          nz-input
-          nzSize="large"
-          placeholder="What is title of the ad?"
-          formControlName="title"
-        />
-        <nz-select
-          nzShowSearch
-          nzPlaceHolder="Which category does this ad belong to?"
-          formControlName="category"
-        >
-          <nz-option nzLabel="Electronics" nzValue="Electronics"></nz-option>
-          <nz-option nzLabel="Sports" nzValue="Sports"></nz-option>
-          <nz-option nzLabel="Vechiles" nzValue="Vechiles"></nz-option>
-          <nz-option nzLabel="Pets" nzValue="Pets"></nz-option>
-          <nz-option nzLabel="Accessories" nzValue="Accessories"></nz-option>
-          <nz-option nzLabel="Workout" nzValue="Workout"></nz-option>
-          <nz-option nzLabel="Mobiles" nzValue="Mobiles"></nz-option>
-          <nz-option nzLabel="Laptops" nzValue="Laptops"></nz-option>
-        </nz-select>
-        <div class="address-section">
+    <nz-step nzTitle="Photos" nzDescription="Upload item photos"></nz-step>
+    <nz-step nzTitle="Confirmation" nzDescription="Last step"></nz-step>
+  </nz-steps>
+  <div class="form-container">
+    <form
+      [formGroup]="createAdForm"
+      nz-form
+      class="from-section"
+      (ngSubmit)="onSubmit()"
+    >
+      <div class="details-section" *ngIf="current==0">
+        <label> Public Required information</label>
+
+        <div class="details-inputs">
           <input
             id="title"
             type="text"
             nz-input
             nzSize="large"
-            placeholder="City"
-            formControlName="city"
+            placeholder="What is title of the ad?"
+            formControlName="title"
           />
+          <ng-container
+            *ngIf="createAdForm.get('title')!.hasError('required')
+          &&createAdForm.get('title')!.touched"
+          >
+            <span style="color: red; font-family: Roboto"
+              >Title is required</span
+            >
+          </ng-container>
+          <nz-select
+            nzShowSearch
+            nzPlaceHolder="Which category does this ad belong to?"
+            formControlName="category"
+            nzSize="large"
+          >
+            <nz-option nzLabel="Electronics" nzValue="Electronics"></nz-option>
+            <nz-option nzLabel="Sports" nzValue="Sports"></nz-option>
+            <nz-option nzLabel="Vechiles" nzValue="Vechiles"></nz-option>
+            <nz-option nzLabel="Pets" nzValue="Pets"></nz-option>
+            <nz-option nzLabel="Accessories" nzValue="Accessories"></nz-option>
+            <nz-option nzLabel="Workout" nzValue="Workout"></nz-option>
+            <nz-option nzLabel="Mobiles" nzValue="Mobiles"></nz-option>
+            <nz-option nzLabel="Laptops" nzValue="Laptops"></nz-option>
+          </nz-select>
+          <ng-container
+            *ngIf="createAdForm.get('category')!.hasError('required')
+          &&createAdForm.get('category')!.touched"
+          >
+            <span style="color: red; font-family: Roboto"
+              >Category is required</span
+            >
+          </ng-container>
+          <div class="address-section">
+            <input
+              id="title"
+              type="text"
+              nz-input
+              nzSize="large"
+              placeholder="City"
+              formControlName="city"
+            />
+            <input
+              id="title"
+              type="text"
+              nz-input
+              nzSize="large"
+              placeholder="District"
+              formControlName="district"
+            />
+          </div>
           <input
             id="title"
-            type="text"
+            type="number"
             nz-input
             nzSize="large"
-            placeholder="District"
-            formControlName="district"
+            placeholder="Price"
+            formControlName="price"
           />
+          <div style="display: flex; flex-flow: column wrap; gap: 5px">
+            <label nz-checkbox style="visibility: hidden"></label>
+            <label nz-checkbox formControlName="isNegotiate"
+              >Allow negotiation for this item</label
+            >
+            <label nz-checkbox formControlName="isOnWarranty"
+              >This item has warrant from official company</label
+            >
+            <br />
+          </div>
         </div>
-        <input
-          id="title"
-          type="number"
-          nz-input
-          nzSize="large"
-          placeholder="Price"
-          formControlName="price"
-        />
       </div>
-    </div>
-    <div class="advertiseInfo-section" formGroupName="advertiseInfo">
-      <div class="details-inputs">
-        <input
-          id="title"
-          type="text"
-          nz-input
-          nzSize="large"
-          placeholder="Color"
-          formControlName="color"
-        />
-        <textarea
-          [nzAutosize]="{ minRows: 3, maxRows: 6 }"
-          id="title"
-          type="text"
-          nz-input
-          nzSize="large"
-          placeholder="Description"
-          formControlName="description"
-        ></textarea>
+      <div class="details-section" *ngIf="current==1">
+        <label> More detailed infortmation about the item</label>
 
-        <input
-          id="title"
-          type="text"
-          nz-input
-          nzSize="large"
-          placeholder="Hint"
-          formControlName="hint"
-        />
-        <input
-          id="title"
-          type="number"
-          nz-input
-          nzSize="large"
-          placeholder="Quantity"
-          formControlName="quantity"
-        />
+        <div
+          class="advertiseInfo-section"
+          formGroupName="advertiseInfo"
+          *ngIf="current==1"
+        >
+          <div class="details-inputs">
+            <input
+              id="title"
+              type="text"
+              nz-input
+              nzSize="large"
+              placeholder="Color"
+              formControlName="color"
+            />
+            <textarea
+              [nzAutosize]="{ minRows: 3, maxRows: 6 }"
+              id="title"
+              type="text"
+              nz-input
+              nzSize="large"
+              placeholder="Description"
+              formControlName="description"
+            ></textarea>
+
+            <input
+              id="title"
+              type="text"
+              nz-input
+              nzSize="large"
+              placeholder="Hint"
+              formControlName="hint"
+            />
+            <input
+              id="title"
+              type="number"
+              nz-input
+              nzSize="large"
+              placeholder="Quantity"
+              formControlName="quantity"
+            />
+          </div>
+        </div>
       </div>
-    </div>
-    <div style="display: flex; flex-flow: column wrap; gap: 5px">
-      <label nz-checkbox style="visibility: hidden"></label>
-      <label nz-checkbox formControlName="isNegotiate"
-        >Allow negotiation for this item</label
-      >
-      <label nz-checkbox formControlName="isOnWarranty"
-        >This item has warrant from official company</label
-      >
-      <br />
-    </div>
-    <button nz-button style="float: right; margin-bottom: 10px" type="submit">
+      <div class="photos-section" *ngIf="current==2">
+        <div>
+          <p style="font-family: Roboto">
+            Upload at least 1 photo that describes your item
+          </p>
+        </div>
+        <nz-upload
+          class="upload-list-inline"
+          nzListType="picture"
+          nzMultiple
+          [nzFileList]="defaultFileList"
+          [nzBeforeUpload]="beforeUpload"
+        >
+          <button nz-button>
+            <i nz-icon nzType="upload"></i>Upload Photos
+          </button>
+        </nz-upload>
+      </div>
+
+      <div class="photos-section" *ngIf="current==3">
+        <div class="confirm-msg">
+          <p>Terms and Policy</p>
+          <p>By publishing advertise you agree to our policy and terms</p>
+          <p>Nudity images = permantly ban</p>
+          <p>Fake advertise = Lockout account for 1 day</p>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <div class="bottom-action">
+    <button
+      nz-button
+      nzType="warning"
+      nzSize="large"
+      nzShape="round"
+      (click)="pre()"
+      *ngIf="current > 0"
+    >
+      <i nz-icon nzType="arrow-left" nzTheme="outline"></i>Back
+    </button>
+    <button
+      nz-button
+      nzType="primary"
+      nzSize="large"
+      nzShape="round"
+      style="margin-bottom: 1%"
+      (click)="next()"
+      *ngIf="current < 3"
+    >
+      <i nz-icon nzType="arrow-right" nzTheme="outline"></i>Next
+    </button>
+
+    <button
+      nz-button
+      [nzLoading]="isConnecting$|async"
+      (click)="handleUpload()"
+      style="margin-top: 16px"
+      *ngIf="current ==3"
+    >
       Publish
     </button>
-  </form>
+  </div>
+  <ng-container *ngIf="apiError$|async as error">
+    <div style="display: flex; flex-flow: row wrap; text-align: center">
+      An error occured while publishing your advertise
+    </div>
+  </ng-container>
 </div>

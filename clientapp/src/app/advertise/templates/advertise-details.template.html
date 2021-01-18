@@ -22,7 +22,7 @@
     <!--tags-->
     <nz-page-header-tags>
       <ng-container
-        *ngIf="advertise.userAdvertise.status == 0 ; else outofstock "
+        *ngIf="advertise.userAdvertise.status == 0 ; else outOfStockTpl "
       >
         <nz-tag [nzColor]="'green'"
           >Available:
@@ -31,7 +31,7 @@
           ></nz-tag
         >
       </ng-container>
-      <ng-template #outofstock>
+      <ng-template #outOfStockTpl>
         <nz-tag [nzColor]="'red'">Out of stock</nz-tag>
       </ng-template>
     </nz-page-header-tags>

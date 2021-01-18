@@ -11,7 +11,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Persistence", "Persistence\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Application", "Application\Application.csproj", "{EAA45AA1-B6EB-4EB3-88DA-71E156A4B281}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure", "Infrastructure\Infrastructure.csproj", "{60AB4CC7-CC68-4891-A332-E2688137302A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Infrastructure", "Infrastructure\Infrastructure.csproj", "{60AB4CC7-CC68-4891-A332-E2688137302A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

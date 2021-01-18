@@ -5,14 +5,16 @@ import {
   Input,
 } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Store } from '@ngrx/store';
+import { select, Store } from '@ngrx/store';
+import { NzUploadFile } from 'ng-zorro-antd/upload';
+import { Observable } from 'rxjs';
 import { fromAdvertise } from '../actions';
 import {
   IAddAdvertise,
   IEditAdvertise,
   IResponseAdvertise,
 } from '../models/Advertise';
-import { AdvertiseState } from '../reducers';
+import { AdvertiseState, getConnecting } from '../reducers';
 import { State } from '../reducers/advertise.reducer';
 
 @Component({
@@ -25,6 +27,10 @@ import { State } from '../reducers/advertise.reducer';
 export class AdvertiseEditComponent {
   @Input() selectedAdvertise: '' | IResponseAdvertise | null | undefined;
   editForm: FormGroup | undefined;
+  imagesToBeDeleted: DeletingImages[] = [];
+  defaultFileList: NzUploadFile[] = [];
+  isConnecting$: Observable<boolean>;
+
   constructor(
     private fb: FormBuilder,
     private store: Store<AdvertiseState>,
@@ -69,16 +75,24 @@ export class AdvertiseEditComponent {
       });
       this.changeDetector.markForCheck();
     }, 1);
+
+    this.isConnecting$ = this.store.pipe(select(getConnecting));
   }
 
   submit(): void {
-    if (this.editForm?.touched) {
+    if (
+      this.editForm?.touched ||
+      this.defaultFileList.length > 0 ||
+      this.imagesToBeDeleted.length > 0
+    ) {
       const toSelectedAdvertise = this.selectedAdvertise as IResponseAdvertise;
 
       const advertise: IEditAdvertise = {
         isNegotiate: toSelectedAdvertise.userAdvertise.isNegotiate as boolean,
         isOnWarranty: toSelectedAdvertise.userAdvertise.isOnWarranty as boolean,
         category: this.editForm?.get('category')?.value,
+        photos: this.defaultFileList,
+        imagesToBeDelete: this.imagesToBeDeleted,
         paymentOption: parseInt(this.editForm?.get('paymentOption')?.value, 0),
         status: parseInt(this.editForm?.get('status')?.value, 0),
         district: toSelectedAdvertise.userAdvertise.advertise
@@ -101,4 +115,23 @@ export class AdvertiseEditComponent {
       console.log('didnt send update');
     }
   }
+  isExist(id: string): boolean {
+    return this.imagesToBeDeleted.findIndex((x) => x.id == id) >= 0;
+  }
+  addToDelete(id: string) {
+    const imageIdx = this.imagesToBeDeleted.findIndex((x) => x.id == id);
+    if (imageIdx >= 0) {
+      this.imagesToBeDeleted.splice(imageIdx, 1);
+    } else {
+      this.imagesToBeDeleted = [...this.imagesToBeDeleted, { id }];
+    }
+  }
+  beforeUpload = (file: NzUploadFile): boolean => {
+    this.defaultFileList = this.defaultFileList.concat(file);
+
+    return false;
+  };
+}
+export interface DeletingImages {
+  id: string;
 }

@@ -1,3 +1,6 @@
+import { NzUploadFile } from 'ng-zorro-antd/upload';
+import { DeletingImages } from '../components/advertise-edit.component';
+
 export interface IResponseAdvertise {
   userAdvertise: IRoot;
 }
@@ -12,6 +15,7 @@ export interface IAddAdvertise {
   city: string;
   price: number;
   advertiseInfo: AdvertiseInfo;
+  photos: NzUploadFile[];
 }
 
 interface AdvertiseInfo {
@@ -39,8 +43,12 @@ export interface IRoot {
   likes: number;
   advertise: IAdvertise;
   user: User;
+  photos: IPhotos[];
 }
-
+interface IPhotos {
+  id: string;
+  url: string;
+}
 interface IAdvertise {
   id: number;
   uniqueId: string;
@@ -66,6 +74,7 @@ interface User {
 }
 export interface IEditAdvertise extends Omit<IAddAdvertise, 'title'> {
   status: number;
+  imagesToBeDelete: DeletingImages[];
 }
 
 export interface IResponseHomeAdvertise {

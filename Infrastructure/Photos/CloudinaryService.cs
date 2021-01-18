@@ -34,7 +34,7 @@ namespace Infrastructure.Photos
             var uploadParams = new ImageUploadParams()
             {
                 File = new FileDescription(file.FileName, stream),
-                Transformation = new Transformation().Crop("fill").Width("400").Height("500")
+               // Transformation = new Transformation().Width("400").Height("500")
                 
             };
             var uploadResult = await cloudinary.UploadAsync(uploadParams);

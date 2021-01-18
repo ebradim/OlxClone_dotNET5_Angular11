@@ -54,7 +54,7 @@ namespace API.Controllers
         }
 
         [HttpPut("{id}"), Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = AppPolicy.IS_ADVERTISE_OWNER), IgnoreAntiforgeryToken]
-        public async Task<ActionResult<UserAdvertiseDTO>> UpdateAdAsync(string id,Edit.Command editAD)
+        public async Task<ActionResult<UserAdvertiseDTO>> UpdateAdAsync(string id,[FromForm]Edit.Command editAD)
         {
             editAD.UniqueId = id;
             return await mediator.Send(editAD);
