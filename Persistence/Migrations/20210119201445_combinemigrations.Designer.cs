@@ -10,8 +10,8 @@ using Persistence;
 namespace Persistence.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20210101170216_added_categories")]
-    partial class added_categories
+    [Migration("20210119201445_combinemigrations")]
+    partial class combinemigrations
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -161,6 +161,31 @@ namespace Persistence.Migrations
                     b.ToTable("AspNetUsers");
                 });
 
+            modelBuilder.Entity("Domain.Photo", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Url")
+                        .HasColumnType("text");
+
+                    b.Property<int>("UserAdvertiseAdvertiseId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("UserAdvertiseAppUserId")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<int>("UserAdvertiseId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserAdvertiseAdvertiseId", "UserAdvertiseAppUserId");
+
+                    b.ToTable("Photos");
+                });
+
             modelBuilder.Entity("Domain.RefreshToken", b =>
                 {
                     b.Property<int>("Id")
@@ -251,7 +276,7 @@ namespace Persistence.Migrations
                     b.ToTable("UserAdvertise");
                 });
 
-            modelBuilder.Entity("Domain.UserAdvertiseFavorite", b =>
+            modelBuilder.Entity("Domain.UserFavorite", b =>
                 {
                     b.Property<int>("AdvertiseId")
                         .HasColumnType("integer");
@@ -263,7 +288,53 @@ namespace Persistence.Migrations
 
                     b.HasIndex("AppUserId");
 
-                    b.ToTable("UserAdvertiseFavorite");
+                    b.ToTable("UserFavorites");
+                });
+
+            modelBuilder.Entity("Domain.UserLike", b =>
+                {
+                    b.Property<int>("AdvertiseId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("AppUserId")
+                        .HasColumnType("text");
+
+                    b.HasKey("AdvertiseId", "AppUserId");
+
+                    b.HasIndex("AppUserId");
+
+                    b.ToTable("UserLikes");
+                });
+
+            modelBuilder.Entity("Domain.UserOffer", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .UseIdentityByDefaultColumn();
+
+                    b.Property<string>("Message")
+                        .HasColumnType("text");
+
+                    b.Property<string>("ReceiverId")
+                        .HasColumnType("text");
+
+                    b.Property<string>("SenderId")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("SentAt")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<string>("Title")
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ReceiverId");
+
+                    b.HasIndex("SenderId", "ReceiverId");
+
+                    b.ToTable("UserOffers");
                 });
 
             modelBuilder.Entity("Domain.UserRoles", b =>
@@ -381,6 +452,17 @@ namespace Persistence.Migrations
                     b.Navigation("Advertise");
                 });
 
+            modelBuilder.Entity("Domain.Photo", b =>
+                {
+                    b.HasOne("Domain.UserAdvertise", "UserAdvertise")
+                        .WithMany("AdvertisePhotos")
+                        .HasForeignKey("UserAdvertiseAdvertiseId", "UserAdvertiseAppUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("UserAdvertise");
+                });
+
             modelBuilder.Entity("Domain.RefreshToken", b =>
                 {
                     b.HasOne("Domain.AppUser", "AppUser")
@@ -409,16 +491,16 @@ namespace Persistence.Migrations
                     b.Navigation("AppUser");
                 });
 
-            modelBuilder.Entity("Domain.UserAdvertiseFavorite", b =>
+            modelBuilder.Entity("Domain.UserFavorite", b =>
                 {
                     b.HasOne("Domain.Advertise", "Advertise")
-                        .WithMany("UserAdvertiseFavorites")
+                        .WithMany("UserFavorites")
                         .HasForeignKey("AdvertiseId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Domain.AppUser", "AppUser")
-                        .WithMany("UserAdvertiseFavorites")
+                        .WithMany("UserFavorites")
                         .HasForeignKey("AppUserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -426,6 +508,40 @@ namespace Persistence.Migrations
                     b.Navigation("Advertise");
 
                     b.Navigation("AppUser");
+                });
+
+            modelBuilder.Entity("Domain.UserLike", b =>
+                {
+                    b.HasOne("Domain.Advertise", "Advertise")
+                        .WithMany("UserLikes")
+                        .HasForeignKey("AdvertiseId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Domain.AppUser", "AppUser")
+                        .WithMany("UserLikes")
+                        .HasForeignKey("AppUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Advertise");
+
+                    b.Navigation("AppUser");
+                });
+
+            modelBuilder.Entity("Domain.UserOffer", b =>
+                {
+                    b.HasOne("Domain.AppUser", "Receiver")
+                        .WithMany("ReceivedOffers")
+                        .HasForeignKey("ReceiverId");
+
+                    b.HasOne("Domain.AppUser", "Sender")
+                        .WithMany("SentOffers")
+                        .HasForeignKey("SenderId");
+
+                    b.Navigation("Receiver");
+
+                    b.Navigation("Sender");
                 });
 
             modelBuilder.Entity("Domain.UserRoles", b =>
@@ -487,18 +603,26 @@ namespace Persistence.Migrations
                 {
                     b.Navigation("AdvertiseInfo");
 
-                    b.Navigation("UserAdvertiseFavorites");
-
                     b.Navigation("UserAdvertises");
+
+                    b.Navigation("UserFavorites");
+
+                    b.Navigation("UserLikes");
                 });
 
             modelBuilder.Entity("Domain.AppUser", b =>
                 {
+                    b.Navigation("ReceivedOffers");
+
                     b.Navigation("RefreshTokens");
 
-                    b.Navigation("UserAdvertiseFavorites");
+                    b.Navigation("SentOffers");
 
                     b.Navigation("UserAdvertises");
+
+                    b.Navigation("UserFavorites");
+
+                    b.Navigation("UserLikes");
 
                     b.Navigation("UserRoles");
                 });
@@ -506,6 +630,11 @@ namespace Persistence.Migrations
             modelBuilder.Entity("Domain.Role", b =>
                 {
                     b.Navigation("UserRoles");
+                });
+
+            modelBuilder.Entity("Domain.UserAdvertise", b =>
+                {
+                    b.Navigation("AdvertisePhotos");
                 });
 #pragma warning restore 612, 618
         }

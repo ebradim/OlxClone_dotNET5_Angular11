@@ -50,6 +50,7 @@ namespace Application.Models
         public HomeAdvertiseInfoDTO AdvertiseInfoDTO { get; set; }
         [JsonProperty("user")]
         public AdvertiseUser User { get; set; }
+        public string ImageUrl { get; set; }
 
     }
     public class HomeAdvertiseInfoDTO

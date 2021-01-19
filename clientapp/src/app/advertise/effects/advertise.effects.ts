@@ -7,6 +7,7 @@ import { NzNotificationService } from 'ng-zorro-antd/notification';
 import { of } from 'rxjs';
 import {
   catchError,
+  concatMap,
   debounceTime,
   exhaustMap,
   map,
@@ -15,6 +16,7 @@ import {
   tap,
   throttleTime,
 } from 'rxjs/operators';
+import { TokenService } from 'src/app/root/service/token.service';
 import { AdvertiseService } from '../../advertise/services/advertise.service';
 import { fromAdvertise, fromAdvertiseAPI } from '../actions';
 import { getConnecting } from '../reducers';
@@ -27,7 +29,8 @@ export class AdvertiseEffects {
     private advertiseService: AdvertiseService,
     private action$: Actions,
     private notification: NzNotificationService,
-    private message: NzMessageService
+    private message: NzMessageService,
+    private tokenService: TokenService
   ) {}
 
   addAdertise$ = createEffect(() =>
@@ -35,12 +38,16 @@ export class AdvertiseEffects {
       ofType(fromAdvertise.addAdvertise),
       map((action) => action.advertise),
       switchMap((request) => {
-        return this.advertiseService.addAdvetise(request).pipe(
-          map((advertise) =>
-            fromAdvertiseAPI.addAdvertiseSuccess({ advertise })
-          ),
-          catchError((error) =>
-            of(fromAdvertiseAPI.addAdvertiseError({ error }))
+        return this.tokenService.getCSRFToken().pipe(
+          concatMap(() =>
+            this.advertiseService.addAdvetise(request).pipe(
+              map((advertise) =>
+                fromAdvertiseAPI.addAdvertiseSuccess({ advertise })
+              ),
+              catchError((error) =>
+                of(fromAdvertiseAPI.addAdvertiseError({ error }))
+              )
+            )
           )
         );
       })
@@ -51,11 +58,17 @@ export class AdvertiseEffects {
       ofType(fromAdvertise.deleteAdvertise),
       map((action) => action.uniqueId),
       exhaustMap((id) => {
-        return this.advertiseService.deleteAdvetise(id).pipe(
-          throttleTime(5000),
-          map((result) => fromAdvertiseAPI.deleteAdvertiseSuccess({ result })),
-          catchError((error) =>
-            of(fromAdvertiseAPI.deleteAdvertiseError({ error }))
+        return this.tokenService.getCSRFToken().pipe(
+          concatMap(() =>
+            this.advertiseService.deleteAdvetise(id).pipe(
+              throttleTime(5000),
+              map((result) =>
+                fromAdvertiseAPI.deleteAdvertiseSuccess({ result })
+              ),
+              catchError((error) =>
+                of(fromAdvertiseAPI.deleteAdvertiseError({ error }))
+              )
+            )
           )
         );
       })
@@ -66,13 +79,17 @@ export class AdvertiseEffects {
       ofType(fromAdvertise.editAdvertise),
       map((action) => action),
       exhaustMap(({ uniqueId, advertise }) => {
-        return this.advertiseService.editAdvetise(uniqueId, advertise).pipe(
-          throttleTime(5000),
-          map((advertise) =>
-            fromAdvertiseAPI.editAdvertiseSuccess({ advertise })
-          ),
-          catchError((error) =>
-            of(fromAdvertiseAPI.editAdvertiseError({ error }))
+        return this.tokenService.getCSRFToken().pipe(
+          concatMap(() =>
+            this.advertiseService.editAdvetise(uniqueId, advertise).pipe(
+              throttleTime(5000),
+              map((advertise) =>
+                fromAdvertiseAPI.editAdvertiseSuccess({ advertise })
+              ),
+              catchError((error) =>
+                of(fromAdvertiseAPI.editAdvertiseError({ error }))
+              )
+            )
           )
         );
       })
@@ -84,13 +101,17 @@ export class AdvertiseEffects {
       ofType(fromAdvertise.addToFavorite),
       map((action) => action),
       exhaustMap(({ uniqueId }) => {
-        return this.advertiseService.addAdvetiseToFavorite(uniqueId).pipe(
-          throttleTime(5000),
-          map((result) =>
-            fromAdvertiseAPI.addAdvertiseToFavSuccess({ result })
-          ),
-          catchError((error) =>
-            of(fromAdvertiseAPI.addAdvertiseToFavError({ error }))
+        return this.tokenService.getCSRFToken().pipe(
+          concatMap(() =>
+            this.advertiseService.addAdvetiseToFavorite(uniqueId).pipe(
+              throttleTime(5000),
+              map((result) =>
+                fromAdvertiseAPI.addAdvertiseToFavSuccess({ result })
+              ),
+              catchError((error) =>
+                of(fromAdvertiseAPI.addAdvertiseToFavError({ error }))
+              )
+            )
           )
         );
       })
@@ -102,13 +123,17 @@ export class AdvertiseEffects {
       ofType(fromAdvertise.removeFromFavorite),
       map((action) => action),
       exhaustMap(({ uniqueId }) => {
-        return this.advertiseService.removeAdvetiseFromFavorite(uniqueId).pipe(
-          throttleTime(5000),
-          map((result) =>
-            fromAdvertiseAPI.removeAdvertiseFromFavSuccess({ result })
-          ),
-          catchError((error) =>
-            of(fromAdvertiseAPI.removeAdvertiseFromFavError({ error }))
+        return this.tokenService.getCSRFToken().pipe(
+          concatMap(() =>
+            this.advertiseService.removeAdvetiseFromFavorite(uniqueId).pipe(
+              throttleTime(5000),
+              map((result) =>
+                fromAdvertiseAPI.removeAdvertiseFromFavSuccess({ result })
+              ),
+              catchError((error) =>
+                of(fromAdvertiseAPI.removeAdvertiseFromFavError({ error }))
+              )
+            )
           )
         );
       })
@@ -119,11 +144,17 @@ export class AdvertiseEffects {
       ofType(fromAdvertise.likeAdvertise),
       map((action) => action),
       exhaustMap(({ uniqueId }) => {
-        return this.advertiseService.likeAdvertise(uniqueId).pipe(
-          throttleTime(5000),
-          map((result) => fromAdvertiseAPI.likeAdvertiseSuccess({ result })),
-          catchError((error) =>
-            of(fromAdvertiseAPI.likeAdvertiseError({ error }))
+        return this.tokenService.getCSRFToken().pipe(
+          concatMap(() =>
+            this.advertiseService.likeAdvertise(uniqueId).pipe(
+              throttleTime(5000),
+              map((result) =>
+                fromAdvertiseAPI.likeAdvertiseSuccess({ result })
+              ),
+              catchError((error) =>
+                of(fromAdvertiseAPI.likeAdvertiseError({ error }))
+              )
+            )
           )
         );
       })

@@ -1,10 +1,10 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
-using System;
 
 namespace Persistence.Migrations
 {
-    public partial class re_migrate_fix_casting_issue : Migration
+    public partial class combinemigrations : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -228,6 +228,7 @@ namespace Persistence.Migrations
                 {
                     AdvertiseId = table.Column<int>(type: "integer", nullable: false),
                     AppUserId = table.Column<string>(type: "text", nullable: false),
+                    Category = table.Column<string>(type: "text", nullable: true),
                     IsNegotiate = table.Column<bool>(type: "boolean", nullable: false),
                     IsOnWarranty = table.Column<bool>(type: "boolean", nullable: false),
                     Status = table.Column<int>(type: "integer", nullable: false),
@@ -251,7 +252,7 @@ namespace Persistence.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "UserAdvertiseFavorite",
+                name: "UserFavorites",
                 columns: table => new
                 {
                     AdvertiseId = table.Column<int>(type: "integer", nullable: false),
@@ -259,18 +260,92 @@ namespace Persistence.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_UserAdvertiseFavorite", x => new { x.AdvertiseId, x.AppUserId });
+                    table.PrimaryKey("PK_UserFavorites", x => new { x.AdvertiseId, x.AppUserId });
                     table.ForeignKey(
-                        name: "FK_UserAdvertiseFavorite_Advertise_AdvertiseId",
+                        name: "FK_UserFavorites_Advertise_AdvertiseId",
                         column: x => x.AdvertiseId,
                         principalTable: "Advertise",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_UserAdvertiseFavorite_AspNetUsers_AppUserId",
+                        name: "FK_UserFavorites_AspNetUsers_AppUserId",
                         column: x => x.AppUserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "UserLikes",
+                columns: table => new
+                {
+                    AdvertiseId = table.Column<int>(type: "integer", nullable: false),
+                    AppUserId = table.Column<string>(type: "text", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserLikes", x => new { x.AdvertiseId, x.AppUserId });
+                    table.ForeignKey(
+                        name: "FK_UserLikes_Advertise_AdvertiseId",
+                        column: x => x.AdvertiseId,
+                        principalTable: "Advertise",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_UserLikes_AspNetUsers_AppUserId",
+                        column: x => x.AppUserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "UserOffers",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    SenderId = table.Column<string>(type: "text", nullable: true),
+                    ReceiverId = table.Column<string>(type: "text", nullable: true),
+                    Title = table.Column<string>(type: "text", nullable: true),
+                    Message = table.Column<string>(type: "text", nullable: true),
+                    SentAt = table.Column<DateTime>(type: "timestamp without time zone", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserOffers", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_UserOffers_AspNetUsers_ReceiverId",
+                        column: x => x.ReceiverId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_UserOffers_AspNetUsers_SenderId",
+                        column: x => x.SenderId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Photos",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "text", nullable: false),
+                    Url = table.Column<string>(type: "text", nullable: true),
+                    UserAdvertiseId = table.Column<int>(type: "integer", nullable: false),
+                    UserAdvertiseAdvertiseId = table.Column<int>(type: "integer", nullable: false),
+                    UserAdvertiseAppUserId = table.Column<string>(type: "text", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Photos", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Photos_UserAdvertise_UserAdvertiseAdvertiseId_UserAdvertise~",
+                        columns: x => new { x.UserAdvertiseAdvertiseId, x.UserAdvertiseAppUserId },
+                        principalTable: "UserAdvertise",
+                        principalColumns: new[] { "AdvertiseId", "AppUserId" },
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -328,6 +403,11 @@ namespace Persistence.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
+                name: "IX_Photos_UserAdvertiseAdvertiseId_UserAdvertiseAppUserId",
+                table: "Photos",
+                columns: new[] { "UserAdvertiseAdvertiseId", "UserAdvertiseAppUserId" });
+
+            migrationBuilder.CreateIndex(
                 name: "IX_RefreshTokens_Token",
                 table: "RefreshTokens",
                 column: "Token");
@@ -343,9 +423,24 @@ namespace Persistence.Migrations
                 column: "AppUserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_UserAdvertiseFavorite_AppUserId",
-                table: "UserAdvertiseFavorite",
+                name: "IX_UserFavorites_AppUserId",
+                table: "UserFavorites",
                 column: "AppUserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserLikes_AppUserId",
+                table: "UserLikes",
+                column: "AppUserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserOffers_ReceiverId",
+                table: "UserOffers",
+                column: "ReceiverId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserOffers_SenderId_ReceiverId",
+                table: "UserOffers",
+                columns: new[] { "SenderId", "ReceiverId" });
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -369,16 +464,25 @@ namespace Persistence.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
+                name: "Photos");
+
+            migrationBuilder.DropTable(
                 name: "RefreshTokens");
 
             migrationBuilder.DropTable(
-                name: "UserAdvertise");
+                name: "UserFavorites");
 
             migrationBuilder.DropTable(
-                name: "UserAdvertiseFavorite");
+                name: "UserLikes");
+
+            migrationBuilder.DropTable(
+                name: "UserOffers");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
+
+            migrationBuilder.DropTable(
+                name: "UserAdvertise");
 
             migrationBuilder.DropTable(
                 name: "Advertise");

@@ -116,33 +116,35 @@
         </nz-select>
       </div>
     </div>
-    <ng-container *ngIf="selectedAdvertise.userAdvertise.photos.length>0">
-      <div
-        style="
-          display: flex;
-          flex-flow: column wrap;
-          gap: 10px;
-          margin-bottom: 20px;
-        "
-      >
-        <p style="font-family: Roboto; margin-top: 10px">PHOTOS</p>
+    <ng-container *ngIf="selectedAdvertise.userAdvertise as ss">
+      <ng-container *ngIf="ss.photos.length>0">
         <div
           style="
             display: flex;
-            flex-flow: row wrap;
-            justify-content: space-around;
+            flex-flow: column wrap;
+            gap: 10px;
+            margin-bottom: 20px;
           "
         >
-          <img
-            [ngClass]="{'marked-Delete': isExist(image.id)}"
-            (click)="addToDelete(image.id)"
-            style="height: 150px; width: 150px"
-            *ngFor="let image of selectedAdvertise.userAdvertise.photos"
-            [src]="image.url"
-            [id]="image.id"
-          />
+          <p style="font-family: Roboto; margin-top: 10px">PHOTOS</p>
+          <div
+            style="
+              display: flex;
+              flex-flow: row wrap;
+              justify-content: space-around;
+            "
+          >
+            <img
+              [ngClass]="{'marked-Delete': isExist(image.id)}"
+              (click)="addToDelete(image.id)"
+              style="height: 150px; width: 150px"
+              *ngFor="let image of selectedAdvertise.userAdvertise.photos"
+              [src]="image.url"
+              [id]="image.id"
+            />
+          </div>
         </div>
-      </div>
+      </ng-container>
     </ng-container>
 
     <nz-upload

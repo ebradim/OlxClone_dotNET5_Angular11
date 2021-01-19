@@ -67,6 +67,10 @@ namespace Persistence
                   .WithMany(x => x.UserAdvertises)
                   .HasForeignKey(x => x.AppUserId);
 
+                opt.HasMany(x=>x.AdvertisePhotos)
+                .WithOne(x=>x.UserAdvertise)
+                .OnDelete(DeleteBehavior.Cascade);
+
             });
             builder.Entity<UserFavorite>(opt =>
             {
@@ -134,7 +138,6 @@ namespace Persistence
                 opt.HasIndex(x => new { x.SenderId, x.ReceiverId });
             });
         
-          
         }
 
     }

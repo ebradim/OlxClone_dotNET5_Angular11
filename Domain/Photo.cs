@@ -12,5 +12,8 @@ namespace Domain
         [Key]
         public string Id { get; set; }
         public string Url { get; set; }
+
+        public int UserAdvertiseId {get;set;}
+        public UserAdvertise UserAdvertise {get;set;}
     }
 }

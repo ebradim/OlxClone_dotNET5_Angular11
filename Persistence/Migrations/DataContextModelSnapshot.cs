@@ -167,11 +167,15 @@ namespace Persistence.Migrations
                     b.Property<string>("Url")
                         .HasColumnType("text");
 
-                    b.Property<int?>("UserAdvertiseAdvertiseId")
+                    b.Property<int>("UserAdvertiseAdvertiseId")
                         .HasColumnType("integer");
 
                     b.Property<string>("UserAdvertiseAppUserId")
+                        .IsRequired()
                         .HasColumnType("text");
+
+                    b.Property<int>("UserAdvertiseId")
+                        .HasColumnType("integer");
 
                     b.HasKey("Id");
 
@@ -448,9 +452,13 @@ namespace Persistence.Migrations
 
             modelBuilder.Entity("Domain.Photo", b =>
                 {
-                    b.HasOne("Domain.UserAdvertise", null)
+                    b.HasOne("Domain.UserAdvertise", "UserAdvertise")
                         .WithMany("AdvertisePhotos")
-                        .HasForeignKey("UserAdvertiseAdvertiseId", "UserAdvertiseAppUserId");
+                        .HasForeignKey("UserAdvertiseAdvertiseId", "UserAdvertiseAppUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("UserAdvertise");
                 });
 
             modelBuilder.Entity("Domain.RefreshToken", b =>

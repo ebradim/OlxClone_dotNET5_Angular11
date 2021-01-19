@@ -37,6 +37,7 @@ namespace Application.RequestsHandler.UserAdvertises
                                 District=x.Advertise.District,
                                 Price=x.Advertise.Price,
                                 Title=x.Advertise.Title,
+                                ImageUrl =x.AdvertisePhotos.First().Url,
                                 AdvertiseInfoDTO =new HomeAdvertiseInfoDTO
                                 {
                                     Hint =x.Advertise.AdvertiseInfo.Advertise.AdvertiseInfo.Hint,

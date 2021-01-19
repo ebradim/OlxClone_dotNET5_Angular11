@@ -42,6 +42,31 @@ export class TokenEffects {
       })
     )
   );
+
+  startWebsocket$ = createEffect(
+    () =>
+      this.action$.pipe(
+        ofType(fromAPIActions.registerSuccess, fromAPIActions.loginSuccess),
+        tap(() => this.signalr.runWebsocket())
+      ),
+
+    { dispatch: false }
+  );
+
+  stopWebsocket$ = createEffect(
+    () =>
+      this.action$.pipe(
+        ofType(
+          fromAPIActions.logoutSuccess,
+          fromAPIActions.loginError,
+          fromAPIActions.registerError,
+          fromAPIActions.refreshTokenError
+        ),
+        tap(() => this.signalr.connection?.stop())
+      ),
+
+    { dispatch: false }
+  );
   tokenUpdate$ = createEffect(
     () =>
       this.action$.pipe(
@@ -50,10 +75,10 @@ export class TokenEffects {
           fromAPIActions.registerSuccess,
           fromAPIActions.loginSuccess
         ),
-        takeUntil(of(fromAPIActions.logoutSuccess)),
         switchMap(() => {
           return this.authService.refreshToken().pipe(
-            delay(25000),
+            delay(250000),
+            take(1),
             map((user) => fromAPIActions.refreshTokenSuccess({ user })),
             catchError((error) =>
               of(fromAPIActions.refreshTokenError({ error }))

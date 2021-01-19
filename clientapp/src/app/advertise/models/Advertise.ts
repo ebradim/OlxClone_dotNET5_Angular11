@@ -84,6 +84,7 @@ interface IHomeAdvertise
   extends Omit<IAdvertise, 'id' | 'publishedAt' | 'advertiseInfo'> {
   advertiseInfo: IHomeAdvertiseInfo;
   user: User;
+  imageUrl: string;
 }
 
 interface IHomeAdvertiseInfo extends Pick<IAdvertiseInfo, 'hint'> {}

@@ -25,7 +25,7 @@ import { State } from '../reducers/advertise.reducer';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AdvertiseEditComponent {
-  @Input() selectedAdvertise: '' | IResponseAdvertise | null | undefined;
+  @Input() selectedAdvertise: any;
   editForm: FormGroup | undefined;
   imagesToBeDeleted: DeletingImages[] = [];
   defaultFileList: NzUploadFile[] = [];

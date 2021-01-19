@@ -47,13 +47,13 @@ namespace API.Controllers
         
         [HttpDelete("{id}")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme,Policy =AppPolicy.IS_ADVERTISE_OWNER)]
-        [IgnoreAntiforgeryToken]
+        [ValidateAntiForgeryToken]
         public async Task<ActionResult<bool>> DeleteAdAsync(string id)
         {
             return await mediator.Send(new Delete.Command { Id = id });
         }
 
-        [HttpPut("{id}"), Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = AppPolicy.IS_ADVERTISE_OWNER), IgnoreAntiforgeryToken]
+        [HttpPut("{id}"), Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = AppPolicy.IS_ADVERTISE_OWNER), ValidateAntiForgeryToken]
         public async Task<ActionResult<UserAdvertiseDTO>> UpdateAdAsync(string id,[FromForm]Edit.Command editAD)
         {
             editAD.UniqueId = id;
@@ -62,7 +62,7 @@ namespace API.Controllers
 
         [HttpPost("fav/{id}")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme,Policy=AppPolicy.IS_ADVERTISE_IN_FAVORITE)]
-        [IgnoreAntiforgeryToken]
+        [ValidateAntiForgeryToken]
         public async Task<ActionResult<bool>> AddToFavorite(string id)
         {
             return await mediator.Send(new Add.Command { AdvertiseId = id });
@@ -70,7 +70,7 @@ namespace API.Controllers
 
         [HttpDelete("fav/{id}")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme,Policy=AppPolicy.IS_ADVERTISE_NOT_IN_FAVORITE)]
-        [IgnoreAntiforgeryToken]
+        [ValidateAntiForgeryToken]
         public async Task<ActionResult<bool>> RemoveFromFavorite(string id)
         {
             return await mediator.Send(new Remove.Command { AdvertiseId = id });
@@ -86,7 +86,7 @@ namespace API.Controllers
         }
         [HttpPost("like/{id}")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = AppPolicy.IS_ADVERTISE_IN_USERLIKES)]
-        [IgnoreAntiforgeryToken]
+        [ValidateAntiForgeryToken]
         public async Task<ActionResult<bool>> AddToLikes(string id)
         {
             return await mediator.Send(new Like.Command { AdvertiseId = id });

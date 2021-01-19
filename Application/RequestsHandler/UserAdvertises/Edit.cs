@@ -62,7 +62,7 @@ namespace Application.RequestsHandler.UserAdvertises
                 .Select(x=>new {x.Id, x.FirstName, x.LastName,x.UserName})
                 .AsNoTracking().FirstOrDefaultAsync(x=>x.Id ==ad.AppUserId);
 
-                if (request.DeletingImages.Count > 0)
+                if (request.DeletingImages is not null && request.DeletingImages.Count > 0)
                 {
                     foreach (var item in request.DeletingImages)
                     {
@@ -72,7 +72,7 @@ namespace Application.RequestsHandler.UserAdvertises
                     }
                 }
                 var photos = new List<Photo>();
-                if (request.Photos.Count > 0)
+                if (request.Photos is not null && request.Photos.Count > 0)
                 {
 
                     foreach (var photo in request.Photos)

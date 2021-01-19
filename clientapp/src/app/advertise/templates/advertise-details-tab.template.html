@@ -65,19 +65,22 @@
       </nz-descriptions>
     </nz-tab>
     <nz-tab nzTitle="Photos">
-      <ng-container *ngIf="SelectedAdvertise.userAdvertise.photos.length >0">
-        <ng-container
-          *ngFor="let image of SelectedAdvertise.userAdvertise.photos"
-        >
-          <div style="height: fit-content">
-            <img
-              style="width: 50%; height: 100%; margin: 2%"
-              [src]="image.url"
-              [id]="image.id"
-            />
-          </div>
+      <ng-container
+        *ngIf="SelectedAdvertise?.userAdvertise?.photos as adPhotos ;else ops"
+      >
+        <ng-container *ngIf="adPhotos.length >0;else ops">
+          <ng-container *ngFor="let image of adPhotos">
+            <div style="height: fit-content">
+              <img
+                style="width: 50%; height: 100%; margin: 2%"
+                [src]="image.url"
+                [id]="image.id"
+              />
+            </div>
+          </ng-container>
         </ng-container>
       </ng-container>
+      <ng-template #ops> Advertise have no photos </ng-template>
     </nz-tab>
   </nz-tabset>
 </div>
