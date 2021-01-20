@@ -1,7 +1,11 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { AppComponent } from './app.component';
-import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import {
+  HttpClient,
+  HttpClientModule,
+  HTTP_INTERCEPTORS,
+} from '@angular/common/http';
 import { StoreModule } from '@ngrx/store';
 import { metaReducers, reducers } from './root/reducers';
 import { EffectsModule } from '@ngrx/effects';
@@ -35,6 +39,8 @@ import { NzNotificationModule } from 'ng-zorro-antd/notification';
 import { FormsModule } from '@angular/forms';
 import { NzBadgeModule } from 'ng-zorro-antd/badge';
 import { NotificationItemComponent } from './root/components/notification-item.component';
+import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 
 const icons: IconDefinition[] = [
   SearchOutline,
@@ -46,7 +52,9 @@ const icons: IconDefinition[] = [
 ];
 
 registerLocaleData(en);
-
+export function createTranslateLoader(http: HttpClient) {
+  return new TranslateHttpLoader(http, './assets/i18n/', '.json');
+}
 @NgModule({
   declarations: [AppComponent, NavbarComponent, NotificationItemComponent],
   imports: [
@@ -57,6 +65,13 @@ registerLocaleData(en);
     StoreModule.forRoot({}, { metaReducers }),
     StoreModule.forFeature('root', reducers),
     EffectsModule.forRoot([TokenEffects, HomeEffects]),
+    TranslateModule.forRoot({
+      loader: {
+        provide: TranslateLoader,
+        useFactory: createTranslateLoader,
+        deps: [HttpClient],
+      },
+    }),
     StoreRouterConnectingModule.forRoot(),
     AppRouting,
     NzMenuModule,

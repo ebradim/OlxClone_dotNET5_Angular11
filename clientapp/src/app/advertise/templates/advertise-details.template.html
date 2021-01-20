@@ -156,17 +156,26 @@
             </svg>
           </i>
           &nbsp;
-          <ng-container *ngIf="advertise.userAdvertise.likes>0 else nolikesTpl">
+          <ng-container *ngIf="currentUser$|async else loginToSeeLikesTpl">
             <ng-container
-              *ngIf="advertise.userAdvertise.isLiked; else publikesTpl"
+              *ngIf="advertise.userAdvertise.likes>0 else nolikesTpl"
             >
-              You liked this ,Total: {{advertise.userAdvertise.likes }}
+              <ng-container
+                *ngIf="advertise.userAdvertise.isLiked; else publikesTpl"
+              >
+                You liked this ,Total: {{advertise.userAdvertise.likes }}
+              </ng-container>
+              <ng-template #publikesTpl>
+                {{advertise.userAdvertise.likes}}
+              </ng-template>
             </ng-container>
-            <ng-template #publikesTpl>
-              {{advertise.userAdvertise.likes}}
+            <ng-template #nolikesTpl>
+              Be the first one to like this
             </ng-template>
           </ng-container>
-          <ng-template #nolikesTpl> Be the first one to like this </ng-template>
+          <ng-template #loginToSeeLikesTpl>
+            Login to see likes on this advertise
+          </ng-template>
         </label>
       </div>
     </nz-page-header-content>

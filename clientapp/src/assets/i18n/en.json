@@ -1,0 +1,9 @@
+{
+  "navbar": {
+    "home": "Home",
+    "explore": "Explore",
+    "signin": "Sign In",
+    "register": "Register",
+    "emptynotification": "There are no currently live notifications"
+  }
+}

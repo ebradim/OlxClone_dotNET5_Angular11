@@ -45,9 +45,10 @@ namespace Application.RequestsHandler.UserAdvertises
                 this.current = current;
                 this.cloudinary = cloudinary;
             }
-
+            
             public async Task<UserAdvertiseDTO> Handle(Command request, CancellationToken cancellationToken)
             {
+
                 var ad = await dataContext.UserAdvertise
                 .Include(x=>x.Advertise)
                 .ThenInclude(x=>x.AdvertiseInfo)

@@ -75,6 +75,7 @@ namespace Application.RequestsHandler.UserAdvertises
                                             PaymentOption = x.PaymentOption,
                                             Category = x.Category,
                                             Photos =x.AdvertisePhotos,
+                                            
                                             AdvertiseDTO = new AdvertiseDTO
                                             {
 

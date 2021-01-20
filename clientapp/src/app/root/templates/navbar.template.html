@@ -1,4 +1,21 @@
-<ul nz-menu nzMode="horizontal" class="navbar-container">
+<ul nz-menu nzMode="horizontal" class="navbar-container" [dir]="html.dir">
+  <div class="navbar-lang">
+    <li nz-submenu [nzTitle]="getSelectedLang()">
+      <ul>
+        <li nz-menu-group nzTitle="Languages">
+          <ul>
+            <li
+              *ngFor="let lang of languages"
+              nz-menu-item
+              (click)="changeLanguage(lang.value)"
+            >
+              {{lang.language}}
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </div>
   <img
     style="width: 50px; height: 40px; margin-top: 10px"
     src="https://upload.wikimedia.org/wikipedia/commons/4/42/OLX_New_Logo.png"
@@ -10,7 +27,8 @@
       [routerLink]="['/home']"
       routerLinkActive="ant-menu-item-selected-route"
     >
-      <i nz-icon nzType="home" nzTheme="outline"></i> Home
+      <i nz-icon nzType="home" nzTheme="outline"></i> {{'navbar.home' |
+      translate}}
     </li>
 
     <li
@@ -18,73 +36,8 @@
       [routerLink]="['/auth']"
       routerLinkActive="ant-menu-item-selected-route"
     >
-      <i nz-icon nzType="search" nzTheme="outline"></i> Explore
-    </li>
-
-    <li nz-submenu nzTitle="Categories" nzIcon="group">
-      <ul>
-        <li nz-submenu nzTitle="Electronics">
-          <ul>
-            <li nz-menu-item>Mobiles</li>
-            <li nz-menu-item>Tablets</li>
-            <li nz-menu-item>Laptops</li>
-            <li nz-menu-item>PCs</li>
-            <li nz-menu-item>Others</li>
-          </ul>
-        </li>
-        <li nz-submenu nzTitle="Vehicles">
-          <ul>
-            <li nz-menu-item>Cars</li>
-            <li nz-menu-item>Bikes</li>
-            <li nz-menu-item>Motocycles</li>
-            <li nz-menu-item>Others</li>
-          </ul>
-        </li>
-        <li nz-submenu nzTitle="Pets">
-          <ul>
-            <li nz-menu-item>Birds</li>
-            <li nz-menu-item>Cats</li>
-            <li nz-menu-item>Dogs</li>
-            <li nz-menu-item>Others</li>
-          </ul>
-        </li>
-        <li nz-submenu nzTitle="Jobs">
-          <ul>
-            <li nz-menu-item>Accounting</li>
-            <li nz-menu-item>Customer Service</li>
-            <li nz-menu-item>Drivers</li>
-            <li nz-menu-item>Engineering</li>
-            <li nz-menu-item>HR</li>
-            <li nz-menu-item>IT</li>
-            <li nz-menu-item>Guards and Security</li>
-            <li nz-menu-item>Others</li>
-          </ul>
-        </li>
-      </ul>
-    </li>
-    <li nz-submenu nzTitle="Help" nzIcon="customer-service">
-      <ul>
-        <li nz-menu-group nzTitle="Customer Service">
-          <ul>
-            <li nz-menu-item>Contact Us</li>
-            <li nz-menu-item>Live chat</li>
-          </ul>
-        </li>
-        <li nz-menu-group nzTitle="Company">
-          <ul>
-            <li nz-menu-item>Careers</li>
-            <li nz-menu-item>About us</li>
-          </ul>
-        </li>
-        <li nz-menu-group nzTitle="FAQ">
-          <ul>
-            <li nz-menu-item>Terms of use</li>
-            <li nz-menu-item>Privacy Policy</li>
-            <li nz-menu-item>Sitemap</li>
-            <li nz-menu-item>Regions map</li>
-          </ul>
-        </li>
-      </ul>
+      <i nz-icon nzType="search" nzTheme="outline"></i> {{'navbar.explore' |
+      translate}}
     </li>
   </div>
   <ng-container *ngIf="user$ |async as logged;else nouser">
@@ -190,12 +143,12 @@
       </ng-container>
       <ng-template #emptynoti>
         <ul nz-menu>
-          <p style="margin: 2%">There are no currently live notifications</p>
+          <p style="margin: 2%">{{'navbar.emptynotification' | translate}}</p>
         </ul>
       </ng-template>
       <ng-template #nolive>
         <ul nz-menu>
-          There are no currently live notifications
+          {{'navbar.emptynotification' | translate}}
         </ul>
       </ng-template>
     </nz-dropdown-menu>
@@ -210,7 +163,7 @@
         nzShape="round"
         [routerLink]="['/auth/login']"
       >
-        <i nz-icon nzType="login"></i>Sign In
+        <i nz-icon nzType="login"></i>{{'navbar.signin' | translate}}
       </button>
       <button
         nz-button
@@ -220,7 +173,7 @@
         nzShape="round"
         [routerLink]="['/auth/register']"
       >
-        <i nz-icon nzType="user-add"></i>Create new account
+        <i nz-icon nzType="user-add"></i>{{'navbar.register' | translate}}
       </button>
     </div>
   </ng-template>

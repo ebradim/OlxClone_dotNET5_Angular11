@@ -2,8 +2,7 @@
 $nav_btn_width: fit-content;
 $nav_btns: ("newaccount", "signin");
 $required_margin: 10px 15px 0px 0px;
-
-.navbar-container {
+@mixin defaultValue {
   background-color: #fff;
   box-shadow: 0px 0px 4px 4px whitesmoke;
   padding-bottom: 8px;
@@ -12,6 +11,13 @@ $required_margin: 10px 15px 0px 0px;
 
   flex-flow: row wrap;
   justify-content: center;
+  .navbar-lang {
+    padding-top: 10px;
+    font-family: Roboto;
+    li {
+      font-size: 15px;
+    }
+  }
   .navbar-start {
     padding-top: 5px !important;
     margin: 5px 50px;
@@ -40,33 +46,42 @@ $required_margin: 10px 15px 0px 0px;
       font-weight: normal;
     }
   }
-}
+  @each $class in $nav_btns {
+    .btns-auth-container {
+      display: flex;
+      flex-flow: row wrap;
+      justify-content: center;
 
-@each $class in $nav_btns {
-  .btns-auth-container {
-    display: flex;
-    flex-flow: row wrap;
-    justify-content: center;
-
-    .btn-#{$class} {
-      margin: $required_margin;
-      float: right;
-      width: $nav_btn_width;
-      transition: box-shadow 500ms, border 500ms;
-
-      &:not(:first-child):hover {
-        box-shadow: 0px 0px 8px 5px #bfc7f5;
-        transition: box-shadow 500ms;
-      }
-      &:first-child:hover {
-        box-shadow: 0px 0px 8px 4px #dfdfdf;
-        border: 1px solid #ffffff;
+      .btn-#{$class} {
+        margin: $required_margin;
+        float: right;
+        width: $nav_btn_width;
         transition: box-shadow 500ms, border 500ms;
+
+        &:not(:first-child):hover {
+          box-shadow: 0px 0px 8px 5px #bfc7f5;
+          transition: box-shadow 500ms;
+        }
+        &:first-child:hover {
+          box-shadow: 0px 0px 8px 4px #dfdfdf;
+          border: 1px solid #ffffff;
+          transition: box-shadow 500ms, border 500ms;
+        }
       }
     }
   }
 }
 
+.navbar-container[dir="ltr"] {
+  @include defaultValue;
+}
+.navbar-container[dir="rtl"] {
+  @include defaultValue;
+  font-family: Amiri;
+  i {
+    margin-left: 5px;
+  }
+}
 .user-info {
   cursor: pointer;
   border-style: none;
