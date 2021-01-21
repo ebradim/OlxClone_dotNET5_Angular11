@@ -18,6 +18,7 @@ import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzDividerModule } from 'ng-zorro-antd/divider';
 import { NzTagModule } from 'ng-zorro-antd/tag';
 import { NzAlertModule } from 'ng-zorro-antd/alert';
+import { TranslateModule } from '@ngx-translate/core';
 
 export const COMPONENTS = [
   HomePageComponent,
@@ -37,6 +38,7 @@ const icons: IconDefinition[] = [SearchOutline, StarFill];
     NzButtonModule,
     NzTagModule,
     NzIconModule.forChild(icons),
+    TranslateModule.forChild(),
     NzAutocompleteModule,
     NzInputModule,
     NzAvatarModule,

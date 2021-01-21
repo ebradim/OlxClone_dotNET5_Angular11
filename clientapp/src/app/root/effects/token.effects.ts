@@ -93,20 +93,20 @@ export class TokenEffects {
 
   //          tap(() => this.store.dispatch(fromHomeActions.establishWebsocket())),
 
-  onErrorAutoLogin = createEffect(
-    () => () =>
-      this.action$.pipe(
-        ofType(fromAPIActions.refreshTokenError),
-        tap(() => {
-          this.notification.error(
-            'Session is expired!',
-            'You have been logged out due to long in-active\nIf you still facing this problem it may be our server problem, We will come back',
-            { nzPlacement: 'bottomLeft', nzDuration: 10000 }
-          );
-          this.route.navigate(['/auth/login']);
-        })
-      ),
+  // onErrorAutoLogin = createEffect(
+  //   () => () =>
+  //     this.action$.pipe(
+  //       ofType(fromAPIActions.refreshTokenError),
+  //       tap(() => {
+  //         this.notification.error(
+  //           'Session is expired!',
+  //           'You have been logged out due to long in-active\nIf you still facing this problem it may be our server problem, We will come back',
+  //           { nzPlacement: 'bottomLeft', nzDuration: 10000 }
+  //         );
+  //         this.route.navigate(['/auth/login']);
+  //       })
+  //     ),
 
-    { dispatch: false }
-  );
+  //   { dispatch: false }
+  // );
 }

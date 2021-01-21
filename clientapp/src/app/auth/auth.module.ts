@@ -20,6 +20,7 @@ import {
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { AuthRegisterComponent } from './components/authregister.component';
 import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
+import { TranslateModule } from '@ngx-translate/core';
 
 const icons: IconDefinition[] = [EyeInvisibleOutline, EyeOutline, UserOutline];
 
@@ -33,6 +34,7 @@ export const COMPONENTS = [AuthLoginComponent, AuthRegisterComponent];
     ReactiveFormsModule,
     NzInputModule,
     NzIconModule.forChild(icons),
+    TranslateModule.forChild(),
     NzSpinModule,
     NzCheckboxModule,
     NzButtonModule,

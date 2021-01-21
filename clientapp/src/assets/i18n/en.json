@@ -3,7 +3,28 @@
     "home": "Home",
     "explore": "Explore",
     "signin": "Sign In",
-    "register": "Register",
+    "register": "Create new account",
     "emptynotification": "There are no currently live notifications"
+  },
+  "auth": {
+    "welcome": "Welcome Back!",
+    "hint": "Login to start selling & buying, and earn money",
+    "username": "Username",
+    "password": "Password",
+    "login": "Log in"
+  },
+  "home": {
+    "search": "What are you looking for?",
+    "suggestedads": "Suggested Ads!",
+    "hint": "If you want to improve your exprience, please login or register in order to get personalized ads"
+  },
+  "error": {
+    "title": "Unable to connect to host",
+    "info": "Our host is temporary down, Please try again in few mintues",
+    "details": {
+      "title": "We’ll be back soon!",
+      "hint": "Sorry for the inconvenience but we’re performing some maintenance at the moment. we’ll be back online shortly!",
+      "team": "The Olx Team"
+    }
   }
 }

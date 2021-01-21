@@ -1,7 +1,7 @@
 <div class="form-container">
   <div class="left-side">
-    <h1 class="title">Welcome Back!</h1>
-    <p class="info">Login to start selling & buying, and earn money</p>
+    <h1 class="title">{{'auth.welcome'|translate}}</h1>
+    <p class="info">{{'auth.hint'|translate}}</p>
   </div>
 
   <form
@@ -17,7 +17,7 @@
             class="input-login"
             formControlName="userName"
             nz-input
-            placeholder="Username"
+            placeholder="{{'auth.username'|translate}}"
             autocomplete="username"
             #ispend
           />
@@ -30,7 +30,7 @@
           <input
             [type]="passwordVisible ? 'text' : 'password'"
             nz-input
-            placeholder="Password"
+            placeholder="{{'auth.password'|translate}}"
             formControlName="password"
           />
         </nz-input-group>
@@ -53,7 +53,7 @@
         class="btn-signin"
         [disabled]="loading$ |async"
       >
-        Log in
+        {{'auth.login'|translate}}
       </button>
     </nz-form-control>
     <div class="flexed-centered" *ngIf="error$ | async as error">

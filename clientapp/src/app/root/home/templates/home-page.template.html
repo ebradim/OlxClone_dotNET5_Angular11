@@ -1,4 +1,4 @@
-<div class="root" dir="ltr">
+<div class="root">
   <div class="search-box">
     <home-searchbox (search)="search($event)"></home-searchbox>
   </div>
@@ -7,8 +7,8 @@
     <nz-alert
       style="margin: 4% 20% 0%"
       nzType="info"
-      nzMessage="Suggested Ads!"
-      nzDescription="If you want to improve your exprience, please login or register in order to get personalized ads"
+      nzMessage="{{'home.suggestedads' |translate}}"
+      nzDescription="{{'home.hint' |translate}}"
       nzShowIcon
     ></nz-alert>
   </ng-container>
@@ -18,13 +18,10 @@
   <ng-template #error>
     <div class="error">
       <article>
-        <h1>We&rsquo;ll be back soon!</h1>
+        <h1>{{'error.details.title' |translate}}</h1>
         <div>
-          <p>
-            Sorry for the inconvenience but we&rsquo;re performing some
-            maintenance at the moment. we&rsquo;ll be back online shortly!
-          </p>
-          <p>&mdash; The Olx Team</p>
+          <p>{{'error.details.hint' |translate}}</p>
+          <p>&mdash; {{'error.details.team' |translate}}</p>
         </div>
       </article>
     </div>

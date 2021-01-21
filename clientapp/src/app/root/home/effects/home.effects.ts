@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
+import { TranslateService } from '@ngx-translate/core';
 import { NzNotificationService } from 'ng-zorro-antd/notification';
 import { asyncScheduler, EMPTY, of } from 'rxjs';
 import {
@@ -10,6 +11,7 @@ import {
   map,
   skip,
   switchMap,
+  take,
   takeUntil,
   tap,
 } from 'rxjs/operators';
@@ -24,7 +26,8 @@ export class HomeEffects {
     private homeService: AdvertiseService,
     private advertiseService: AdvertiseService,
     private action$: Actions,
-    private router: Router
+    private router: Router,
+    private translate: TranslateService
   ) {}
 
   loadHomeAds$ = createEffect(() =>
@@ -82,13 +85,20 @@ export class HomeEffects {
     () =>
       this.action$.pipe(
         ofType(fromAPIActions.loadHomeAdvertisesError),
-        tap(() =>
-          this.notification.error(
-            'Unable to connect to host',
-            'Our host is temporary down, Please try again in few mintues',
-            { nzPlacement: 'bottomLeft' }
-          )
-        )
+        tap(() => {
+          const lang = this.translate.currentLang;
+          this.translate
+            .getTranslation(lang)
+            .pipe(
+              take(1),
+              tap((e) => {
+                this.notification.error(`${e.error.title}`, `${e.error.info}`, {
+                  nzPlacement: lang === 'ar' ? 'bottomRight' : 'bottomLeft',
+                });
+              })
+            )
+            .subscribe();
+        })
       ),
 
     { dispatch: false }
