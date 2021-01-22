@@ -1,8 +1,38 @@
 <ul nz-menu nzMode="horizontal" class="navbar-container" [dir]="html.dir">
+  <button
+    style="margin-top: 5px; font-size: 16px; height: 50px"
+    nz-button
+    nz-dropdown
+    nzType="link"
+    nzShape="round"
+    [nzDropdownMenu]="menu"
+    [nzPlacement]="'topCenter'"
+  >
+    <i nz-icon nzType="skin" nzTheme="outline"></i>
+    <br />{{'navbar.'+currentTheme |translate}}
+  </button>
+  <nz-dropdown-menu #menu="nzDropdownMenu">
+    <ul nz-menu style="margin-top: 10px">
+      <li
+        nz-menu-item
+        [nzSelected]="currentTheme=='light'"
+        (click)="setLightTheme()"
+      >
+        {{'navbar.light' |translate}}
+      </li>
+      <li
+        nz-menu-item
+        [nzSelected]="currentTheme!='light'"
+        (click)="setDarkTheme()"
+      >
+        {{'navbar.dark' |translate}}
+      </li>
+    </ul>
+  </nz-dropdown-menu>
   <div class="navbar-lang">
     <li nz-submenu [nzTitle]="getSelectedLang()">
       <ul>
-        <li nz-menu-group nzTitle="Languages">
+        <li nz-menu-group nzTitle="{{'navbar.languages' |translate}}">
           <ul>
             <li
               *ngFor="let lang of languages"
@@ -157,7 +187,7 @@
     <div class="btns-auth-container">
       <button
         nz-button
-        nzType="default"
+        nzType="dashed"
         [nzSize]="'large'"
         class="btn-signin"
         nzShape="round"

@@ -3,8 +3,7 @@ $nav_btn_width: fit-content;
 $nav_btns: ("newaccount", "signin");
 $required_margin: 10px 15px 0px 0px;
 @mixin defaultValue {
-  background-color: #fff;
-  box-shadow: 0px 0px 4px 4px whitesmoke;
+  background-color: transparent;
   padding-bottom: 8px;
   display: flex;
   font-family: Roboto;
@@ -29,19 +28,12 @@ $required_margin: 10px 15px 0px 0px;
     text-align: center;
     outline: none;
     &:hover {
-      color: #253fba;
       font-weight: bold;
     }
   }
-  .ant-menu-item {
-    color: black;
-  }
 
   .ant-menu-item-selected-route {
-    background-color: #f2f4fd !important;
-    border-bottom: 3px solid #485bbd;
     font-weight: bolder !important;
-    color: rgba(68, 88, 187, 0.849);
     &:hover {
       font-weight: normal;
     }
@@ -59,12 +51,11 @@ $required_margin: 10px 15px 0px 0px;
         transition: box-shadow 500ms, border 500ms;
 
         &:not(:first-child):hover {
-          box-shadow: 0px 0px 8px 5px #bfc7f5;
+          background-color: darken($color: #253fba, $amount: 5);
           transition: box-shadow 500ms;
         }
         &:first-child:hover {
-          box-shadow: 0px 0px 8px 4px #dfdfdf;
-          border: 1px solid #ffffff;
+          box-shadow: 0px 0px 1px 1px currentColor;
           transition: box-shadow 500ms, border 500ms;
         }
       }

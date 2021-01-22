@@ -3,6 +3,7 @@ import { select, Store } from '@ngrx/store';
 import { TranslateService } from '@ngx-translate/core';
 import { dir } from 'console';
 import { Observable } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
 import { fromLogoutActions } from 'src/app/auth/actions';
 import { IUser } from '../../auth/models/API';
 import { IReceivedOffer } from '../home/models/OffersHubs';
@@ -35,6 +36,7 @@ export class NavbarComponent {
       value: 'ar',
     },
   ];
+  currentTheme = 'light';
 
   constructor(
     private store: Store<RootState>,
@@ -63,6 +65,23 @@ export class NavbarComponent {
     // tslint:disable-next-line: no-non-null-assertion
     return this.languages.find((x) => x.value === this.translate.currentLang)!
       .language;
+  }
+  setLightTheme(): void {
+    const style = document.getElementById('dynamic-skin') as HTMLLinkElement;
+    style.removeAttribute('href');
+    this.currentTheme = 'light';
+  }
+
+  setDarkTheme(): void {
+    let style = document.getElementById('dynamic-skin') as HTMLLinkElement;
+    if (!style) {
+      style = document.createElement('link');
+      style.id = 'dynamic-skin';
+      style.rel = 'stylesheet';
+      document.head.append(style);
+    }
+    style.href = '../../../../assets/themes/dark.css';
+    this.currentTheme = 'dark';
   }
 }
 

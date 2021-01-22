@@ -4,7 +4,10 @@
     "explore": "بحث عن المزيد",
     "signin": "تسجيل الدخول",
     "register": "إنشاء حساب جديد",
-    "emptynotification": "لا يوجد إشعارات حاليه"
+    "emptynotification": "لا يوجد إشعارات حاليه",
+    "light": "سطوع",
+    "dark": "ليلي",
+    "languages": "اللغات"
   },
   "auth": {
     "welcome": "اهلا بعودتك!",

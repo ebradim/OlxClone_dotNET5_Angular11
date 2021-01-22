@@ -4,7 +4,10 @@
     "explore": "Explore",
     "signin": "Sign In",
     "register": "Create new account",
-    "emptynotification": "There are no currently live notifications"
+    "emptynotification": "There are no currently live notifications",
+    "light": "Light",
+    "dark": "Dark",
+    "languages": "Languages"
   },
   "auth": {
     "welcome": "Welcome Back!",
