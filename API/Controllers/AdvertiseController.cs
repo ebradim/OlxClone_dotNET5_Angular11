@@ -91,5 +91,13 @@ namespace API.Controllers
         {
             return await mediator.Send(new Like.Command { AdvertiseId = id });
         }
+        [HttpGet("filter")]
+        [AllowAnonymous]
+        public async Task<ActionResult<FilteredSearchDTO>> Filter([FromQuery] Search.Query query)
+        {
+            return await mediator.Send(new Search.Query { AdvertiseId = query.AdvertiseId, Category = query.Category });
+        }
+
+
     }
 }
