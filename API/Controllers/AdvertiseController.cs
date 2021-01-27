@@ -93,6 +93,7 @@ namespace API.Controllers
         }
         [HttpGet("filter")]
         [AllowAnonymous]
+        [IgnoreAntiforgeryToken]
         public async Task<ActionResult<FilteredSearchDTO>> Filter([FromQuery] Search.Query query)
         {
             return await mediator.Send(new Search.Query { AdvertiseId = query.AdvertiseId, Category = query.Category });

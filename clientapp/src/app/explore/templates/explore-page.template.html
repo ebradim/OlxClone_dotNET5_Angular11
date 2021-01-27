@@ -1,0 +1,59 @@
+<div class="container">
+  <div class="filter-result">
+    <div [formGroup]="filterForm" class="filter">
+      <nz-select
+        nzShowSearch
+        formControlName="category"
+        nzPlaceHolder="Filter by Category"
+      >
+        <nz-option nzLabel="Laptops" nzValue="Laptops"></nz-option>
+        <nz-option nzLabel="Mobiles" nzValue="Mobiles"></nz-option>
+        <nz-option nzLabel="Vechiles" nzValue="Vechiles"></nz-option>
+      </nz-select>
+      <button
+        nz-button
+        nzType="primary"
+        (click)="filter()"
+        [disabled]="!isFiltered()"
+      >
+        <i nz-icon nzType="filter" nzTheme="outline"></i>Filter
+      </button>
+
+      <button *ngIf="isFiltered()" nz-button nzDanger (click)="clearFilters()">
+        <i nz-icon nzType="clear" nzTheme="outline"></i>Remove Filters
+      </button>
+    </div>
+    <ng-container *ngIf="entities$|async as result;else nodata">
+      <div class="result">
+        <advertise-explore
+          *ngFor="let item of result"
+          [advertise]="item"
+        ></advertise-explore>
+      </div>
+    </ng-container>
+  </div>
+  <ng-container *ngIf="(lastId$|async) as lastId;else nodata">
+    <nz-pagination
+      class="pagination"
+      [nzPageIndex]="1"
+      [nzTotal]="resultCount$ |async"
+      [nzPageSize]="10"
+      (nzPageIndexChange)="onPageChange($event,lastId)"
+      [nzShowTotal]="rangeTemplate"
+    ></nz-pagination>
+  </ng-container>
+
+  <ng-template #rangeTemplate let-range="range" let-total>
+    {{ range[0] }}-{{ range[1] }} of {{ total }} items
+  </ng-template>
+  <ng-template #nodata>
+    <nz-pagination
+      class="pagination"
+      [nzPageIndex]="1"
+      [nzTotal]="resultCount$ |async"
+      [nzPageSize]="10"
+      (nzPageIndexChange)="onPageChange($event)"
+      [nzShowTotal]="rangeTemplate"
+    ></nz-pagination>
+  </ng-template>
+</div>

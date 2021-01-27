@@ -1,0 +1,37 @@
+.container {
+  display: flex;
+  flex-flow: column wrap;
+  gap: 20px;
+  align-items: center;
+  margin-top: 5%;
+  margin-left: 5%;
+  margin-right: 5%;
+  .filter-result {
+    display: flex;
+    flex-flow: column wrap;
+    justify-content: center;
+
+    gap: 20px;
+    .filter {
+      display: flex;
+      flex-flow: row wrap;
+      justify-content: flex-start;
+      gap: 5px;
+      width: 400px;
+      nz-select {
+        width: 310px;
+      }
+    }
+    .result {
+      display: flex;
+      flex-flow: column wrap;
+      justify-content: space-evenly;
+      gap: 5px;
+    }
+  }
+  .pagination {
+    position: static;
+    bottom: 0;
+    margin-bottom: 25px;
+  }
+}

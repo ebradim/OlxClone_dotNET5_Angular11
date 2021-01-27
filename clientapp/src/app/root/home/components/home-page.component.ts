@@ -22,6 +22,7 @@ import {
 export class HomePageComponent {
   isHomeError$: Observable<boolean>;
   currentUser$: Observable<IUser | null>;
+
   constructor(
     private homeSerivce: AdvertiseService,
     private store: Store<RootState>

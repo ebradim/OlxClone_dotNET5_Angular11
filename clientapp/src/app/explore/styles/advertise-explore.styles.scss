@@ -1,0 +1,16 @@
+nz-card {
+  width: 400px;
+  .inner-container {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-evenly;
+    gap: 55px;
+    img {
+      width: 85px;
+      height: 100px;
+    }
+    p {
+      font-family: Roboto;
+    }
+  }
+}

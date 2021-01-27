@@ -61,7 +61,12 @@ export class HomeEffects {
         );
         return this.advertiseService.searchForAdvertise(term).pipe(
           takeUntil(next$),
-          map((result) => fromAPIActions.searchForAdvertisesSuccess({ result }))
+          map((result) =>
+            fromAPIActions.searchForAdvertisesSuccess({ result })
+          ),
+          catchError((error) =>
+            of(fromAPIActions.searchForAdvertisesError({ error }))
+          )
         );
       })
     )

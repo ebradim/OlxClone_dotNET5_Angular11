@@ -5,6 +5,7 @@ import { AuthRegisterComponent } from './components/authregister.component';
 const routes: Routes = [
   { path: 'login', component: AuthLoginComponent },
   { path: 'register', component: AuthRegisterComponent },
+  { path: '', pathMatch: 'full', redirectTo: 'login' },
 ];
 @NgModule({
   imports: [RouterModule.forChild(routes)],

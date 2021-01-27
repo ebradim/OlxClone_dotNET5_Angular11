@@ -41,6 +41,8 @@ import { NzBadgeModule } from 'ng-zorro-antd/badge';
 import { NotificationItemComponent } from './root/components/notification-item.component';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
+import { environment } from 'src/environments/environment';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 
 const icons: IconDefinition[] = [
   SearchOutline,
@@ -72,6 +74,7 @@ export function createTranslateLoader(http: HttpClient) {
         deps: [HttpClient],
       },
     }),
+
     StoreRouterConnectingModule.forRoot(),
     AppRouting,
     NzMenuModule,

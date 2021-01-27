@@ -47,6 +47,10 @@ export const searchForAdvertisesSuccess = createAction(
   '[Advertise/API/Home] Search For Advertise Success',
   props<{ result: IGroupedAdvertise[] }>()
 );
+export const searchForAdvertisesError = createAction(
+  '[Advertise/API/Home] Search For Advertise Error',
+  props<{ error: any[] }>()
+);
 export const establishWebsocketSuccess = createAction(
   '[Hubs/Offers/Establish] Establish HUB Success'
 );
