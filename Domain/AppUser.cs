@@ -23,6 +23,7 @@ namespace Domain
 
         public ICollection<UserOffer> SentOffers { get; set; }
         public ICollection<UserOffer> ReceivedOffers { get; set; }
+        public ICollection<UserComments> UserComments { get; set; }
 
    
 

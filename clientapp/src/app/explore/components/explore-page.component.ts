@@ -36,28 +36,34 @@ export class ExplorePageComponent {
     this.entities$ = this.store.pipe(select(getFilteredEntity));
     this.store.dispatch(fromFilter.loadAdvertises());
   }
-  onPageChange(pageIndex: any, lastId: any): void {
+  onPageChange(pageIndex: any, lastId?: any): void {
     if (pageIndex > this.currentIndex) {
       this.currentIndex = pageIndex;
     }
 
-    if (!!!(this.currentIndex % 3)) {
-      const category = this.filterForm.get('category')?.value;
-      if (category.length > 1) {
-        this.store.dispatch(
-          fromFilter.filterByCategoryLastId({ lastId, category })
-        );
-      } else {
-        this.store.dispatch(fromFilter.filterByLastId({ advertiseId: lastId }));
+    if (lastId) {
+      if (!!!(this.currentIndex % 3)) {
+        const category = this.filterForm.get('category')?.value;
+        if (category.length > 1) {
+          this.store.dispatch(
+            fromFilter.filterByCategoryLastId({ lastId, category })
+          );
+        } else {
+          this.store.dispatch(
+            fromFilter.filterByLastId({ advertiseId: lastId })
+          );
+        }
       }
-    }
 
-    this.store.dispatch(fromFilter.pageChange({ page: pageIndex }));
-    console.log(
-      '%cCurrent Page Index: ',
-      'color:blue;font-size:20px',
-      this.currentIndex
-    );
+      this.store.dispatch(fromFilter.pageChange({ page: pageIndex }));
+      console.log(
+        '%cCurrent Page Index: ',
+        'color:blue;font-size:20px',
+        this.currentIndex
+      );
+    } else {
+      this.store.dispatch(fromFilter.pageChange({ page: pageIndex }));
+    }
   }
 
   filter(): void {

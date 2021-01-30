@@ -22,6 +22,7 @@ namespace Domain
         [JsonIgnore]
         public ICollection<UserFavorite> UserFavorites { get; set; }        
         public ICollection<UserLike> UserLikes { get; set; }
+        public ICollection<UserComments> UserComments { get; set; }
 
     }
     public class AdvertiseUniqueId

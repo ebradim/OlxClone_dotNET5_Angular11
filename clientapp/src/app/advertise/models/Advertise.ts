@@ -80,7 +80,7 @@ export interface IEditAdvertise extends Omit<IAddAdvertise, 'title'> {
 export interface IResponseHomeAdvertise {
   userAdvertise: IHomeAdvertise;
 }
-interface IHomeAdvertise
+export interface IHomeAdvertise
   extends Omit<IAdvertise, 'id' | 'publishedAt' | 'advertiseInfo'> {
   advertiseInfo: IHomeAdvertiseInfo;
   user: User;

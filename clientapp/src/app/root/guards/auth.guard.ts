@@ -28,13 +28,6 @@ export class AuthGuard implements CanActivate {
     | UrlTree
     | Observable<boolean | UrlTree>
     | Promise<boolean | UrlTree> {
-    if (route.routeConfig?.path === 'user') {
-      this.router.navigate(['/auth/login'], {
-        queryParams: { redirect: 'user-fav' },
-      });
-      return this.isAuthenticated$.pipe(map((user) => !!user));
-    } else {
-      return this.isAuthenticated$.pipe(map((user) => !!!user));
-    }
+    return this.isAuthenticated$.pipe(map((user) => !!!user));
   }
 }

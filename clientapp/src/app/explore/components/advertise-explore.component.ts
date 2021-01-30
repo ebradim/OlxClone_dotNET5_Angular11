@@ -1,4 +1,5 @@
 import { Component, Input } from '@angular/core';
+import { IHomeAdvertise } from 'src/app/advertise/models/Advertise';
 import { IFilterAdvertise } from '../models/advertise';
 
 @Component({
@@ -8,5 +9,5 @@ import { IFilterAdvertise } from '../models/advertise';
   styleUrls: ['../styles/advertise-explore.styles.scss'],
 })
 export class AdvertiseExploreComponent {
-  @Input() advertise: IFilterAdvertise | undefined;
+  @Input() advertise: any;
 }

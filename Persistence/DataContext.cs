@@ -20,6 +20,7 @@ namespace Persistence
         public DbSet<UserLike> UserLikes { get; set; }
         public DbSet<UserOffer> UserOffers { get; set; }
         public DbSet<Photo> Photos { get; set; }
+        public DbSet<UserComments> UserComments { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -104,11 +105,11 @@ namespace Persistence
 
             builder.Entity<Advertise>(opt =>
             {
-                opt.HasIndex(x => x.UniqueId);
+                opt.HasIndex(advertise => advertise.UniqueId);
 
-                opt.HasOne(x => x.AdvertiseInfo)
-                    .WithOne(x => x.Advertise)
-                    .HasForeignKey<AdvertiseInfo>(x => x.AdvertiseId);
+                opt.HasOne(advertise => advertise.AdvertiseInfo)
+                    .WithOne(advertiseInfo => advertiseInfo.Advertise)
+                    .HasForeignKey<AdvertiseInfo>(advertiseInfo => advertiseInfo.AdvertiseId);
         
 
             });
@@ -136,6 +137,23 @@ namespace Persistence
                     .HasForeignKey(x => x.ReceiverId);
 
                 opt.HasIndex(x => new { x.SenderId, x.ReceiverId });
+            });
+
+            builder.Entity<UserComments>(opt =>
+            {
+                opt.HasKey(x => x.Id);
+                opt.HasOne(x => x.Advertise)
+                .WithMany(x => x.UserComments)
+                .HasForeignKey(x => x.AdvertiseId);
+
+
+                opt.HasOne(x => x.Commenter)
+                    .WithMany(x => x.UserComments)
+                    .HasForeignKey(x => x.CommenterId);
+
+                opt.HasIndex(x => new { x.CommenterId, x.AdvertiseId });
+                
+
             });
         
         }

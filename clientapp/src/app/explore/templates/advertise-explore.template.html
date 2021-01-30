@@ -1,15 +1,15 @@
-<ng-container *ngIf="advertise">
-  <nz-card nzType="inner" [nzTitle]="advertise.title" [nzExtra]="extraTemplate">
+<ng-container *ngIf="advertise as advert">
+  <nz-card nzType="inner" [nzTitle]="advert.title" [nzExtra]="extraTemplate">
     <div class="inner-container">
-      <img [src]="advertise.imageUrl" alt="img" />
+      <img [src]="advert.imageUrl" alt="img" />
       <div class="details">
-        <p>{{advertise.advertiseInfo.hint}}</p>
-        <p>$ {{advertise.price}}</p>
-        <p>{{advertise.city}} {{advertise.district}}</p>
+        <p>{{advert.advertiseInfo?.hint}}</p>
+        <p>$ {{advert.price}}</p>
+        <p>{{advert.city}} {{advert.district}}</p>
       </div>
     </div>
   </nz-card>
+  <ng-template #extraTemplate>
+    <a [routerLink]="['../advertise',advert.uniqueId]">Details</a>
+  </ng-template>
 </ng-container>
-<ng-template #extraTemplate>
-  <a [routerLink]="['../advertise',advertise.uniqueId]">Details</a>
-</ng-template>
