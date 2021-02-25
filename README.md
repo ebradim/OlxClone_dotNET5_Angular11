@@ -31,7 +31,7 @@
 ## 📝 Overview
 
 
-This project is no longer receiving updates ( almost done already )
+This project is no longer receiving updates ( almost done already ), and was removed from YT reinventing the whole content into small parts(playlists) for better exprience. *.*
 <br/>
 
  [![YouTube](https://img.shields.io/badge/-YouTube-red)](https://www.youtube.com/channel/UCWTh_y-OmZyR5eUijwWfFCA) in Arabic :)
