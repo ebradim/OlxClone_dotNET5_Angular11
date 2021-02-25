@@ -31,7 +31,7 @@
 ## 📝 Overview
 
 
-This project is still in progress.
+This project is no longer receiving updates ( almost done already )
 <br/>
 
  [![YouTube](https://img.shields.io/badge/-YouTube-red)](https://www.youtube.com/channel/UCWTh_y-OmZyR5eUijwWfFCA) in Arabic :)
